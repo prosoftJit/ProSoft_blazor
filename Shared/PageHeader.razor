@@ -1,0 +1,22 @@
+﻿
+<PageTitle>@Title</PageTitle>
+
+<h1>@Title</h1>
+
+@if (Description != null)
+{
+    <p>@Description</p>
+}
+
+@ChildContent
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = "";
+
+    [Parameter]
+    public string? Description { get; set; } = null;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

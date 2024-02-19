@@ -1,0 +1,198 @@
+﻿@page "/NotasCompra/Form"
+
+@using System.ComponentModel.DataAnnotations
+@using ProSoft.Data
+@using ProSoft.Components
+@using Microsoft.EntityFrameworkCore
+
+<EditForm Model="Model" id="formId" OnValidSubmit="Submit">
+    
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+
+    <div class="row mb-3">
+        <label class="col-3">
+            Id
+            <input type="text" value="@Model?.IdNotaCompra.ToString("000000")" class="form-control" disabled="disabled" />
+        </label>
+        <label class="col-3">
+            Número da NF
+            <InputText class="form-control" @bind-Value=Model!.NumeroNF></InputText>
+        </label>
+        <label class="col-3">
+            Data
+            <InputDate @bind-Value="Model!.Data" class="form-control" ></InputDate>
+        </label>
+    </div>
+
+    <div class="row">
+
+        <label class="col-6">
+            Fornecedor
+            @* <InputSelect2 TItem="fornecedor"
+                ValueProperty="(f)=>f.IdFornecedor" 
+                OnNeedItems="()=>ctx.fornecedores.ToArray()" 
+                @bind-Value="Model.Fornecedor_IdFornecedor"
+                FormId="edFornId"
+                OnEdit="(i)=>{editFornecedor=i; StateHasChanged();}"
+            >
+            </InputSelect2> *@
+        </label>
+        <label class="col-6">
+            Xml
+            <InputText @bind-Value="Model!.Xml" class="form-control"></InputText>
+        </label>
+    </div>
+
+    <table class="table mt-2">
+        <thead>
+            <tr>
+                <th>Qt.</th>
+                <th>Un</th>
+                <th>Descrição</th>
+                <th>P. Custo</th>
+                <th>Total</th>
+                <th>P. Venda</th>
+                <th width="1%"><button type="button" class="btn btn-link btn-sm d-print-none" @onclick="()=>AddRow()"><i class="oi oi-plus"></i></button></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach(compra c in Model.Items)
+        {
+            <tr>
+            <Row GetMercadorias="(filter)=>ctx.mercadorias.Where(k=>k.Descricao.Contains(filter.Value)).ToArray()" 
+                Model="c" TotalChanged="CalcTotal" OnDelete="(c)=>{rowToDelete=c;StateHasChanged();}"/>
+            </tr>
+        }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" class="text-end">Total</td>
+                <td><RadzenNumeric Format="N2" TextAlign="TextAlign.End" Value="_total" Disabled=true ShowUpDown=false /></td>
+            </tr>
+        </tfoot>
+    </table>
+
+</EditForm>
+
+@if (rowToDelete != null)
+{
+    <ModalConfirm Title="Excluir" Message="Confirma exclusão da linha?" OnClose="DeleteRow"></ModalConfirm>
+}
+
+@if (editFornecedor != null)
+{
+    <ModalDialog OnCancel="()=>editFornecedor=null" Title="Editar fornecedor">
+        <ModalBody>
+            <EditForm id="edFornId" Model="editFornecedor" OnValidSubmit="_=>FornecedorSubmit(editFornecedor)">
+                <Fornecedor Model="editFornecedor"></Fornecedor>
+            </EditForm>
+        </ModalBody>
+        <ModalFooter>
+            <button type="submit" class="btn btn-success" form="edFornId">Salvar</button>
+        </ModalFooter>
+    </ModalDialog>
+}
+
+@code {
+    [Parameter] public long idNotaCompra{ get; set; }
+    @* [Inject] Services.MessageService message { get; set; } *@
+
+    notacompra? Model;
+    Contexto ctx = new();
+
+    fornecedor[]? fornecedores;
+
+    void AddRow()
+    {
+        compra c = new();
+        Model?.Items.Add(c);
+        StateHasChanged();
+    }
+
+    float _total;
+    void CalcTotal()
+    {
+        float tot = 0;
+        if (Model == null)
+            return;
+            
+         tot = Model.Items.Sum(k => (k.Quantidade * k.Custo));
+        if (tot != _total)
+        {
+            _total = tot;
+            StateHasChanged();
+        }
+    }
+
+    void Submit()
+    {
+        if (Model!.IdNotaCompra == 0)
+            ctx.Entry(Model).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+        else
+            ctx.Entry(Model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+
+        ctx.SaveChanges();
+
+        Model = ctx.notascompra.Find(Model.IdNotaCompra);
+
+//        message.ShowToast("Nota salva com sucess!", Services.ToastLevel.Success);
+
+        StateHasChanged();
+    }
+
+    void GetFornecedores()
+    {
+        fornecedores = ctx.fornecedores.OrderBy(k => k.Nome).ToArray();
+    }
+
+    protected override void OnInitialized()
+    {
+        Model = ctx.notascompra.Include(k => k.Fornecedor).Include(k => k.Items).ThenInclude(k => k.Mercadoria).FirstOrDefault(k => k.IdNotaCompra == idNotaCompra);
+        if (Model == null)
+            Model = new();
+
+        if (Model.Items.Count == 0)
+            AddRow();
+
+        GetFornecedores();
+
+        CalcTotal();
+
+        base.OnInitialized();
+    }
+
+    compra? rowToDelete;
+    void DeleteRow(bool confirm)
+    {
+        if (confirm)
+        {
+            Model!.Items.Remove(rowToDelete);
+        }
+        rowToDelete = null;
+        StateHasChanged();
+    }
+
+    fornecedor? editFornecedor = null;
+    void DeleteFornecedor(long idFornecedor)
+    {
+    }
+    void FornecedorSubmit(fornecedor fornecedor)
+    {
+        if (fornecedor.IdFornecedor == 0)
+        {
+            ctx.Entry(fornecedor).State = EntityState.Added;
+            ctx.fornecedores.Add(fornecedor);
+        }
+        else
+            ctx.Entry(fornecedor).State = EntityState.Modified;
+        ctx.SaveChanges();
+        GetFornecedores();
+        StateHasChanged();
+//        message.ShowToast("Fornecedor salvo com sucesso!", Services.ToastLevel.Success);
+    }
+
+
+
+}

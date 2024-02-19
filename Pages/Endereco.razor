@@ -1,0 +1,52 @@
+﻿@using System.ComponentModel.DataAnnotations
+@using ProSoft.Data
+
+<RadzenRow class="mb-3">
+    <RadzenColumn Size="10">
+        <RadzenFormField Text="Logradouro" Variant="Variant.Filled" class="w-100">
+            <RadzenTextBox @bind-Value="endereco.Endereco_logradouro"></RadzenTextBox>
+        </RadzenFormField>
+    </RadzenColumn>
+    <RadzenColumn Size="2">
+        <RadzenFormField Text="Número" Variant="Variant.Filled" class="w-100">
+            <RadzenNumeric @bind-Value="endereco.Endereco_numero" />
+        </RadzenFormField>
+    </RadzenColumn>
+</RadzenRow>
+
+<RadzenRow class="mb-3">
+    <RadzenColumn Size="6">
+        <RadzenFormField Text="Complemento" Variant="Variant.Filled" class="w-100">
+            <RadzenTextBox @bind-Value="endereco.Endereco_complemento"></RadzenTextBox>
+        </RadzenFormField>
+    </RadzenColumn>
+    <RadzenColumn Size="6">
+        <RadzenFormField Text="Bairro" Variant="Variant.Filled" class="w-100">
+            <RadzenTextBox @bind-Value="endereco.Endereco_bairro"></RadzenTextBox>
+        </RadzenFormField>
+    </RadzenColumn>
+</RadzenRow>
+
+<RadzenRow class="mb-3">
+    <RadzenColumn Size="2">
+        <RadzenFormField Text="CEP" Variant="Variant.Filled" class="w-100">
+            <RadzenMask Mask="**-***.***" CharacterPattern="[0-9]" @bind-Value="endereco.Endereco_cep" />
+        </RadzenFormField>
+    </RadzenColumn>
+    <RadzenColumn Size="9">
+        <RadzenFormField Text="Cidade" Variant="Variant.Filled" class="w-100">
+            <RadzenTextBox @bind-Value="endereco.Endereco_cidade" />
+        </RadzenFormField>
+    </RadzenColumn>
+    <RadzenColumn Size="1">
+        <RadzenStack>
+        <RadzenFormField Text="UF" Variant="Variant.Filled" class="w-100">
+                <RadzenMask Mask="**" CharacterPattern="[A-Z]+" @bind-Value="endereco.Endereco_uf" />
+        </RadzenFormField>
+        </RadzenStack>
+    </RadzenColumn>
+</RadzenRow>
+
+@code {
+    [Parameter] public iendereco endereco { get; set; } = default!;
+}

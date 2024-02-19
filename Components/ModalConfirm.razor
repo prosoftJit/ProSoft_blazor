@@ -1,0 +1,31 @@
+﻿@namespace ProSoft.Components 
+{
+
+<ModalDialog Title="Confirmação" OnCancel="_=>Close(false)" HideCloseButton="true">
+    <ModalBody>
+        @Message
+    </ModalBody>
+    <ModalFooter>
+        <button type="button" Class="btn btn-primary" @onclick="() => Close(true)">Ok</button>
+        <button type="button" Class="btn btn-secondary" @onclick="() => Close(false)">Cancel</button>
+    </ModalFooter>
+</ModalDialog>
+
+}
+
+@code {
+    [Parameter] public string Title { get; set; } = "Confirmação";
+
+    [Parameter] public string Message { get; set; } = "";
+
+    [Parameter] public Action<bool>? OnClose { get; set; }
+
+    [Parameter] public Action? OnConfirm { get; set; }
+
+    private void Close(bool response)
+    {
+        OnClose?.Invoke(response);
+        if (response)
+            OnConfirm?.Invoke();
+    }
+}

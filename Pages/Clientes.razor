@@ -1,0 +1,112 @@
+﻿@page "/Clientes"
+@using ProSoft.Data
+@using ProSoft.Components
+@using ProSoft.Services
+@using Microsoft.EntityFrameworkCore
+
+<PageHeader Title="Clientes" Description="Listagem de clientes cadastrados no sistema"></PageHeader>
+
+<GenericTemplate Items="clientes">
+    <TableHeader>
+        <th>Id</th>
+        <th>Nome</th>
+        <th></th>
+    </TableHeader>
+    <RowTemplate Context="cli">
+        <td class="text-center"><a href="" @onclick="()=>ShowModal(cli.idCliente)" @onclick:preventDefault>@cli.idCliente.ToString("000000")</a></td>
+        <td>@cli.Nome</td>
+        <td>
+            <button type="button" class="dropdown-item" @onclick="()=>AskDelete(cli.idCliente)"><i class="oi oi-trash"></i> Excluir</button>
+        </td>
+    </RowTemplate>
+</GenericTemplate>
+
+<div class="row justify-content-end">
+    <div class="col-2">
+        <button type="button" class="btn btn-primary" @onclick="()=>ShowModal()">+ Cliente</button>
+    </div>
+</div>
+
+@if (askDelete != null)
+{
+    @* <ProSoft.Co ConfirmDialog Message="Confirma exclusão?" OnClose="DeleteDialogClosed"></ConfirmDialog> *@
+}
+
+@if (showDialogNewClient)
+{
+    <ModalDialog Title="Cliente" Size="modal-fullscreen" OnCancel="_=>showDialogNewClient=false">
+        <ModalBody>
+            <PageHeader Title="Cliente"></PageHeader>
+            <Cliente @ref="clienteForm" idCliente="@this.idCliente"></Cliente>
+        </ModalBody>
+        <ModalFooter>
+            <button type="button" class="btn btn-success" @onclick="()=>ClientSave()">Salvar</button>
+        </ModalFooter>
+    </ModalDialog>
+}
+
+@code {
+    private Cliente? clienteForm = null;
+    private long? idCliente = null;
+
+    Contexto ctx = new();
+
+    cliente? askDelete = null;
+
+    private bool showDialogNewClient = false;
+    private void ShowModal(long? idCliente = null)
+    {
+        this.idCliente = idCliente;
+        showDialogNewClient = true;
+    }
+    private void ClientSave()
+    {
+        @* showDialogNewClient = false;
+        await clienteForm?.Submit();
+        await LoadClientes();
+        StateHasChanged(); *@
+    }
+    public void AskDelete(long idCliente)
+    {
+        cliente cli = ctx.clientes.First(k => k.idCliente == idCliente);
+
+        var c = (from cl in ctx.clientes
+                where cl.idCliente == idCliente
+                let c1 = cl.Compras.Count()
+                let c2 = cl.Equipamentos.Count()
+                let c3 = cl.Pagamentos.Count()
+                let c4 = cl.Orcamentos.Count()
+                select c1 + c2 + c3 + c4).First();
+
+        if (c > 0)
+        {
+//            toastService.ShowToast("Impossível excluir o cliente: " + cli.Nome, ToastLevel.Warning);
+            return;
+        }
+
+        askDelete = cli;
+    }
+    public void DeleteDialogClosed(bool value)
+    {
+        if (value && askDelete != null)
+        {
+            ctx.clientes.Remove(askDelete);
+            ctx.SaveChanges();
+        }
+        askDelete = null;
+        StateHasChanged();
+    }
+
+    private cliente[]? clientes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadClientes();
+    }
+
+    Task LoadClientes()
+    {
+        clientes = ctx.clientes.OrderBy(k => k.Nome).ToArray();
+        return Task.FromResult(clientes);
+    }
+}

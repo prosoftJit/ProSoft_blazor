@@ -1,0 +1,8 @@
+﻿@page "/"
+@namespace ProSoft.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_Layout";
+}
+
+<component type="typeof(App)" render-mode="ServerPrerendered" param-LogedUser="@HttpContext.Request.Cookies["pn"]" />

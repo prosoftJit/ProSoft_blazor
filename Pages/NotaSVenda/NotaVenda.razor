@@ -1,0 +1,170 @@
+﻿@page "/NotaVenda/{idNotaVenda:long}"
+@using System.ComponentModel.DataAnnotations
+@using ProSoft.Data
+@using ProSoft.Components
+@using Microsoft.EntityFrameworkCore
+@using BlazorBootstrap
+
+
+<EditForm Model="Model" OnSubmit="ValidSubmit" id="editForm">
+
+    <DataAnnotationsValidator />
+    <ValidationSummary Model="Model" />
+
+    <div class="row my-1">
+        @* <FloatingLabel InputId="IdNotaVenda" Text="Id da Nota" Columns="2">
+            <input type="text" value="@Model.IdNotaVenda.ToString("000000")" class="form-control" disabled="disabled" />
+        </FloatingLabel>
+        <FloatingLabel InputId="Data" Text="Data" Columns="2">
+            <InputDate @bind-Value="Model!.Data" class="form-control"></InputDate>
+        </FloatingLabel> *@
+        @* <FloatingLabel InputId="Cliente_IdCliente" Class="d-flex" Text="Cliente" Columns="4">
+            <InputSelect2 
+                Context="Model" 
+                FormId="formCli" 
+                ValueProperty="(c)=>c.idCliente"
+                TItem="cliente" 
+                Value="@Model.Cliente?.idCliente" 
+                OnNeedItems="()=>ctx.clientes.ToArray()"
+                OnEdit="(c)=>{editCliente=c;StateHasChanged();}"
+                OnSelectionChanged="(i)=>Model.Cliente=i"
+            >
+            </InputSelect2>
+        </FloatingLabel> *@
+    </div>
+
+    <GenericTemplate Items="Model.Items" TItem="venda">
+        <TableHeader>
+            <th>Quant</th>
+            <th>Un</th>
+            <th>Descrição</th>
+            <th>P. Venda</th>
+            <th>Desconto</th>
+            <th>Total</th>
+            <th>
+                <button type="button" class="btn btn-link" @onclick="AddVenda"><i class="oi oi-plus"></i></button>
+            </th>
+        </TableHeader>
+        <RowTemplate Context="itemsCtx">
+            <Venda_row Model="itemsCtx" OnAskDelete="AskDeleteRow" 
+                OnNeedCompras="()=>ctx.compras.Include(k=>k.Mercadoria).OrderBy(k=>k.Mercadoria.Descricao).ToArray()"></Venda_row>
+        </RowTemplate>
+        <TableFooter>
+            <tr>
+                <td colspan="5" class="text-end">Total</td>
+                <td><RadzenNumeric Format="N2" Value="@TotalVendas()" TextAlign="TextAlign.End" ShowUpDown=false /></td>
+            </tr>
+        </TableFooter>
+    </GenericTemplate>
+
+    <GenericTemplate Items="Model.Parcelas" TItem="contaareceber">
+        <TableHeader>
+            <th>Vencimento</th>
+            <th>Valor</th>
+            <th><button type="button" class="btn btn-link" @onclick="AddParcela"><i class="oi oi-plus"></i></button></th>
+        </TableHeader>
+        <RowTemplate Context="parc">
+            <Parcela Model="parc" OnDelete="DeleteParcela" OnTotalChanged="()=>StateHasChanged()"></Parcela>
+        </RowTemplate>
+        <TableFooter>
+            <tr>
+                <td class="text-end">Total</td>
+                <td><RadzenNumeric Format="N2" TextAlign="TextAlign.End" ShowUpDown=false Disabled=true Value="@Model.Parcelas.Sum(k=>k.Valor)" /></td>
+            </tr>
+        </TableFooter>
+    </GenericTemplate>
+
+</EditForm>
+
+@if (editCliente != null)
+{
+    <EditForm id="formCli" Model="editCliente">
+        <Cliente idCliente="editCliente.idCliente"></Cliente>
+    </EditForm>
+}
+
+@if (askDeleteVenda != null)
+{
+    <ModalConfirm Title="Excluir" Message="Confirma exclusão da linha?" OnClose="DeleteRow"></ModalConfirm>
+}
+
+<!-- Colocar em um lugar mais no final da página para aparecer sobre os outros componentes -->
+<RadzenDialog></RadzenDialog>
+
+@code {
+    private notavenda Model = new();
+    [Parameter] public long idNotaVenda { get; set; } = 0;
+
+    private Contexto ctx = new();
+
+    cliente? editCliente = null; 
+ //   long? deleteClient = null;
+
+    protected override void OnInitialized() {
+        Model = ctx.notasvenda.Include(k=>k.Cliente).Include(k=>k.Items).ThenInclude(k=>k.Compra).ThenInclude(k=>k.Mercadoria).Include(k=>k.Parcelas).First(k=>k.IdNotaVenda==idNotaVenda);
+        if (Model == null)
+            Model = new notavenda();
+        if (Model.Items.Count == 0)
+            AddVenda();
+    }
+
+    void ValidSubmit()
+    {
+        if (Model.IdNotaVenda == 0)
+            ctx.Entry(Model).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+        else
+            ctx.Entry(Model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+
+        ctx.SaveChanges();
+
+        StateHasChanged();
+    }
+
+    void AddVenda()
+    {
+        venda ve = new venda { Quantidade=0, Compra=null };
+        Model.Items.Add(ve);
+        StateHasChanged();
+    }
+
+    venda? askDeleteVenda = null;
+    void AskDeleteRow(venda venda)
+    {
+
+
+        askDeleteVenda = venda;
+        StateHasChanged();
+    }
+    void DeleteRow(bool confirm)
+    {
+        if (confirm)
+            Model.Items.Remove(askDeleteVenda);
+        askDeleteVenda=null;
+        StateHasChanged();
+    }
+
+    float TotalVendas()
+    {
+        return Model.Items.Sum(k => (k.Quantidade * (k.Compra?.Venda ?? 0) - k.Desconto));
+    }
+
+    cliente[] GetClientes(BlazorBootstrap.FilterItem filter)
+    {
+        return ctx.clientes.Where(k => k.Nome.Contains(filter.Value)).ToArray();
+    }
+
+    void DeleteParcela(contaareceber cr)
+    {
+        if (Model.Parcelas.Count > 1)
+        {
+            Model.Parcelas.Remove(cr);
+            StateHasChanged();
+        }
+    }
+    void AddParcela()
+    {
+        contaareceber cr = new();
+        Model.Parcelas.Add(cr);
+        StateHasChanged();
+    }
+}

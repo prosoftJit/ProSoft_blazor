@@ -1,0 +1,47 @@
+﻿@page "/NotasVenda/Venda_row"
+
+@using ProSoft.Data
+@using Microsoft.EntityFrameworkCore
+
+<td width="10%"><RadzenNumeric Format="N2" TextAlign="TextAlign.Center" @bind-Value="Model.Quantidade" ShowUpDown=false /></td>
+<td width="10%"><RadzenTextBox TextAlign="TextAlign.Center" Value="@Model.Compra?.Mercadoria?.Unidade" Disabled=true /></td>
+
+<td>
+    @* <InputSelect2
+        TItem="compra"
+        Value="Model.Compra_IdCompra"
+        FormId="formId"
+        ValueProperty="(i)=>i.IdCompra"
+        OnNeedItems="OnNeedCompras"
+        OnSelectionChanged="(i)=>{Model.Compra=i;StateHasChanged();}"
+    >
+        <OnEditRenderFragment Context="cp">
+            <ProSoft.Pages.NotasCompra.Form idNotaCompra="@cp.NotaCompra_IdNotaCompra"></ProSoft.Pages.NotasCompra.Form>
+        </OnEditRenderFragment>
+    </InputSelect2> *@
+   
+</td>
+
+<td width="10%"><RadzenNumeric Format="N2" ShowUpDown=false Value="@Model.Compra?.Venda" TextAlign=TextAlign.End Disabled=true /></td>
+<td width="10%"><RadzenNumeric Format="N2" ShowUpDown=false @bind-Value="Model!.Desconto" TextAlign=TextAlign.End ></RadzenNumeric></td>
+<td width="10%"><RadzenNumeric Format="N2" Value="@Total()" TextAlign=TextAlign.End Disabled=true ShowUpDown=false /></td>
+<td width="1%"><button type="button" class="btn btn-link text-danger" @onclick="()=>OnAskDelete?.Invoke(Model)"><i class="oi oi-trash"></i></button></td>
+
+@code {
+    [Parameter] public venda Model { get; set; } = new();
+    [Parameter] public Action<float>? TotalChanged { get; set; } = null;
+    [Parameter] public Action<venda>? OnAskDelete { get; set; } = null;
+    [Parameter] public Func<compra[]>? OnNeedCompras { get; set; } = null;
+
+    float _total = 0;
+    float Total()
+    {
+        float t = Model.Quantidade * (Model.Compra?.Venda ?? 0) - Model.Desconto;
+        if (t != _total)
+        {
+            _total = t;
+            TotalChanged?.Invoke(_total);
+        }
+        return _total;
+    }
+}

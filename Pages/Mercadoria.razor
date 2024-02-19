@@ -1,0 +1,44 @@
+﻿@page "/Mercadoria/{idMercadoria:long}"
+
+@using System.ComponentModel.DataAnnotations
+@using ProSoft.Data
+
+<DataAnnotationsValidator />
+<ValidationSummary />
+
+<RadzenRow class="mb-3">
+    <RadzenColumn Size="3">
+        <RadzenFormField Text="Id da Mercadoria" Variant="Variant.Filled" class="w-100">
+            <RadzenNumeric Format="000000" @bind-Value="Model.IdMercadoria" Disabled="true" />
+        </RadzenFormField>
+    </RadzenColumn>
+    <RadzenColumn Size="9">
+        <RadzenFormField Text="Descrição" Variant="Variant.Filled" class="w-100">
+            <RadzenTextBox @bind-Value="Model.Descricao" />
+            <RadzenLengthValidator Min="5" Max="200" Text="Descrição precisa ter entre 5 e 200 caracteres" /> 
+        </RadzenFormField>
+    </RadzenColumn>
+</RadzenRow>
+
+<RadzenRow>
+    <RadzenColumn Size="4">
+        <RadzenFormField Text="NCM" Variant="Variant.Filled" class="w-100">
+            <RadzenTextBox @bind-Value="Model.NCM" />
+        </RadzenFormField>
+    </RadzenColumn>
+    <RadzenColumn Size="4">
+        <RadzenFormField Text="Unidade" Variant="Variant.Filled" class="w-100">
+            <RadzenTextBox @bind-Value="Model.Unidade" />
+            <RadzenRequiredValidator Text="Unidade é informação obrigatória" />
+        </RadzenFormField>
+    </RadzenColumn>
+    <RadzenColumn Size="4">
+        <RadzenFormField Text="Código" Variant="Variant.Filled" class="w-100">
+            <RadzenTextBox @bind-Value="Model.Codigo" />
+        </RadzenFormField>
+    </RadzenColumn>
+</RadzenRow>
+
+@code {
+    [Parameter] public mercadoria Model { get; set; } = default!;
+}

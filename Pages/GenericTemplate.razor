@@ -1,0 +1,41 @@
+﻿@using ProSoft.Data
+
+@namespace ProSoft.Pages 
+
+@typeparam TItem
+
+@if (Items is null)
+{
+    <p>Nothing to show!</p>
+} else {
+    <table class="table w-100">
+        <thead>
+            <tr>@TableHeader</tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Items)
+            {
+                <tr>@RowTemplate?.Invoke(item)</tr>
+            }
+        </tbody>
+        <tfoot>
+            @TableFooter
+        </tfoot>
+    </table>
+}
+
+
+
+@code {
+    [Parameter]
+    public RenderFragment? TableHeader { get; set; }
+
+    [Parameter]
+    public RenderFragment<TItem>? RowTemplate { get; set; }
+
+    [Parameter]
+    public RenderFragment? TableFooter { get; set; }
+
+    [Parameter]
+    public IEnumerable<TItem>? Items { get; set; }
+}

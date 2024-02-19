@@ -1,0 +1,84 @@
+﻿@page "/Mercadorias"
+@using ProSoft.Data
+@using ProSoft.Components
+
+<PageHeader Title="Mercadorias" Description="Listagem de mercadorias cadastradas no sistema"></PageHeader>
+
+<GenericTemplate Items="mercadorias">
+    <TableHeader>
+        <th>Id</th>
+        <th>Descrição</th>
+    </TableHeader>
+    <RowTemplate Context="merc">
+        <td class="text-center"><a href="" @onclick="()=>askEdit=merc" @onclick:preventDefault>@merc.IdMercadoria.ToString("000000")</a></td>
+        <td>@merc.Descricao</td>
+    </RowTemplate>
+</GenericTemplate>
+
+<div class="row justify-content-end">
+    <div class="col-2">
+        <button type="button" class="btn btn-primary" @onclick="()=>AskEdit(null)">+ Mercadoria</button>
+    </div>
+</div>
+
+@if (askEdit != null)
+{
+    <ModalDialog Title="Cliente" Size="modal-fullscreen" OnCancel="()=>askEdit=null">
+        <ModalBody>
+            <PageHeader Title="Cliente"></PageHeader>
+            <EditForm id="editForm" Model="askEdit" OnValidSubmit="Submit">
+                <Mercadoria Model="askEdit"></Mercadoria>
+            </EditForm>
+        </ModalBody>
+        <ModalFooter>
+            <button form="editForm" type="submit" Class="btn btn-success">Salvar</Button>
+        </ModalFooter>
+    </ModalDialog> 
+}
+
+@code {
+    mercadoria? askEdit = null;
+    [Inject] Radzen.NotificationService notificationService {get;set;} = default!;
+    [Inject] Radzen.DialogService dialogService {get;set;} = default!;
+
+    void AskEdit(long? idMercadoria)
+    {
+        if (idMercadoria == null) {
+            askEdit = new();
+            askEdit.Tipo = TipoMercadoria.Produto;
+        }
+        else
+            askEdit = ctx.mercadorias.First(k=>k.IdMercadoria == idMercadoria);
+    }
+    void Submit()
+    {
+        if (askEdit != null) {
+            if (askEdit?.IdMercadoria == 0)
+                ctx.Entry(askEdit).State = EntityState.Added;
+            else
+                ctx.Entry(askEdit!).State = EntityState.Modified;
+
+            ctx.SaveChangesAsync();
+
+            notificationService.Notify(NotificationSeverity.Success, "Sucesso!", "As alterações foram salvas com sucesso.");
+
+            LoadMercadorias();
+
+            StateHasChanged();
+        }
+    }
+
+    mercadoria[]? mercadorias;
+    Contexto ctx = new Contexto();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadMercadorias();
+    }
+
+    Task LoadMercadorias()
+    {
+        mercadorias = ctx.mercadorias.OrderBy(k => k.Descricao).ToArray();
+        return Task.FromResult(mercadorias);
+    }
+}

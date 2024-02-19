@@ -1,0 +1,25 @@
+﻿@page "/NotasVenda/Parcela"
+
+@using ProSoft.Data
+@using ProSoft.Components
+@using Microsoft.EntityFrameworkCore
+@inject DialogService dialogService
+
+<td width="10%"><RadzenDatePicker @bind-Value="Model.Vencimento" /></td>
+<td width="10%"><RadzenNumeric Format="N2" ShowUpDown=false TextAlign=TextAlign.Right @bind-Value="Model.Valor" Change=OnTotalChanged /></td>
+<td>
+    <RadzenButton Icon="delete" ButtonType=ButtonType.Button Variant=Variant.Filled Click=@(args => AskDeleteParcela(args) )></RadzenButton>
+</td>
+
+@code {
+    [Parameter] public contaareceber Model { get; set; } = default!;
+    [Parameter] public Action<contaareceber>? OnDelete { get; set; } = null;
+    [Parameter] public EventCallback<float> OnTotalChanged { get; set; }
+
+    async void AskDeleteParcela(MouseEventArgs args)
+    {
+        bool? b = await dialogService.Confirm("Confirma exclusão do registro?", "Excluir", new ConfirmOptions() { OkButtonText = "Sim", CancelButtonText = "Não" });
+        if (b == true)
+            OnDelete?.Invoke(Model);
+    }
+}
