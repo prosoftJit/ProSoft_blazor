@@ -30,14 +30,8 @@
 
         <label class="col-6">
             Fornecedor
-            @* <InputSelect2 TItem="fornecedor"
-                ValueProperty="(f)=>f.IdFornecedor" 
-                OnNeedItems="()=>ctx.fornecedores.ToArray()" 
-                @bind-Value="Model.Fornecedor_IdFornecedor"
-                FormId="edFornId"
-                OnEdit="(i)=>{editFornecedor=i; StateHasChanged();}"
-            >
-            </InputSelect2> *@
+            <RadzenDropDown AllowClear="true" class="form-control" @bind-Value=Model.Fornecedor_IdFornecedor AllowVirtualization="true"
+                    AllowFiltering="true" Data=ctx.fornecedores.ToArray() TextProperty="Nome" ValueProperty="IdFornecedor" Change='()=>ctx.Entry(Model).Navigation("Fornecedor").Load()' />
         </label>
         <label class="col-6">
             Xml
@@ -61,8 +55,8 @@
         @foreach(compra c in Model.Items)
         {
             <tr>
-            <Row GetMercadorias="(filter)=>ctx.mercadorias.Where(k=>k.Descricao.Contains(filter.Value)).ToArray()" 
-                Model="c" TotalChanged="CalcTotal" OnDelete="(c)=>{rowToDelete=c;StateHasChanged();}"/>
+            <Row GetMercadorias="()=>ctx.mercadorias.ToArray()" 
+                Model="c" TotalChanged="CalcTotal" OnDelete="(c)=>{rowToDelete=c;StateHasChanged();}" MercadoriaChanged='()=>ctx.Entry(c).Navigation("Mercadoria").Load()'/>
             </tr>
         }
         </tbody>
@@ -97,7 +91,7 @@
 
 @code {
     [Parameter] public long idNotaCompra{ get; set; }
-    @* [Inject] Services.MessageService message { get; set; } *@
+    [Inject] public NotificationService notificationService {get;set;} = default!;
 
     notacompra? Model;
     Contexto ctx = new();
@@ -129,15 +123,15 @@
     void Submit()
     {
         if (Model!.IdNotaCompra == 0)
-            ctx.Entry(Model).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+            ctx.Entry(Model).State = EntityState.Added;
         else
-            ctx.Entry(Model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            ctx.Entry(Model).State = EntityState.Modified;
 
         ctx.SaveChanges();
 
         Model = ctx.notascompra.Find(Model.IdNotaCompra);
 
-//        message.ShowToast("Nota salva com sucess!", Services.ToastLevel.Success);
+        notificationService.Notify(NotificationSeverity.Success, "Venda", "Todos os dados da Venda foram salvos  com sucesso");
 
         StateHasChanged();
     }

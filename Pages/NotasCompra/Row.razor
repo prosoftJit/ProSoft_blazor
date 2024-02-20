@@ -7,22 +7,8 @@
 <td width="10%"><RadzenTextBox value="@Model.Mercadoria?.Unidade" Disabled=true /></td>
 <td>
 
-    <RadzenDropDown AllowClear="true" @bind-Value=descMercadoria AllowVirtualization="true" Name="DropDownVirtualization"
-        AllowFiltering="true" Data=@customers TextProperty="descMercadoria" ValueProperty="CustomerID" Style="width: 100%; max-width: 400px;" />
-
-    @* <InputSelect2
-        FormId="formId"
-        ValueProperty="(i)=>i.IdMercadoria"
-        OnNeedItems="()=>ctxMercadoria.mercadorias.OrderBy(k=>k.Descricao).ToArray()"
-        TItem="mercadoria"
-        Value="Model.Mercadoria_IdMercadoria"
-        >
-        <OnEditRenderFragment Context="merc">
-            <EditForm id="edFornId" Model="merc" OnValidSubmit="_=>MercadoriaSubmit(merc)">
-                <Mercadoria Model="merc"></Mercadoria>
-            </EditForm>
-        </OnEditRenderFragment>
-    </InputSelect2> *@
+    <RadzenDropDown AllowClear="true" class="form-control" @bind-Value=Model.Mercadoria_IdMercadoria AllowVirtualization="true"
+        AllowFiltering="true" Data=GetMercadorias?.Invoke() TextProperty="Descricao" ValueProperty="IdMercadoria" Change="()=>MercadoriaChanged?.Invoke()" />
 
 </td>
 <td width="10%"><RadzenNumeric ShowUpDown=false @bind-Value="Model.Custo" Format="N2" TextAlign=TextAlign.End /></td>
@@ -33,74 +19,9 @@
 
 @code {
     [Parameter] public compra? Model { get; set; } = null;
-    [Parameter] public Func<BlazorBootstrap.FilterItem, mercadoria[]>? GetMercadorias { get;set; } = null;
+    [Parameter] public Func<mercadoria[]>? GetMercadorias { get;set; } = null;
     [Parameter] public Action? TotalChanged { get; set; } = null;
+    [Parameter] public Action? MercadoriaChanged { get; set; } = null;
     [Parameter] public Action<compra>? OnDelete { get; set; } = null;
-    [Inject] Radzen.NotificationService notificationService {get;set;} = default!;
-
-    float _total = 0;
-    float Total
-    {
-        set { _total = value; }
-        get
-        {
-            if (Model == null)
-                return 0;
-
-            float t = Model.Quantidade * Model.Custo;
-            if (t != _total)
-            {
-                _total = t;
-                TotalChanged?.Invoke();
-                ValueChanged();
-            }
-            return _total;
-        }
-    }
-    void ValueChanged()
-    {
-        descMercadoria = Model?.Mercadoria?.Descricao;
-        StateHasChanged();
-    }
-
-    string? descMercadoria;
-    private async Task<BlazorBootstrap.AutoCompleteDataProviderResult<mercadoria>> MercadoriasDataProvider(BlazorBootstrap.AutoCompleteDataProviderRequest<mercadoria> request)
-    {
-        var mercadorias = GetMercadorias?.Invoke(request.Filter); // API call
-        return await Task.FromResult(new BlazorBootstrap.AutoCompleteDataProviderResult<mercadoria> { Data = mercadorias, TotalCount = mercadorias?.Count() });
-    }
-
-    private void OnAutoCompleteChanged(mercadoria mercadoria)
-    {
-        // TODO: handle your own logic
-
-        // NOTE: do null check
-        Console.WriteLine($"'{mercadoria?.Descricao}' selected.");
-    }
-
-    mercadoria? editMercadoria = null;
-    Contexto ctxMercadoria = new();
-    void DelMercadoria(mercadoria mercadoria)
-    {
-        ctxMercadoria.mercadorias.Remove(mercadoria);
-        ctxMercadoria.SaveChanges();
-    }
-    void EditMercadoria()
-    {
-        editMercadoria = Model?.Mercadoria ?? ctxMercadoria.mercadorias.Find(Model?.Mercadoria_IdMercadoria) ?? new();
-    }
-    void MercadoriaSubmit(mercadoria merc)
-    {
-        if (merc.IdMercadoria == 0) 
-        {
-            ctxMercadoria.Entry(merc).State = EntityState.Added;
-            ctxMercadoria.mercadorias.Add(merc);
-        }
-        else
-            ctxMercadoria.Entry(merc).State = EntityState.Modified;
-
-        ctxMercadoria.SaveChanges();
-        StateHasChanged();
-        //message.ShowToast("Mercadoria salva com sucesso!", Services.ToastLevel.Success);
-    }
+    [Inject] NotificationService notificationService {get;set;} = default!;
 }

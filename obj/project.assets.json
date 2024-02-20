@@ -3026,11 +3026,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\ProSoft_blazor\\ProSoft.csproj",
+      "projectUniqueName": "C:\\ProSoft_blazor\\ProSoft.csproj",
       "projectName": "ProSoft",
-      "projectPath": "E:\\ProSoft_blazor\\ProSoft.csproj",
+      "projectPath": "C:\\ProSoft_blazor\\ProSoft.csproj",
       "packagesPath": "C:\\Users\\paulo\\.nuget\\packages\\",
-      "outputPath": "E:\\ProSoft_blazor\\obj\\",
+      "outputPath": "C:\\ProSoft_blazor\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\paulo\\AppData\\Roaming\\NuGet\\NuGet.Config",

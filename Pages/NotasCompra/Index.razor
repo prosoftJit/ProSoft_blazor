@@ -4,7 +4,11 @@
 @using Microsoft.EntityFrameworkCore
 @using BlazorBootstrap
 
-<PageHeader Title="Notas de Compra" Description="Notas de entrada de estoque"></PageHeader>
+<PageHeader Title="Notas de Compra" Description="Notas de entrada de estoque" DropdownClick="DropdownClick">
+    <DropdownItems>
+        <RadzenSplitButtonItem Text="Nova compra" Value="AddCompra" />
+    </DropdownItems>
+</PageHeader>
 
 @if (notascompra == null) {
     <p>Carregando...</p>
@@ -61,6 +65,14 @@
 
     mercadoria[] Mercadorias = Array.Empty<mercadoria>();
 
+    void DropdownClick(string value) {
+        switch (value) {
+            case "AddCompra": {
+                askEdit = new();
+                break;
+            }
+        }
+    }
     void Delete()
     {
         if (askDelete == null)

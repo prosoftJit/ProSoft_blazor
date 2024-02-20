@@ -1,0 +1,17 @@
+﻿<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" aria-expanded="false">
+        <i class="oi oi-menu"></i>
+    </button>
+    <ul class="dropdown-menu">
+        @if (ChildContent != null) {
+            @ChildContent
+        }
+    </ul>
+</div>
+
+@code {
+    string guid = Guid.NewGuid().ToString();
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

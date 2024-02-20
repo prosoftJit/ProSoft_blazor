@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "RMHczPAhMatE3ootba86WJBn7LqgcEQR5hLvoDS6PvLAMxSK7ZMfP4D8n98yC0A7z7W707fRM6t42kamLGWb9g==",
+  "dgSpecHash": "smztGNHzXm8pqR8Tv3sSFXH/XPLnVrX805ATliB4NXvpuuYpc86iyBmjRxnd7D3EJ6jkac00wR7qai/hXqlq4A==",
   "success": true,
-  "projectFilePath": "E:\\ProSoft_blazor\\ProSoft.csproj",
+  "projectFilePath": "C:\\ProSoft_blazor\\ProSoft.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\paulo\\.nuget\\packages\\blazor.bootstrap\\1.10.5\\blazor.bootstrap.1.10.5.nupkg.sha512",
     "C:\\Users\\paulo\\.nuget\\packages\\bouncycastle.cryptography\\2.2.1\\bouncycastle.cryptography.2.2.1.nupkg.sha512",

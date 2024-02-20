@@ -1,7 +1,27 @@
-﻿
+﻿@using ProSoft.Components
+
 <PageTitle>@Title</PageTitle>
 
-<h1>@Title</h1>
+<RadzenRow>
+    <RadzenColumn Size="11">
+        <h1>@Title</h1>
+    </RadzenColumn>
+    <RadzenColumn Size="1">
+
+        @if (DropdownItems != null) {
+            <RadzenSplitButton Icon="Menu" Click="(v)=>DropdownClick?.Invoke(v.Value)">
+                <ChildContent>
+                    @DropdownItems
+                </ChildContent>
+            </RadzenSplitButton>
+        }
+
+    </RadzenColumn>
+</RadzenRow>
+
+<Radzen.Blazor.Rendering.Popup>
+
+</Radzen.Blazor.Rendering.Popup>
 
 @if (Description != null)
 {
@@ -11,12 +31,9 @@
 @ChildContent
 
 @code {
-    [Parameter]
-    public string Title { get; set; } = "";
-
-    [Parameter]
-    public string? Description { get; set; } = null;
-
-    [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public string? Description { get; set; } = null;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment? DropdownItems { get; set; }
+    [Parameter] public Action<string>? DropdownClick { get; set; }
 }
