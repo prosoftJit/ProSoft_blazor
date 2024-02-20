@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "bM3PnGZ0DXzPBEdZlqAZSQIclcZlNvX3GNN7UxL2bzs=",
+  "Hash": "FxKeH5TW2HmsA0waZM5YAJu0U0JdFlWQUmOjJf1l4MY=",
   "Source": "ProSoft",
   "BasePath": "_content/ProSoft",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "ProSoft\\wwwroot",
       "Source": "ProSoft",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\ProSoft_blazor\\obj\\Debug\\net6.0\\scopedcss\\bundle\\ProSoft.styles.css",
+      "Identity": "c:\\ProSoft_blazor\\obj\\Debug\\net6.0\\scopedcss\\bundle\\ProSoft.styles.css",
       "SourceId": "ProSoft",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\ProSoft_blazor\\obj\\Debug\\net6.0\\scopedcss\\bundle\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\obj\\Debug\\net6.0\\scopedcss\\bundle\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "ProSoft.styles.css",
       "AssetKind": "All",
@@ -33,13 +33,13 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\ProSoft_blazor\\obj\\Debug\\net6.0\\scopedcss\\bundle\\ProSoft.styles.css"
+      "OriginalItemSpec": "c:\\ProSoft_blazor\\obj\\Debug\\net6.0\\scopedcss\\bundle\\ProSoft.styles.css"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\ProSoft.bundle.scp.css",
+      "Identity": "c:\\ProSoft_blazor\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\ProSoft.bundle.scp.css",
       "SourceId": "ProSoft",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\ProSoft_blazor\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "ProSoft.bundle.scp.css",
       "AssetKind": "All",
@@ -52,13 +52,13 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\ProSoft_blazor\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\ProSoft.bundle.scp.css"
+      "OriginalItemSpec": "c:\\ProSoft_blazor\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\ProSoft.bundle.scp.css"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\content\\WhatsApp Image 2021-02-07 at 19.09.43 - Copia.jpeg",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\content\\WhatsApp Image 2021-02-07 at 19.09.43 - Copia.jpeg",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "content/WhatsApp Image 2021-02-07 at 19.09.43 - Copia.jpeg",
       "AssetKind": "All",
@@ -74,10 +74,10 @@
       "OriginalItemSpec": "wwwroot\\content\\WhatsApp Image 2021-02-07 at 19.09.43 - Copia.jpeg"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\content\\WhatsApp Image 2021-02-07 at 19.09.43 - Copia.png",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\content\\WhatsApp Image 2021-02-07 at 19.09.43 - Copia.png",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "content/WhatsApp Image 2021-02-07 at 19.09.43 - Copia.png",
       "AssetKind": "All",
@@ -93,10 +93,10 @@
       "OriginalItemSpec": "wwwroot\\content\\WhatsApp Image 2021-02-07 at 19.09.43 - Copia.png"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\content\\WhatsApp_Image_2021-02-07_at_19.09.430113-96-wood.png",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\content\\WhatsApp_Image_2021-02-07_at_19.09.430113-96-wood.png",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "content/WhatsApp_Image_2021-02-07_at_19.09.430113-96-wood.png",
       "AssetKind": "All",
@@ -112,10 +112,10 @@
       "OriginalItemSpec": "wwwroot\\content\\WhatsApp_Image_2021-02-07_at_19.09.430113-96-wood.png"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\css\\Autocomplete.css",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\css\\Autocomplete.css",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "css/Autocomplete.css",
       "AssetKind": "All",
@@ -131,10 +131,10 @@
       "OriginalItemSpec": "wwwroot\\css\\Autocomplete.css"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "css/bootstrap/bootstrap.min.css",
       "AssetKind": "All",
@@ -150,10 +150,10 @@
       "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "css/bootstrap/bootstrap.min.css.map",
       "AssetKind": "All",
@@ -169,10 +169,10 @@
       "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "css/open-iconic/FONT-LICENSE",
       "AssetKind": "All",
@@ -188,10 +188,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\FONT-LICENSE"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "css/open-iconic/font/css/open-iconic-bootstrap.min.css",
       "AssetKind": "All",
@@ -207,10 +207,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.eot",
       "AssetKind": "All",
@@ -226,10 +226,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.otf",
       "AssetKind": "All",
@@ -245,10 +245,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.svg",
       "AssetKind": "All",
@@ -264,10 +264,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.ttf",
       "AssetKind": "All",
@@ -283,10 +283,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.woff",
       "AssetKind": "All",
@@ -302,10 +302,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "css/open-iconic/ICON-LICENSE",
       "AssetKind": "All",
@@ -321,10 +321,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\ICON-LICENSE"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\README.md",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\README.md",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "css/open-iconic/README.md",
       "AssetKind": "All",
@@ -340,10 +340,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\README.md"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\css\\site.css",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\css\\site.css",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "css/site.css",
       "AssetKind": "All",
@@ -359,10 +359,10 @@
       "OriginalItemSpec": "wwwroot\\css\\site.css"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\css\\Toast_ps.css",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\css\\Toast_ps.css",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "css/Toast_ps.css",
       "AssetKind": "All",
@@ -378,10 +378,10 @@
       "OriginalItemSpec": "wwwroot\\css\\Toast_ps.css"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\favicon.ico",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\favicon.ico",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "favicon.ico",
       "AssetKind": "All",
@@ -397,10 +397,10 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\lib\\jquery\\jquery.js",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\lib\\jquery\\jquery.js",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "lib/jquery/jquery.js",
       "AssetKind": "All",
@@ -416,10 +416,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\jquery.js"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\lib\\jquery\\jquery.min.js",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\lib\\jquery\\jquery.min.js",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "lib/jquery/jquery.min.js",
       "AssetKind": "All",
@@ -435,10 +435,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\jquery.min.js"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\lib\\jquery\\jquery.min.map",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\lib\\jquery\\jquery.min.map",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "lib/jquery/jquery.min.map",
       "AssetKind": "All",
@@ -454,10 +454,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\jquery.min.map"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\lib\\jquery\\jquery.slim.js",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\lib\\jquery\\jquery.slim.js",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "lib/jquery/jquery.slim.js",
       "AssetKind": "All",
@@ -473,10 +473,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\jquery.slim.js"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\lib\\jquery\\jquery.slim.min.js",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\lib\\jquery\\jquery.slim.min.js",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "lib/jquery/jquery.slim.min.js",
       "AssetKind": "All",
@@ -492,10 +492,10 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery\\jquery.slim.min.js"
     },
     {
-      "Identity": "C:\\ProSoft_blazor\\wwwroot\\lib\\jquery\\jquery.slim.min.map",
+      "Identity": "c:\\ProSoft_blazor\\wwwroot\\lib\\jquery\\jquery.slim.min.map",
       "SourceId": "ProSoft",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\ProSoft_blazor\\wwwroot\\",
+      "ContentRoot": "c:\\ProSoft_blazor\\wwwroot\\",
       "BasePath": "_content/ProSoft",
       "RelativePath": "lib/jquery/jquery.slim.min.map",
       "AssetKind": "All",

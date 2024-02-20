@@ -3,22 +3,22 @@
 @using ProSoft.Components
 @using Microsoft.EntityFrameworkCore
 
-<td width="10%"><RadzenNumeric ShowUpDown=false TextAlign="TextAlign.Center" @bind-Value="Model!.Quantidade" Format="N2" /></td>
+<td width="10%"><RadzenNumeric ShowUpDown=false TextAlign="TextAlign.Center" TValue="float" @bind-Value="Model!.Quantidade" Format="N2" Change="()=>TotalChanged?.Invoke()" /></td>
 <td width="10%"><RadzenTextBox value="@Model.Mercadoria?.Unidade" Disabled=true /></td>
 <td>
 
-    <RadzenDropDown AllowClear="true" class="form-control" @bind-Value=Model.Mercadoria_IdMercadoria AllowVirtualization="true"
+    <RadzenDropDown AllowClear="true" class="form-control" TValue="long" @bind-Value=Model.Mercadoria_IdMercadoria AllowVirtualization="true"
         AllowFiltering="true" Data=GetMercadorias?.Invoke() TextProperty="Descricao" ValueProperty="IdMercadoria" Change="()=>MercadoriaChanged?.Invoke()" />
 
 </td>
-<td width="10%"><RadzenNumeric ShowUpDown=false @bind-Value="Model.Custo" Format="N2" TextAlign=TextAlign.End /></td>
+<td width="10%"><RadzenNumeric ShowUpDown=false TValue=float @bind-Value="Model.Custo" Format="N2" TextAlign=TextAlign.End Change="()=>TotalChanged?.Invoke()" /></td>
 <td width="10%"><RadzenNumeric ShowUpDown=false TValue=float value="@Model.Total" Format="N2" TextAlign="TextAlign.End" Disabled=true /></td>
 <td width="10%"><RadzenNumeric ShowUpDown=false @bind-Value="Model.Venda" Format="N2" TextAlign="TextAlign.End" /></td>
 
 <td width="1%"><button class="btn btn-link d-print-none" type="button" @onclick="()=>OnDelete?.Invoke(Model)"><i class="oi oi-trash"></i></button></td>
 
 @code {
-    [Parameter] public compra? Model { get; set; } = null;
+    [Parameter, EditorRequired] public compra Model { get; set; } = default!;
     [Parameter] public Func<mercadoria[]>? GetMercadorias { get;set; } = null;
     [Parameter] public Action? TotalChanged { get; set; } = null;
     [Parameter] public Action? MercadoriaChanged { get; set; } = null;

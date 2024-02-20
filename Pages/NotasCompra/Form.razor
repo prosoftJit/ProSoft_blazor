@@ -5,11 +5,17 @@
 @using ProSoft.Components
 @using Microsoft.EntityFrameworkCore
 
-<EditForm Model="Model" id="formId" OnValidSubmit="Submit">
-    
+<EditForm id="formId" EditContext="@editContext" OnValidSubmit="Submit">
+
+    <PageHeader Title="Compras" Description="Nota Fiscal de Compras" DropdownClick="DropdownClick">
+        <DropdownItems>
+            <RadzenSplitButtonItem Value="1" Text="Salvar"></RadzenSplitButtonItem>
+            <RadzenSplitButtonItem Value="2" Text="Nova compra"></RadzenSplitButtonItem>
+        </DropdownItems>
+    </PageHeader>
+
     <DataAnnotationsValidator />
     <ValidationSummary />
-
 
     <div class="row mb-3">
         <label class="col-3">
@@ -56,14 +62,14 @@
         {
             <tr>
             <Row GetMercadorias="()=>ctx.mercadorias.ToArray()" 
-                Model="c" TotalChanged="CalcTotal" OnDelete="(c)=>{rowToDelete=c;StateHasChanged();}" MercadoriaChanged='()=>ctx.Entry(c).Navigation("Mercadoria").Load()'/>
+                Model="c" OnDelete="(c)=>{rowToDelete=c;StateHasChanged();}" MercadoriaChanged='()=>MercadoriaChanged(c)' TotalChanged="()=>StateHasChanged()" />
             </tr>
         }
         </tbody>
         <tfoot>
             <tr>
                 <td colspan="4" class="text-end">Total</td>
-                <td><RadzenNumeric Format="N2" TextAlign="TextAlign.End" Value="_total" Disabled=true ShowUpDown=false /></td>
+                <td><RadzenNumeric Format="N2" TextAlign="TextAlign.End" Value="Model.Total" Disabled=true ShowUpDown=false /></td>
             </tr>
         </tfoot>
     </table>
@@ -75,40 +81,26 @@
     <ModalConfirm Title="Excluir" Message="Confirma exclusão da linha?" OnClose="DeleteRow"></ModalConfirm>
 }
 
-@if (editFornecedor != null)
-{
-    <ModalDialog OnCancel="()=>editFornecedor=null" Title="Editar fornecedor">
-        <ModalBody>
-            <EditForm id="edFornId" Model="editFornecedor" OnValidSubmit="_=>FornecedorSubmit(editFornecedor)">
-                <Fornecedor Model="editFornecedor"></Fornecedor>
-            </EditForm>
-        </ModalBody>
-        <ModalFooter>
-            <button type="submit" class="btn btn-success" form="edFornId">Salvar</button>
-        </ModalFooter>
-    </ModalDialog>
-}
-
 @code {
     [Parameter] public long idNotaCompra{ get; set; }
     [Inject] public NotificationService notificationService {get;set;} = default!;
 
-    notacompra? Model;
+    notacompra Model = new();
     Contexto ctx = new();
-
-    fornecedor[]? fornecedores;
 
     void AddRow()
     {
         compra c = new();
-        Model?.Items.Add(c);
+        Model.Items.Add(c);
         StateHasChanged();
     }
 
-    float _total;
     void CalcTotal()
     {
-        float tot = 0;
+            StateHasChanged();
+            return;
+
+        @* float tot = 0;
         if (Model == null)
             return;
             
@@ -117,7 +109,7 @@
         {
             _total = tot;
             StateHasChanged();
-        }
+        } *@
     }
 
     void Submit()
@@ -129,30 +121,26 @@
 
         ctx.SaveChanges();
 
-        Model = ctx.notascompra.Find(Model.IdNotaCompra);
+        Model = ctx.notascompra.First(k=>k.IdNotaCompra == Model.IdNotaCompra);
 
         notificationService.Notify(NotificationSeverity.Success, "Venda", "Todos os dados da Venda foram salvos  com sucesso");
 
         StateHasChanged();
     }
 
-    void GetFornecedores()
-    {
-        fornecedores = ctx.fornecedores.OrderBy(k => k.Nome).ToArray();
-    }
-
     protected override void OnInitialized()
     {
-        Model = ctx.notascompra.Include(k => k.Fornecedor).Include(k => k.Items).ThenInclude(k => k.Mercadoria).FirstOrDefault(k => k.IdNotaCompra == idNotaCompra);
-        if (Model == null)
-            Model = new();
+        Model = ctx.notascompra.Include(k => k.Fornecedor).Include(k => k.Items).ThenInclude(k => k.Mercadoria).FirstOrDefault(k => k.IdNotaCompra == idNotaCompra) ?? new();
+
+        if (Model.IdNotaCompra == 0)
+            ctx.Entry(Model).State = EntityState.Added;
 
         if (Model.Items.Count == 0)
             AddRow();
 
-        GetFornecedores();
-
         CalcTotal();
+
+        editContext = new EditContext(Model);
 
         base.OnInitialized();
     }
@@ -168,25 +156,21 @@
         StateHasChanged();
     }
 
-    fornecedor? editFornecedor = null;
-    void DeleteFornecedor(long idFornecedor)
-    {
+    void MercadoriaChanged(compra c) {
+        c.Mercadoria = ctx.Find<mercadoria>(c.Mercadoria_IdMercadoria);
     }
-    void FornecedorSubmit(fornecedor fornecedor)
-    {
-        if (fornecedor.IdFornecedor == 0)
-        {
-            ctx.Entry(fornecedor).State = EntityState.Added;
-            ctx.fornecedores.Add(fornecedor);
+
+    EditContext editContext = default!;
+    void DropdownClick(string value) {
+        switch (value) {
+            case "1": {
+                editContext.Validate();
+                break;
+            }
+            case "2": {
+                AddRow();
+                break;
+            }
         }
-        else
-            ctx.Entry(fornecedor).State = EntityState.Modified;
-        ctx.SaveChanges();
-        GetFornecedores();
-        StateHasChanged();
-//        message.ShowToast("Fornecedor salvo com sucesso!", Services.ToastLevel.Success);
     }
-
-
-
 }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\ProSoft_blazor\\ProSoft.csproj": {}
+    "c:\\ProSoft_blazor\\ProSoft.csproj": {}
   },
   "projects": {
-    "C:\\ProSoft_blazor\\ProSoft.csproj": {
+    "c:\\ProSoft_blazor\\ProSoft.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\ProSoft_blazor\\ProSoft.csproj",
+        "projectUniqueName": "c:\\ProSoft_blazor\\ProSoft.csproj",
         "projectName": "ProSoft",
-        "projectPath": "C:\\ProSoft_blazor\\ProSoft.csproj",
+        "projectPath": "c:\\ProSoft_blazor\\ProSoft.csproj",
         "packagesPath": "C:\\Users\\paulo\\.nuget\\packages\\",
-        "outputPath": "C:\\ProSoft_blazor\\obj\\",
+        "outputPath": "c:\\ProSoft_blazor\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\paulo\\AppData\\Roaming\\NuGet\\NuGet.Config",
