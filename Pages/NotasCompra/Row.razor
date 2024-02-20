@@ -6,6 +6,10 @@
 <td width="10%"><RadzenNumeric ShowUpDown=false TextAlign="TextAlign.Center" @bind-Value="Model!.Quantidade" Format="N2" /></td>
 <td width="10%"><RadzenTextBox value="@Model.Mercadoria?.Unidade" Disabled=true /></td>
 <td>
+
+    <RadzenDropDown AllowClear="true" @bind-Value=descMercadoria AllowVirtualization="true" Name="DropDownVirtualization"
+        AllowFiltering="true" Data=@customers TextProperty="descMercadoria" ValueProperty="CustomerID" Style="width: 100%; max-width: 400px;" />
+
     @* <InputSelect2
         FormId="formId"
         ValueProperty="(i)=>i.IdMercadoria"
