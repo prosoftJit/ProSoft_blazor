@@ -5,76 +5,90 @@
 @using Microsoft.EntityFrameworkCore
 @using BlazorBootstrap
 
+<CascadingValue Name="ctx" Value="ctx">
+    <EditForm Model="Model" OnSubmit="ValidSubmit" id="editForm">
 
-<EditForm Model="Model" OnSubmit="ValidSubmit" id="editForm">
+        <DataAnnotationsValidator />
+        <ValidationSummary Model="Model" />
 
-    <DataAnnotationsValidator />
-    <ValidationSummary Model="Model" />
+        <RadzenRow>
+            <RadzenColumn Size="1">
+                <RadzenFormField Text="Id" >
+                    <RadzenNumeric Format="000000" ShowUpDown=false Disabled=true Value="@Model.IdNotaVenda" />
+                </RadzenFormField>
+            </RadzenColumn>
+            <RadzenColumn Size="3">
+                <RadzenFormField Text="Cliente" >
+                    <RadzenDropDown @bind-Value="Model.Cliente_IdCliente" AllowClear=true AllowFiltering=true AllowVirtualization=true TValue="long?" Data="ctx.clientes" TextProperty="Nome" ValueProperty="idCliente" Change="ClienteChanged" />
+                </RadzenFormField>
+            </RadzenColumn>
+        </RadzenRow>
 
-    <div class="row my-1">
-        @* <FloatingLabel InputId="IdNotaVenda" Text="Id da Nota" Columns="2">
-            <input type="text" value="@Model.IdNotaVenda.ToString("000000")" class="form-control" disabled="disabled" />
-        </FloatingLabel>
-        <FloatingLabel InputId="Data" Text="Data" Columns="2">
-            <InputDate @bind-Value="Model!.Data" class="form-control"></InputDate>
-        </FloatingLabel> *@
-        @* <FloatingLabel InputId="Cliente_IdCliente" Class="d-flex" Text="Cliente" Columns="4">
-            <InputSelect2 
-                Context="Model" 
-                FormId="formCli" 
-                ValueProperty="(c)=>c.idCliente"
-                TItem="cliente" 
-                Value="@Model.Cliente?.idCliente" 
-                OnNeedItems="()=>ctx.clientes.ToArray()"
-                OnEdit="(c)=>{editCliente=c;StateHasChanged();}"
-                OnSelectionChanged="(i)=>Model.Cliente=i"
-            >
-            </InputSelect2>
-        </FloatingLabel> *@
-    </div>
+        <div class="row my-1">
+            @* <FloatingLabel InputId="IdNotaVenda" Text="Id da Nota" Columns="2">
+                <input type="text" value="@Model.IdNotaVenda.ToString("000000")" class="form-control" disabled="disabled" />
+            </FloatingLabel>
+            <FloatingLabel InputId="Data" Text="Data" Columns="2">
+                <InputDate @bind-Value="Model!.Data" class="form-control"></InputDate>
+            </FloatingLabel> *@
+            @* <FloatingLabel InputId="Cliente_IdCliente" Class="d-flex" Text="Cliente" Columns="4">
+                <InputSelect2 
+                    Context="Model" 
+                    FormId="formCli" 
+                    ValueProperty="(c)=>c.idCliente"
+                    TItem="cliente" 
+                    Value="@Model.Cliente?.idCliente" 
+                    OnNeedItems="()=>ctx.clientes.ToArray()"
+                    OnEdit="(c)=>{editCliente=c;StateHasChanged();}"
+                    OnSelectionChanged="(i)=>Model.Cliente=i"
+                >
+                </InputSelect2>
+            </FloatingLabel> *@
+        </div>
 
-    <GenericTemplate Items="Model.Items" TItem="venda">
-        <TableHeader>
-            <th>Quant</th>
-            <th>Un</th>
-            <th>Descrição</th>
-            <th>P. Venda</th>
-            <th>Desconto</th>
-            <th>Total</th>
-            <th>
-                <button type="button" class="btn btn-link" @onclick="AddVenda"><i class="oi oi-plus"></i></button>
-            </th>
-        </TableHeader>
-        <RowTemplate Context="itemsCtx">
-            <Venda_row Model="itemsCtx" OnAskDelete="AskDeleteRow" 
-                OnNeedCompras="()=>ctx.compras.Include(k=>k.Mercadoria).OrderBy(k=>k.Mercadoria.Descricao).ToArray()"></Venda_row>
-        </RowTemplate>
-        <TableFooter>
-            <tr>
-                <td colspan="5" class="text-end">Total</td>
-                <td><RadzenNumeric Format="N2" Value="@TotalVendas()" TextAlign="TextAlign.End" ShowUpDown=false /></td>
-            </tr>
-        </TableFooter>
-    </GenericTemplate>
+        <GenericTemplate Items="Model.Items" TItem="venda">
+            <TableHeader>
+                <th>Quant</th>
+                <th>Un</th>
+                <th>Descrição</th>
+                <th>P. Venda</th>
+                <th>Desconto</th>
+                <th>Total</th>
+                <th>
+                    <button type="button" class="btn btn-link" @onclick="AddVenda"><i class="oi oi-plus"></i></button>
+                </th>
+            </TableHeader>
+            <RowTemplate Context="itemsCtx">
+                <Venda_row Model="itemsCtx" OnAskDelete="AskDeleteRow" 
+                    OnNeedCompras="()=>ctx.compras.Include(k=>k.Mercadoria).OrderBy(k=>k.Mercadoria.Descricao).ToArray()"></Venda_row>
+            </RowTemplate>
+            <TableFooter>
+                <tr>
+                    <td colspan="5" class="text-end">Total</td>
+                    <td><RadzenNumeric Format="N2" Value="@TotalVendas()" TextAlign="TextAlign.End" ShowUpDown=false /></td>
+                </tr>
+            </TableFooter>
+        </GenericTemplate>
 
-    <GenericTemplate Items="Model.Parcelas" TItem="contaareceber">
-        <TableHeader>
-            <th>Vencimento</th>
-            <th>Valor</th>
-            <th><button type="button" class="btn btn-link" @onclick="AddParcela"><i class="oi oi-plus"></i></button></th>
-        </TableHeader>
-        <RowTemplate Context="parc">
-            <Parcela Model="parc" OnDelete="DeleteParcela" OnTotalChanged="()=>StateHasChanged()"></Parcela>
-        </RowTemplate>
-        <TableFooter>
-            <tr>
-                <td class="text-end">Total</td>
-                <td><RadzenNumeric Format="N2" TextAlign="TextAlign.End" ShowUpDown=false Disabled=true Value="@Model.Parcelas.Sum(k=>k.Valor)" /></td>
-            </tr>
-        </TableFooter>
-    </GenericTemplate>
+        <GenericTemplate Items="Model.Parcelas" TItem="contaareceber">
+            <TableHeader>
+                <th>Vencimento</th>
+                <th>Valor</th>
+                <th><button type="button" class="btn btn-link" @onclick="AddParcela"><i class="oi oi-plus"></i></button></th>
+            </TableHeader>
+            <RowTemplate Context="parc">
+                <Parcela Model="parc" OnDelete="DeleteParcela" OnTotalChanged="()=>StateHasChanged()"></Parcela>
+            </RowTemplate>
+            <TableFooter>
+                <tr>
+                    <td class="text-end">Total</td>
+                    <td><RadzenNumeric Format="N2" TextAlign="TextAlign.End" ShowUpDown=false Disabled=true Value="@Model.Parcelas.Sum(k=>k.Valor)" /></td>
+                </tr>
+            </TableFooter>
+        </GenericTemplate>
 
-</EditForm>
+    </EditForm>
+</CascadingValue>
 
 @if (editCliente != null)
 {
@@ -166,5 +180,8 @@
         contaareceber cr = new();
         Model.Parcelas.Add(cr);
         StateHasChanged();
+    }
+    void ClienteChanged() {
+        Model.Cliente = ctx.clientes.Find(Model.Cliente_IdCliente);
     }
 }

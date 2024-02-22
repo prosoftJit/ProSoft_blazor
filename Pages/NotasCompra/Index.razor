@@ -1,13 +1,13 @@
 ﻿@page "/NotasCompra/Index"
 @using ProSoft.Data
-@using ProSoft.Components
 @using Microsoft.EntityFrameworkCore
 @using BlazorBootstrap
+@using ProSoft.Components
 
-<PageHeader Title="Notas de Compra" Description="Notas de entrada de estoque" DropdownClick="DropdownClick">
-    <DropdownItems>
-        <RadzenSplitButtonItem Text="Nova compra" Value="AddCompra" />
-    </DropdownItems>
+<PageHeader Title="Notas de Compra" Description="Notas de entrada de estoque">
+    <BarItems>
+        <RadzenButton Icon="add" Click="()=>askEdit=new()">Nova compra</RadzenButton>
+    </BarItems>
 </PageHeader>
 
 @if (notascompra == null) {
@@ -23,7 +23,7 @@
             <th></th>
         </TableHeader>
         <RowTemplate Context="nfc">
-            <td class="text-center"><a href="/NotasCompra/Form">@nfc.IdNotaCompra.ToString("000000")</a></td>
+            <td class="text-center"><a href="/NotasCompra/Form/@(nfc.IdNotaCompra)">@nfc.IdNotaCompra.ToString("000000")</a></td>
             <td>@nfc.NumeroNF</td>
             <td>@nfc.Data.ToShortDateString()</td>
             <td>@nfc.Fornecedor?.Nome</td>
@@ -56,16 +56,6 @@
     notacompra? askDelete = null;
 
     mercadoria[] Mercadorias = Array.Empty<mercadoria>();
-
-    void DropdownClick(string value) {
-        switch (value) {
-            case "AddCompra": {
-                askEdit = new();
-                StateHasChanged();
-                break;
-            }
-        }
-    }
     void Delete()
     {
         if (askDelete == null)

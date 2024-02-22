@@ -1,10 +1,10 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 @media print {
-    body {
-        /*font-size: 50% !important;*/ /* Diminui o tamanho da fonte em 20% */
+    * {
+        font-size: 60% !important;
         background-color: yellow !important;
-        zoom: 60%;
+        /* zoom: 60%; */
     }
 }
 

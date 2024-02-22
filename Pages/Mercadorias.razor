@@ -2,7 +2,11 @@
 @using ProSoft.Data
 @using ProSoft.Components
 
-<PageHeader Title="Mercadorias" Description="Listagem de mercadorias cadastradas no sistema"></PageHeader>
+<PageHeader Title="Mercadorias" Description="Listagem de mercadorias cadastradas no sistema">
+    <BarItems>
+        <RadzenButton Icon="add" Text="Nova Mercadoria" Click="()=>askEdit=new()" />
+    </BarItems>
+</PageHeader>
 
 <GenericTemplate Items="mercadorias">
     <TableHeader>
@@ -15,17 +19,11 @@
     </RowTemplate>
 </GenericTemplate>
 
-<div class="row justify-content-end">
-    <div class="col-2">
-        <button type="button" class="btn btn-primary" @onclick="()=>AskEdit(null)">+ Mercadoria</button>
-    </div>
-</div>
-
 @if (askEdit != null)
 {
-    <ModalDialog Title="Cliente" Size="modal-fullscreen" OnCancel="()=>askEdit=null">
+    <ModalDialog Title="Mercadoria" Size="modal-fullscreen" OnCancel="()=>askEdit=null">
         <ModalBody>
-            <PageHeader Title="Cliente"></PageHeader>
+            <PageHeader Title="Mercadoria"></PageHeader>
             <EditForm id="editForm" Model="askEdit" OnValidSubmit="Submit">
                 <Mercadoria Model="askEdit"></Mercadoria>
             </EditForm>

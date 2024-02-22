@@ -1,5 +1,4 @@
 ﻿@namespace ProSoft.Components 
-{
 
 <ModalDialog Title="Confirmação" OnCancel="_=>Close(false)" HideCloseButton="true">
     <ModalBody>
@@ -10,8 +9,6 @@
         <button type="button" Class="btn btn-secondary" @onclick="() => Close(false)">Cancel</button>
     </ModalFooter>
 </ModalDialog>
-
-}
 
 @code {
     [Parameter] public string Title { get; set; } = "Confirmação";

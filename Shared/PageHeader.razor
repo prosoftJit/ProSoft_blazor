@@ -3,19 +3,15 @@
 <PageTitle>@Title</PageTitle>
 
 <RadzenRow>
-    <RadzenColumn Size="11">
+    <RadzenColumn>
         <h1>@Title</h1>
     </RadzenColumn>
-    <RadzenColumn Size="1">
-
-        @if (DropdownItems != null) {
-            <RadzenSplitButton Icon="Menu" Click="(v)=>DropdownClick?.Invoke(v.Value)">
-                <ChildContent>
-                    @DropdownItems
-                </ChildContent>
-            </RadzenSplitButton>
+    <RadzenColumn>
+        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="3px">
+        @if (BarItems != null) {
+            @BarItems
         }
-
+        </RadzenStack>
     </RadzenColumn>
 </RadzenRow>
 
@@ -30,6 +26,5 @@
     [Parameter] public string Title { get; set; } = "";
     [Parameter] public string? Description { get; set; } = null;
     [Parameter] public RenderFragment? ChildContent { get; set; }
-    [Parameter] public RenderFragment? DropdownItems { get; set; }
-    [Parameter] public Action<string>? DropdownClick { get; set; }
+    [Parameter] public RenderFragment? BarItems { get; set; }
 }

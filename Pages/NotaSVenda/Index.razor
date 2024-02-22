@@ -51,8 +51,7 @@
 @code {
     long askEdit = 0;
     notavenda? askDelete = null;
-    [Inject] Services.MessageService message { get; set; } = default!;
-
+    [Inject] NotificationService notificationService { get; set; } = default!;
     compra[] compras = Array.Empty<compra>();
 
     void Delete()
@@ -61,7 +60,7 @@
             ctx.notasvenda.Remove(askDelete);
             ctx.SaveChanges();
             LoadNotas();
-            message.ShowToast("Nota excluída com sucesso!", Services.ToastLevel.Success);
+            notificationService.Notify(NotificationSeverity.Success, "Venda", "Nota excluída com sucesso!");
         }
     }
 

@@ -1,4 +1,4 @@
-﻿@page "/NotasCompra/Form"
+﻿@page "/NotasCompra/Form/{idNotaCompra:long}"
 
 @using System.ComponentModel.DataAnnotations
 @using ProSoft.Data
@@ -7,43 +7,44 @@
 
 <EditForm id="formId" EditContext="@editContext" OnValidSubmit="Submit">
 
-    <PageHeader Title="Compras" Description="Nota Fiscal de Compras" DropdownClick="DropdownClick">
-        <DropdownItems>
-            <RadzenSplitButtonItem Value="1" Text="Salvar"></RadzenSplitButtonItem>
-            <RadzenSplitButtonItem Value="2" Text="Nova compra"></RadzenSplitButtonItem>
-        </DropdownItems>
+    <PageHeader Title="Compras" Description="Nota Fiscal de Compras">
+        <BarItems>
+            <RadzenButton Icon="save" Click="Submit"><RadzenIcon Icon="save" /> Salvar</RadzenButton>
+            <RadzenButton Icon="add" Click="()=>AddRow()">Novo Item</RadzenButton>
+        </BarItems>
     </PageHeader>
 
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <div class="row mb-3">
-        <label class="col-3">
-            Id
-            <input type="text" value="@Model?.IdNotaCompra.ToString("000000")" class="form-control" disabled="disabled" />
-        </label>
-        <label class="col-3">
-            Número da NF
-            <InputText class="form-control" @bind-Value=Model!.NumeroNF></InputText>
-        </label>
-        <label class="col-3">
-            Data
-            <InputDate @bind-Value="Model!.Data" class="form-control" ></InputDate>
-        </label>
-    </div>
-
-    <div class="row">
-
-        <label class="col-6">
-            Fornecedor
-            <RadzenDropDown AllowClear="true" class="form-control" @bind-Value=Model.Fornecedor_IdFornecedor AllowVirtualization="true"
-                    AllowFiltering="true" Data=ctx.fornecedores.ToArray() TextProperty="Nome" ValueProperty="IdFornecedor" Change='()=>ctx.Entry(Model).Navigation("Fornecedor").Load()' />
-        </label>
-        <label class="col-6">
-            Xml
-            <InputText @bind-Value="Model!.Xml" class="form-control"></InputText>
-        </label>
-    </div>
+    <RadzenRow RowGap="1rem">
+        <RadzenColumn Size="2">
+            <RadzenFormField class="w-100" Text="Id">
+                <RadzenNumeric Format="000000" Value="@Model.IdNotaCompra" TextAlign="TextAlign.Center" Disabled=true ShowUpDown=false />
+            </RadzenFormField>
+        </RadzenColumn>
+        <RadzenColumn Size="2">
+            <RadzenFormField class="w-100" Text="Número da NF">
+                <RadzenTextBox @bind-Value="Model.NumeroNF" TextAlign=TextAlign.Center />
+            </RadzenFormField>
+        </RadzenColumn>
+        <RadzenColumn Size="2">
+            <RadzenFormField class="w-100" Text="Data">
+                <RadzenDatePicker @bind-Value="Model.Data" />
+            </RadzenFormField>
+        </RadzenColumn>
+        <RadzenColumn Size="3">
+            <RadzenFormField class="w-100" Text="Fornecedor">
+                <RadzenDropDown AllowClear="true" class="form-control" @bind-Value=Model.Fornecedor_IdFornecedor AllowVirtualization="true"
+                        AllowFiltering="true" Data=ctx.fornecedores.ToArray() TextProperty="Nome" ValueProperty="IdFornecedor" Change='()=>ctx.Entry(Model).Navigation("Fornecedor").Load()' />
+            </RadzenFormField>
+        </RadzenColumn>
+        <RadzenColumn Size="3">
+            <RadzenFormField class="w-100" Text="Xml">
+                <RadzenTextBox @bind-Value="Model.Xml"/>
+            </RadzenFormField>
+        </RadzenColumn>
+    </RadzenRow>
 
     <table class="table mt-2">
         <thead>
@@ -70,6 +71,7 @@
             <tr>
                 <td colspan="4" class="text-end">Total</td>
                 <td><RadzenNumeric Format="N2" TextAlign="TextAlign.End" Value="Model.Total" Disabled=true ShowUpDown=false /></td>
+                <td colspan="2"></td>
             </tr>
         </tfoot>
     </table>

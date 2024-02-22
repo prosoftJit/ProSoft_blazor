@@ -20,6 +20,10 @@
         </OnEditRenderFragment>
     </InputSelect2> *@
    
+
+    <RadzenDropDown AllowClear="true" TValue="long" @bind-Value=Model.Compra_idCompra AllowVirtualization="true"
+        AllowFiltering="true" Data=OnNeedCompras?.Invoke() TextProperty="Descricao" ValueProperty="IdCompra" Change="()=>CompraChanged?.Invoke()" />
+
 </td>
 
 <td width="10%"><RadzenNumeric Format="N2" ShowUpDown=false Value="@Model.Compra?.Venda" TextAlign=TextAlign.End Disabled=true /></td>
@@ -32,6 +36,7 @@
     [Parameter] public Action<float>? TotalChanged { get; set; } = null;
     [Parameter] public Action<venda>? OnAskDelete { get; set; } = null;
     [Parameter] public Func<compra[]>? OnNeedCompras { get; set; } = null;
+    [CascadingParameter(Name="ctx")] public Context ctx {get;set;} = default!;
 
     float _total = 0;
     float Total()
@@ -43,5 +48,8 @@
             TotalChanged?.Invoke(_total);
         }
         return _total;
+    }
+    void CompraChanged() {
+        Model.compra = 
     }
 }
