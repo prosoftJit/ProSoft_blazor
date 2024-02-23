@@ -1,0 +1,36 @@
+@page "/Funcionario/{idFuncionario:long}"
+@using System.ComponentModel.DataAnnotations
+@using ProSoft.Data
+
+<DataAnnotationsValidator />
+<ValidationSummary />
+
+<RadzenRow class="mb-3">
+    <RadzenColumn Size="3">
+        <RadzenFormField Text="Id do Fornecedor" class="w-100">
+            <RadzenNumeric Value="@Model.IdFuncionario" Format="000000" ShowUpDown=false TextAlign="TextAlign.Center" Disabled=true></RadzenNumeric>
+        </RadzenFormField>
+    </RadzenColumn>
+    <RadzenColumn Size="9">
+        <RadzenFormField Text="Nome" class="w-100">
+            <RadzenTextBox @bind-Value="Model.Nome" />
+            <RadzenRequiredValidator Text="Nome obrigatório" />
+        </RadzenFormField>
+    </RadzenColumn>
+</RadzenRow>
+
+<RadzenRow class="mb-3">
+    <RadzenColumn Size="4">
+        <RadzenCheckBox Value="@Model.IsSystemUser" />
+    </RadzenColumn>
+    <RadzenColumn Size="4">
+        <RadzenFormField Text="CNPJ" class="w-100">
+            <RadzenPassword Mask="**.***.***/****-**" CharacterPattern="[0-9]" @bind-Value="Model.Senha" />
+        </RadzenFormField>
+    </RadzenColumn>
+</RadzenRow>
+
+@code {
+    [Parameter] public funcionario Model { get; set; } = new();
+    protected override void OnInitialized() => Model ??= new();
+}

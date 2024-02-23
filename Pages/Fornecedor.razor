@@ -1,4 +1,4 @@
-﻿@page "/Fornecedor/{idFornecedor:long}"
+@page "/Fornecedor/{idFornecedor:long}"
 @using System.ComponentModel.DataAnnotations
 @using ProSoft.Data
 
@@ -7,13 +7,13 @@
 
 <RadzenRow class="mb-3">
     <RadzenColumn Size="3">
-        <RadzenFormField Text="Id do Fornecedor" Variant="Variant.Filled" class="w-100">
+        <RadzenFormField Text="Id do Fornecedor" class="w-100">
             <RadzenNumeric Value="@Model.IdFornecedor" Format="000000" ShowUpDown=false TextAlign="TextAlign.Center" Disabled=true></RadzenNumeric>
         </RadzenFormField>
     </RadzenColumn>
     <RadzenColumn Size="9">
-        <RadzenFormField Text="Nome" Variant="Variant.Filled" class="w-100">
-            <RadzenNumeric @bind-Value="Model.Nome" />
+        <RadzenFormField Text="Nome" class="w-100">
+            <RadzenTextBox @bind-Value="Model.Nome" />
             <RadzenRequiredValidator Text="Nome obrigatório" />
         </RadzenFormField>
     </RadzenColumn>
@@ -21,12 +21,12 @@
 
 <RadzenRow class="mb-3">
     <RadzenColumn Size="4">
-        <RadzenFormField Text="Nome Fantasia" Variant="Variant.Filled" class="w-100">
+        <RadzenFormField Text="Nome Fantasia" class="w-100">
             <RadzenTextBox Value="@Model.Fantasia" />
         </RadzenFormField>
     </RadzenColumn>
     <RadzenColumn Size="4">
-        <RadzenFormField Text="CNPJ" Variant="Variant.Filled" class="w-100">
+        <RadzenFormField Text="CNPJ" class="w-100">
             <RadzenMask Mask="**.***.***/****-**" CharacterPattern="[0-9]" @bind-Value="Model.CNPJ" />
         </RadzenFormField>
     </RadzenColumn>

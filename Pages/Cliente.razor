@@ -1,4 +1,4 @@
-﻿@page "/Cliente/{idCliente:long}"
+@page "/Cliente/{idCliente:long}"
 @using System.ComponentModel.DataAnnotations
 @using ProSoft.Data
 @using ProSoft.Services
@@ -12,12 +12,11 @@
         <RadzenColumn Size="2">
             <RadzenFormField Text="Id do Cliente" class="w-100">
                 <RadzenNumeric Value="@Model.idCliente" Format="000000" ShowUpDown=false TextAlign="TextAlign.Center" Disabled=true></RadzenNumeric>
-                <RadzenRequiredValidator Text="Nome obrigatório" />
             </RadzenFormField>
         </RadzenColumn>
-        <RadzenColumn Size="3">
+        <RadzenColumn Size="4">
             <RadzenFormField Text="Nome" class="w-100">
-                <RadzenNumeric @bind-Value="Model.Nome" />
+                <RadzenTextBox @bind-Value="Model.Nome" AutoComplete="false" />
             </RadzenFormField>
         </RadzenColumn>
     </RadzenRow>
@@ -32,7 +31,7 @@
         </RadzenColumn>
         <RadzenColumn Size="4">
             <RadzenFormField Text="Email" class="w-100">
-                <RadzenNumeric @bind-Value="Model.Email" />
+                <RadzenTextBox @bind-Value="Model.Email" />
             </RadzenFormField>
         </RadzenColumn>
         <RadzenColumn Size="4">
@@ -59,15 +58,18 @@
 
     [Inject] NotificationService notificationService { get; set; } = default!;
 
-    public async Task Submit()
+    void Submit()
     {
+        Console.Write("Salvando...");
+        Console.WriteLine(Model.idCliente.ToString());
         if (Model.idCliente == 0)
-            ctx.Entry(Model).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+            ctx.Entry(Model).State = EntityState.Added;
         else
-            ctx.Entry(Model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            ctx.Entry(Model).State = EntityState.Modified;
 
-        await ctx.SaveChangesAsync();
+        ctx.SaveChanges();
 
+        Console.WriteLine("Saved");
         notificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Cadastro de clientes", Detail = "Alterações do cliente foram salvas com sucesso!", Duration = 4000 });
     }
 }

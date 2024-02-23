@@ -1,0 +1,109 @@
+@page "/Funcionarios"
+@using ProSoft.Data
+@using ProSoft.Services
+@using ProSoft.Components
+@using ProSoft.Pages
+
+<PageHeader Title="Funcionários" Description="Colaboradores da empresa com ou sem acesso ao sistema">
+    <BarItems>
+        <RadzenButton ButtonStyle="Radzen.ButtonStyle.Primary" Icon="add" Size="Radzen.ButtonSize.Medium" Text="Funcionário" Click="()=>AskEdit(null)" />
+    </BarItems>
+</PageHeader>
+
+<GenericTemplate Context="ctx" Items="funcionarios">
+    <TableHeader>
+        <th>Id do Funcionário</th>
+        <th>Nome</th>
+        <th>SysUser?</th>
+        <th></th>
+    </TableHeader>
+    <RowTemplate Context="func">
+        <td class="text-center"><a href="" @onclick="()=>AskEdit(func.IdFuncionario)" @onclick:preventDefault>@func.IdFuncionario.ToString("000000")</a></td>
+        <td>@func.Nome</td>
+        <td>@func.IsSystemUser</td>
+        <td><a href="" @onclick="()=>AskDelete(func.IdFuncionario)" @onclick:preventDefault><i class="oi oi-trash"></i></a></td>
+    </RowTemplate>
+    <TableFooter>
+    </TableFooter>
+</GenericTemplate>
+
+@if (askEdit != null)
+{
+    <ModalDialog Title="Funcionario" Size="modal-fullscreen" OnCancel="()=>askEdit=null">
+        <ModalBody>
+            <PageHeader Title="Fornecedor"></PageHeader>
+            <EditForm id="fornForm" Model="askEdit" OnValidSubmit="Submit">
+                <Funcionario Model="askEdit" />
+            </EditForm>
+        </ModalBody>
+        <ModalFooter>
+            <button class="btn btn-success" @onclick="()=>Submit()">Salvar</button>
+        </ModalFooter>
+    </ModalDialog>
+}
+
+@if (askDelete != null)
+{
+    <ModalConfirm OnClose="Delete">Confirma exclusão do fornecedor @askDelete?.Nome?</ModalConfirm>
+}
+
+@code {
+    Contexto ctx = new();
+    [Inject] NotificationService? notificationService {get;set;}
+    funcionario? askEdit = null;
+    funcionario? askDelete = null;
+    private void AskDelete(long idFuncionario)
+    {
+        askDelete = ctx.funcionarios.Find(idFuncionario);
+        if (askDelete != null)
+        {
+            askDelete = null;
+            notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Error, Summary="Cadastro de Fornecedores", Detail = "Não é possível excluir o funcionário", Duration = 4000 });
+            return;
+        }
+    }
+    private void Delete(bool confirm)
+    {
+        if (askDelete != null && confirm)
+        {
+            ctx.funcionarios.Remove(askDelete);
+            ctx.SaveChanges();
+            notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary="Cadastro de Fornecedores", Detail = "Fornecedor excluído com sucesso", Duration = 4000 });
+            GetFuncionarios();
+        }
+        askDelete = null;
+        StateHasChanged();
+    }
+    void AskEdit(long? idFuncionario)
+    {
+        if (idFuncionario == null)
+            askEdit = new();
+        else
+            askEdit = ctx.funcionarios.Find(idFuncionario);
+    }
+
+    private void Submit()
+    {
+        if (askEdit == null)
+            return;
+
+        if (askEdit.IdFuncionario == 0)
+            ctx.Entry(askEdit).State = EntityState.Added;
+        else
+            ctx.Entry(askEdit).State = EntityState.Modified;
+        ctx.SaveChanges();
+        askEdit = null;
+        GetFuncionarios();
+        notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Cadastro de Fornecedores", Detail = "Alterações do funcionário foram salvas com sucesso!", Duration = 4000 });
+    }
+
+    private IReadOnlyList<funcionario> funcionarios = Array.Empty<funcionario>();
+    void GetFuncionarios()
+    {
+        funcionarios = ctx.funcionarios.ToArray();
+    }
+    protected override void OnInitialized()
+    {
+        GetFuncionarios();
+    }
+}
