@@ -1,0 +1,99 @@
+@page "/OrdemServico/Orcamento"
+@using System.ComponentModel.DataAnnotations
+@using ProSoft.Data
+@using ProSoft.Components
+@using Microsoft.EntityFrameworkCore
+@using BlazorBootstrap
+
+<PageHeader Title="Orçamento">
+</PageHeader>
+
+<RadzenTemplateForm TItem="orcamento" Data="Model" Submit="Submit" id="editForm">
+
+    <DataAnnotationsValidator />
+    <ValidationSummary Model="Model" />
+
+    <RadzenRow>
+        <RadzenColumn Size="2" class="w-100">
+            <RadzenFormField Text="Id" >
+                <RadzenNumeric Format="000000" ShowUpDown=false Disabled=true Value="@Model.IdOrcamento" TextAlign="Radzen.TextAlign.Center" />
+            </RadzenFormField>
+        </RadzenColumn>
+        <RadzenColumn Size="2">
+            <RadzenFormField Text="Data" class="w-100">
+                <RadzenDatePicker @bind-Value=Model.Data DateFormat="dd/MM/yyyy" />
+            </RadzenFormField>
+        </RadzenColumn>
+        <RadzenColumn Size=4>
+            <RadzenFormField Text=Cliente class="w-100">
+                <RadzenDropDown Name=Cliente @bind-Value="Model.Cliente_IdCliente" AllowClear=true AllowFiltering=true AllowVirtualization=true TValue="long" Data="ctx.clientes" TextProperty="Nome" ValueProperty="idCliente" ClearSearchAfterSelection="true" Change=ClienteChanged />
+                <RadzenCustomValidator Component=Cliente Validator="()=>Model.Cliente_IdCliente>0" Text="É necessário selecionar um cliente" />
+                <RadzenButton Icon="edit" Style="max-width: 35px;" Click="()=>askEditCliente=Model.Cliente"  />
+            </RadzenFormField>
+        </RadzenColumn>
+    </RadzenRow>
+
+    <GenericTemplate Items="Model.Items" TItem="itemdoorcamento">
+        <TableHeader>
+            <th>Quant</th>
+            <th>Un</th>
+            <th>Descrição</th>
+            <th>P. Venda</th>
+            <th>Desconto</th>
+            <th>Total</th>
+            <th><button type="button" class="btn btn-link" @onclick="AddRow"><i class="oi oi-plus"></i></button></th>
+        </TableHeader>
+        <RowTemplate Context="OrcItem">
+            <OS_row Model=OrcItem Contexto=ctx OnNeedCompras="()=>ctx.compras.Include(k=>k.Mercadoria).OrderBy(k=>k.Mercadoria.Descricao).ToArray()" />
+        </RowTemplate>
+        <TableFooter>
+            <tr>
+                <td colspan="5" class="text-end">Total</td>
+                <td></td>
+            </tr>
+        </TableFooter>
+    </GenericTemplate>
+
+</RadzenTemplateForm>
+
+@if (askEditCliente != null) {
+    <ModalDialog Title="Editar Cliente" OnCancel="()=>askEditCliente=null" Size="modal-lg">
+        <ModalBody>
+            <ProSoft.Pages.Cadastros.Cliente idCliente="askEditCliente.idCliente"/>
+        </ModalBody>
+        <ModalFooter>
+            <RadzenButton Icon="save" Text="Salvar" ButtonType="Radzen.ButtonType.Submit"  Form="eqpForm" />
+        </ModalFooter>
+    </ModalDialog>
+}
+
+@code {
+    [Parameter] public orcamento Model { get; set; } = new();
+    [Parameter, EditorRequired] public Contexto ctx {get;set;} = new(); // new for designtime purposes
+
+    cliente askEditCliente = null;
+
+    protected override void OnInitialized() {
+        if (Model.Items.Count == 0)
+            AddRow();
+    }
+
+    void AddRow()
+    {
+        itemdoorcamento io = new();
+        Model.Items.Add(io);
+        StateHasChanged();
+    }
+
+    void Submit(orcamento orc) {
+        if (orc.IdOrcamento == 0)
+            ctx.Entry(orc).State = EntityState.Added;
+        else
+            ctx.Entry(orc).State = EntityState.Modified;
+        ctx.SaveChanges();
+    }
+
+    void ClienteChanged() {
+        Model.Cliente = ctx.clientes.Find(Model.Cliente_IdCliente) ?? new();
+    }
+ }

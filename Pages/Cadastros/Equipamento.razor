@@ -1,0 +1,80 @@
+@page "/Cadastros/Equipamento"
+@using System.ComponentModel.DataAnnotations
+@using ProSoft.Data
+@using ProSoft.Componentes
+
+@inject DialogService dialogService
+
+<RadzenTemplateForm TItem=equipamento Data=Model Submit=EqpSubmit id=formEqp>
+
+    <DataAnnotationsValidator />
+
+    <RadzenRow class="mb-3">
+        <RadzenColumn Size="3">
+            <RadzenFormField Text="Id do Equipamento" class="w-100">
+                <RadzenNumeric Value="@Model.IdEquipamento" Format="000000" ShowUpDown=false TextAlign="TextAlign.Center" Disabled=true></RadzenNumeric>
+            </RadzenFormField>
+        </RadzenColumn>
+        <RadzenColumn Size="9">
+            <RadzenFormField Text="Cliente" class="w-100">
+
+                <RadzenDropDown AllowClear="true" TValue="long" @bind-Value="Model.Cliente_IdCliente" AllowVirtualization="true"
+                AllowFiltering="true" Data="ctx.clientes" TextProperty="Nome" ValueProperty="idCliente" Name="Cliente" />
+                <RadzenButton Icon="edit" Style="max-width: 35px;" Click="EditCliente" IsBusy="false" />
+                <RadzenRequiredValidator Component="Cliente" Text="É necessário informar o cliente" />
+            
+            </RadzenFormField>
+        </RadzenColumn>
+    </RadzenRow>
+
+    <RadzenRow class="mb-3">
+        <RadzenColumn Size="12">
+            <RadzenFormField Text="Descricao" class="w-100">
+                <RadzenTextArea Rows=3 @bind-Value="Model.Descricao" Name="Descricao" />
+                <RadzenRequiredValidator Text="Descrição obrigatória" Component="Descricao" />
+            </RadzenFormField>
+        </RadzenColumn>
+    </RadzenRow>
+
+</RadzenTemplateForm>
+
+@if (askEditCli != null) {
+    <ModalDialog Title="Cliente" Size="modal-fullscreen" OnCancel="()=>askEditCli=null">
+        <ModalBody>
+            <Cliente idCliente="askEditCli.idCliente" />
+        </ModalBody>
+        <ModalFooter>
+            <RadzenButton Icon="save" Text="Salvar" ButtonType=ButtonType.Submit form="cliForm" />
+        </ModalFooter>
+    </ModalDialog>
+}
+
+<RadzenDialog></RadzenDialog>
+
+@code {
+    [Parameter] public equipamento Model { get; set; } = new();
+    [Parameter] public Contexto ctx {get;set;} = null;
+
+
+    cliente cli = new();
+
+    cliente askEditCli = null;
+
+    void EqpSubmit(equipamento eqp) {
+        if (eqp.IdEquipamento == 0)
+            ctx.Entry(eqp).State = EntityState.Added;
+        else
+            ctx.Entry(eqp).State = EntityState.Modified;
+        ctx.SaveChanges();
+    }
+
+    async void EditCliente() {
+        cliente c = ctx.clientes.Find(Model.Cliente_IdCliente) ?? new();
+
+        await dialogService.OpenAsync<Cliente>(
+            $"Cliente ID: {c.idCliente.ToString("000000")}",
+            new Dictionary<string, object>() { { "idCliente", c.idCliente } },
+            new DialogOptions() { Width = "700px", Height = "530px", Resizable = true }
+        );    
+    }
+}

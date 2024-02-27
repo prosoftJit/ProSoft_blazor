@@ -171,7 +171,7 @@ namespace ProSoft.Data
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key, Display(Name = "Id OS")]
         public long IdOrdemDeServico { get; set; }
-        public DateTime Data { get; set; }
+        public DateTime Data { get; set; } = DateTime.Today;
 
         [Display(Name = "Id Equip.")]
         public long Equipamento_IdEquipamento { get; set; }

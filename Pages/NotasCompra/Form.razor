@@ -1,4 +1,4 @@
-﻿@page "/NotasCompra/Form/{idNotaCompra:long}"
+@page "/NotasCompra/Form/{idNotaCompra:long}"
 
 @using System.ComponentModel.DataAnnotations
 @using ProSoft.Data
@@ -36,7 +36,7 @@
         <RadzenColumn Size="3">
             <RadzenFormField class="w-100" Text="Fornecedor">
                 <RadzenDropDown AllowClear="true" class="form-control" @bind-Value=Model.Fornecedor_IdFornecedor AllowVirtualization="true"
-                        AllowFiltering="true" Data=ctx.fornecedores.ToArray() TextProperty="Nome" ValueProperty="IdFornecedor" Change='()=>ctx.Entry(Model).Navigation("Fornecedor").Load()' />
+                        AllowFiltering="true" Data=Contexto.fornecedores.ToArray() TextProperty="Nome" ValueProperty="IdFornecedor" Change='()=>Contexto.Entry(Model).Navigation("Fornecedor").Load()' />
             </RadzenFormField>
         </RadzenColumn>
         <RadzenColumn Size="3">
@@ -46,35 +46,25 @@
         </RadzenColumn>
     </RadzenRow>
 
-    <table class="table mt-2">
-        <thead>
-            <tr>
-                <th>Qt.</th>
-                <th>Un</th>
-                <th>Descrição</th>
-                <th>P. Custo</th>
-                <th>Total</th>
-                <th>P. Venda</th>
-                <th width="1%"><button type="button" class="btn btn-link btn-sm d-print-none" @onclick="()=>AddRow()"><i class="oi oi-plus"></i></button></th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach(compra c in Model.Items)
-        {
-            <tr>
-            <Row GetMercadorias="()=>ctx.mercadorias.ToArray()" 
+    <GenericTemplate Items=Model.Items Context=Contexto>
+        <TableHeader>
+            <th>Qt.</th>
+            <th>Un</th>
+            <th>Descrição</th>
+            <th>P. Custo</th>
+            <th>Total</th>
+            <th>P. Venda</th>
+        </TableHeader>
+        <RowTemplate Context=c>
+            <Row GetMercadorias="()=>Contexto.mercadorias.ToArray()" 
                 Model="c" OnDelete="(c)=>{rowToDelete=c;StateHasChanged();}" MercadoriaChanged='()=>MercadoriaChanged(c)' TotalChanged="()=>StateHasChanged()" />
-            </tr>
-        }
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="4" class="text-end">Total</td>
-                <td><RadzenNumeric Format="N2" TextAlign="TextAlign.End" Value="Model.Total" Disabled=true ShowUpDown=false /></td>
-                <td colspan="2"></td>
-            </tr>
-        </tfoot>
-    </table>
+        </RowTemplate>
+        <TableFooter>
+            <td colspan="4" class="text-end">Total</td>
+            <td><RadzenNumeric Format="N2" TextAlign="TextAlign.End" Value="Model.Total" Disabled=true ShowUpDown=false /></td>
+            <td colspan="2"></td>
+        </TableFooter>
+    </GenericTemplate>
 
 </EditForm>
 
@@ -84,11 +74,9 @@
 }
 
 @code {
-    [Parameter] public long idNotaCompra{ get; set; }
+    [Parameter] public notacompra Model{ get; set; } = new();
     [Inject] public NotificationService notificationService {get;set;} = default!;
-
-    notacompra Model = new();
-    Contexto ctx = new();
+    [Parameter, EditorRequired] public Contexto Contexto {get;set;}
 
     void AddRow()
     {
@@ -117,13 +105,13 @@
     void Submit()
     {
         if (Model!.IdNotaCompra == 0)
-            ctx.Entry(Model).State = EntityState.Added;
+            Contexto.Entry(Model).State = EntityState.Added;
         else
-            ctx.Entry(Model).State = EntityState.Modified;
+            Contexto.Entry(Model).State = EntityState.Modified;
 
-        ctx.SaveChanges();
+        Contexto.SaveChanges();
 
-        Model = ctx.notascompra.First(k=>k.IdNotaCompra == Model.IdNotaCompra);
+        Model = Contexto.notascompra.First(k=>k.IdNotaCompra == Model.IdNotaCompra);
 
         notificationService.Notify(NotificationSeverity.Success, "Venda", "Todos os dados da Venda foram salvos  com sucesso");
 
@@ -132,10 +120,8 @@
 
     protected override void OnInitialized()
     {
-        Model = ctx.notascompra.Include(k => k.Fornecedor).Include(k => k.Items).ThenInclude(k => k.Mercadoria).FirstOrDefault(k => k.IdNotaCompra == idNotaCompra) ?? new();
-
         if (Model.IdNotaCompra == 0)
-            ctx.Entry(Model).State = EntityState.Added;
+            Contexto.Entry(Model).State = EntityState.Added;
 
         if (Model.Items.Count == 0)
             AddRow();
@@ -147,7 +133,7 @@
         base.OnInitialized();
     }
 
-    compra? rowToDelete;
+    compra rowToDelete;
     void DeleteRow(bool confirm)
     {
         if (confirm)
@@ -159,7 +145,7 @@
     }
 
     void MercadoriaChanged(compra c) {
-        c.Mercadoria = ctx.Find<mercadoria>(c.Mercadoria_IdMercadoria);
+        c.Mercadoria = Contexto.Find<mercadoria>(c.Mercadoria_IdMercadoria);
     }
 
     EditContext editContext = default!;

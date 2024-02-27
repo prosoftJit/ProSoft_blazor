@@ -1,28 +1,19 @@
 @page "/OrdemServico/OS_row"
 
 @using ProSoft.Data
+@using ProSoft.Components
 @using Microsoft.EntityFrameworkCore
 
 <td width="10%"><RadzenNumeric Format="N2" TextAlign="TextAlign.Center" @bind-Value="Model.Quantidade" ShowUpDown=false /></td>
 <td width="10%"><RadzenTextBox TextAlign="TextAlign.Center" Value="@Model.Compra?.Mercadoria?.Unidade" Disabled=true /></td>
 
 <td>
-    @* <InputSelect2
-        TItem="compra"
-        Value="Model.Compra_IdCompra"
-        FormId="formId"
-        ValueProperty="(i)=>i.IdCompra"
-        OnNeedItems="OnNeedCompras"
-        OnSelectionChanged="(i)=>{Model.Compra=i;StateHasChanged();}"
-    >
-        <OnEditRenderFragment Context="cp">
-            <ProSoft.Pages.NotasCompra.Form idNotaCompra="@cp.NotaCompra_IdNotaCompra"></ProSoft.Pages.NotasCompra.Form>
-        </OnEditRenderFragment>
-    </InputSelect2> *@
-   
-
-    <RadzenDropDown AllowClear="true" TValue="long" @bind-Value=Model.Compra_IdCompra AllowVirtualization="true"
-        AllowFiltering="true" Data=OnNeedCompras?.Invoke() TextProperty="Descricao" ValueProperty="IdCompra" Change="args=>CompraChanged(args)" />
+<RadzenStack Orientation=Orientation.Horizontal Gap=0>
+    <RadzenDropDown class="w-100" AllowClear="true" TValue="long" @bind-Value=Model.Compra_IdCompra AllowVirtualization="true"
+        AllowFiltering="true" Data=OnNeedCompras?.Invoke() TextProperty="Descricao" ValueProperty="IdCompra" Change="args=>CompraChanged(args)" >
+    </RadzenDropDown>
+    <RadzenButton Style="max-length: 35px;" Icon=edit Click="CompraEdit"></RadzenButton>
+</RadzenStack>
 
 </td>
 
@@ -31,12 +22,22 @@
 <td width="10%"><RadzenNumeric Format="N2" Value="@Total()" TextAlign=TextAlign.End Disabled=true ShowUpDown=false /></td>
 <td width="1%"><button type="button" class="btn btn-link text-danger" @onclick="()=>OnAskDelete?.Invoke(Model)"><i class="oi oi-trash"></i></button></td>
 
+@if (askEditCompra != null) {
+    <ModalDialog Size="modal-fullscreen" Title="Editar Compra" OnCancel="()=>askEditCompra=null">
+        <ModalBody>
+            <ProSoft.Pages.NotasCompra.Form Model=askEditCompra />
+        </ModalBody>
+        <ModalFooter>
+        </ModalFooter>
+    </ModalDialog>
+}
+
 @code {
-    [Parameter] public venda Model { get; set; } = new();
+    [Parameter] public itemdoorcamento Model { get; set; } = new();
     [Parameter] public Action<float> TotalChanged { get; set; } = null;
-    [Parameter] public Action<venda> OnAskDelete { get; set; } = null;
+    [Parameter] public Action<itemdoorcamento> OnAskDelete { get; set; } = null;
     [Parameter] public Func<compra[]> OnNeedCompras { get; set; } = null;
-    [CascadingParameter(Name="ctx")] public Contexto ctx {get;set;} = default!;
+    [Parameter] public Contexto Contexto {get;set;} = null;
 
     float _total = 0;
     float Total()
@@ -50,6 +51,13 @@
         return _total;
     }
     void CompraChanged(object args) {
-        Model.Compra = ctx.compras.FirstOrDefault(K=>K.IdCompra == Model.Compra_IdCompra);
+        Model.Compra = Contexto.compras.FirstOrDefault(K=>K.IdCompra == Model.Compra_IdCompra);
+        StateHasChanged();
     }
+
+    notacompra askEditCompra = null;
+    void CompraEdit() {
+        askEditCompra = Model.Compra?.NotaCompra ?? new();
+    }
+
 }

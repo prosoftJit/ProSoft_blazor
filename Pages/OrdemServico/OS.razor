@@ -6,7 +6,7 @@
 @using BlazorBootstrap
 
 <CascadingValue Name="ctx" Value="ctx">
-    <EditForm Model="Model" OnSubmit="ValidSubmit" id="editForm">
+    <RadzenTemplateForm TItem="ordemdeservico" Data="Model" Submit="ValidSubmit" id="editForm">
 
         <DataAnnotationsValidator />
         <ValidationSummary Model="Model" />
@@ -17,17 +17,27 @@
                     <RadzenNumeric Format="000000" ShowUpDown=false Disabled=true Value="@Model.IdOrdemDeServico" TextAlign="Radzen.TextAlign.Center" />
                 </RadzenFormField>
             </RadzenColumn>
-            <RadzenColumn Size="3">
-                <RadzenFormField Text="Data">
-                    <RadzenDatePicker @bind-Value=Model.Data />
+            <RadzenColumn Size="2">
+                <RadzenFormField Text="Data" class="w-100">
+                    <RadzenDatePicker @bind-Value=Model.Data DateFormat="dd/MM/yyyy" />
                 </RadzenFormField>
             </RadzenColumn>
-            <RadzenColumn Size=3>
+            <RadzenColumn Size=5>
                 <RadzenFormField Text=Equipamento class="w-100">
                     <RadzenDropDown @bind-Value="Model.Equipamento_IdEquipamento" AllowClear=true AllowFiltering=true AllowVirtualization=true TValue="long" Data="ctx.equipamentos" TextProperty="Descricao" ValueProperty="IdEquipamento" Change="EquipamentoChanged" ClearSearchAfterSelection="true" />
+                    <RadzenButton Icon="edit" Style="max-width: 35px;" Click="()=>EditEquipamento(Model.Equipamento)" />
+                </RadzenFormField>
+            </RadzenColumn>
+            <RadzenColumn Size=5>
+                <RadzenFormField Text=Recebido class="w-100">
+                    <RadzenDropDown @bind-Value="Model.FuncionarioEnt_IdFuncionario" AllowClear=true AllowFiltering=true AllowVirtualization=true TValue="long" Data="ctx.funcionarios" TextProperty="Nome" ValueProperty="IdFuncionario" Change="FuncionarioChanged" ClearSearchAfterSelection="true" />
                 </RadzenFormField>
             </RadzenColumn>
         </RadzenRow>
+
+        <RadzenFormField Text="Detalhes do Equipamento" class="w-100 mt-2 mb-2">
+            <RadzenTextArea @bind-Value="@Model.Acessorios" Rows="3" />
+        </RadzenFormField>
 
         <RadzenFormField Text="Defeito apresentado" class="w-100 mt-2 mb-2">
             <RadzenTextArea @bind-Value="@Model.DefeitoApresentado" Rows="3" />
@@ -63,12 +73,10 @@
                 <th>P. Venda</th>
                 <th>Desconto</th>
                 <th>Total</th>
-                <th>
-                    <button type="button" class="btn btn-link" @onclick="AddOrca"><i class="oi oi-plus"></i></button>
-                </th>
+                <th><button type="button" class="btn btn-link" @onclick="AddOrca"><i class="oi oi-plus"></i></button></th>
             </TableHeader>
-            <RowTemplate Context="itemsCtx">
-                <Venda_row Model="itemsCtx" OnAskDelete="AskDeleteRow" 
+            <RowTemplate Context="OrcItem">
+                <Venda_row Model="OrcItem" OnAskDelete="AskDeleteRow" 
                     OnNeedCompras="()=>ctx.compras.Include(k=>k.Mercadoria).OrderBy(k=>k.Mercadoria.Descricao).ToArray()"></Venda_row>
             </RowTemplate>
             <TableFooter>
@@ -79,28 +87,21 @@
             </TableFooter>
         </GenericTemplate>
 
-        <GenericTemplate Items="Model.Orcamentos" TItem="orcamento">
-            <TableHeader>
-                <th>Vencimento</th>
-                <th>Valor</th>
-                <th><button type="button" class="btn btn-link" @onclick="AddOrca"><i class="oi oi-plus"></i></button></th>
-            </TableHeader>
-            <RowTemplate Context="parc">
-                <Parcela Model="parc" OnDelete="DeleteParcela" OnTotalChanged="()=>StateHasChanged()"></Parcela>
-            </RowTemplate>
-            <TableFooter>
-                <tr>
-                    <td class="text-end">Total</td>
-                    <td></td>
-                </tr>
-            </TableFooter>
-        </GenericTemplate>
-
-    </EditForm>
+    </RadzenTemplateForm>
 </CascadingValue>
 
-<!-- Colocar em um lugar mais no final da página para aparecer sobre os outros componentes -->
-<RadzenDialog></RadzenDialog>
+@if (askEditEqp != null) {
+    <ModalDialog Title="Editar Equipamento" OnCancel="()=>askEditEqp=null" Size="modal-lg">
+        <ModalBody>
+            <RadzenTemplateForm TItem=equipamento Data=askEditEqp Submit=EqpSubmit id="eqpForm">
+                <ProSoft.Pages.Cadastros.Equipamento Model="askEditEqp" ctx=ctx />
+            </RadzenTemplateForm>
+        </ModalBody>
+        <ModalFooter>
+            <RadzenButton Icon="save" Text="Salvar" ButtonType="Radzen.ButtonType.Submit"  Form="eqpForm" />
+        </ModalFooter>
+    </ModalDialog>
+}
 
 @code {
     private ordemdeservico Model = new();
@@ -118,12 +119,12 @@
         }
     }
 
-    void ValidSubmit()
+    void ValidSubmit(ordemdeservico os)
     {
         if (Model.IdOrdemDeServico == 0)
-            ctx.Entry(Model).State = EntityState.Added;
+            ctx.Entry(os).State = EntityState.Added;
         else
-            ctx.Entry(Model).State = EntityState.Modified;
+            ctx.Entry(os).State = EntityState.Modified;
 
         ctx.SaveChanges();
 
@@ -137,7 +138,7 @@
         StateHasChanged();
     }
 
-    orcamento? askDeleteOrca = null;
+    orcamento askDeleteOrca = null;
     void AskDeleteRow(orcamento orca)
     {
         askDeleteOrca = orca;
@@ -151,6 +152,23 @@
         StateHasChanged();
     }
     void EquipamentoChanged() {
+        Model.Equipamento = ctx.equipamentos.Find(Model.Equipamento_IdEquipamento);
+    }
 
+    equipamento askEditEqp = null;
+    void EditEquipamento(equipamento eqp) {
+        askEditEqp = eqp ?? new();
+    }
+
+    void EqpSubmit(equipamento eqp) {
+        if (eqp.IdEquipamento == 0)
+            ctx.Entry(eqp).State = EntityState.Added;
+        else
+            ctx.Entry(eqp).State = EntityState.Modified;
+        ctx.SaveChanges();
+        askEditEqp = null;
+    }
+
+    void FuncionarioChanged() {
     }
 }

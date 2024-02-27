@@ -1,0 +1,99 @@
+@page "/Cadastros/Equipamentos"
+@using ProSoft.Data
+@using ProSoft.Services
+@using ProSoft.Components
+@using ProSoft.Pages
+
+<PageHeader Title="Equipamentos" Description="Listagem de equipamentos dos clientes, enviados para serviço">
+    <BarItems>
+        <RadzenButton Text="Equipamento" Icon="add" Click="()=>askEdit=new()" />
+    </BarItems>
+</PageHeader>
+
+<GenericTemplate Context="ctx" Items="equipamentos">
+    <TableHeader>
+        <th>Id do Equipamento</th>
+        <th>Descrição</th>
+        <th>Cliente</th>
+        <th></th>
+    </TableHeader>
+    <RowTemplate Context="eqp">
+        <td class="text-center"><a href="" @onclick="()=>askEdit = eqp" @onclick:preventDefault>@eqp.IdEquipamento.ToString("000000")</a></td>
+        <td>@eqp.Descricao</td>
+        <td>@eqp.Cliente?.Nome</td>
+        <td><a href="" @onclick="()=>AskDelete(eqp.IdEquipamento)" @onclick:preventDefault><i class="oi oi-trash"></i></a></td>
+    </RowTemplate>
+    <TableFooter>
+    </TableFooter>
+</GenericTemplate>
+
+@if (askEdit != null)
+{
+    <ModalDialog Title="Equipamento" Size="modal-fullscreen" OnCancel="()=>askEdit=null">
+        <ModalBody>
+            <Equipamento Model="askEdit" ctx=ctx></Equipamento>
+        </ModalBody>
+        <ModalFooter>
+            <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Form="formEqp"> Salvar</RadzenButton>
+        </ModalFooter>
+    </ModalDialog>
+}
+
+@if (askDelete > 0)
+{
+    <ModalConfirm OnClose="Delete">Confirma exclusão?</ModalConfirm>
+}
+
+@code {
+    Contexto ctx = new();
+    [Inject] NotificationService notificationService {get;set;}
+    equipamento askEdit = null;
+    long askDelete = 0;
+    private void AskDelete(long idFornecedor)
+    {
+        askDelete = idFornecedor;
+        if (askDelete > 0)
+        {
+            askDelete = 0;
+        }
+    }
+    private void Delete(bool confirm)
+    {
+        if (askDelete > 0 && confirm)
+        {
+            equipamento eqp = ctx.equipamentos.Find(askDelete);
+            ctx.equipamentos.Remove(eqp);
+            ctx.SaveChanges();
+            notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary="Cadastro de Equipamentos", Detail = "Equipamento excluído com sucesso", Duration = 4000 });
+            GetEquipamentos();
+        }
+        askDelete = 0;
+        StateHasChanged();
+    }
+
+    private void Submit()
+    {
+        Console.WriteLine("Submit");
+        if (askEdit == null)
+            return;
+
+        if (askEdit.IdEquipamento == 0)
+            ctx.Entry(askEdit).State = EntityState.Added;
+        else
+            ctx.Entry(askEdit).State = EntityState.Modified;
+        ctx.SaveChanges();
+        askEdit = null;
+        GetEquipamentos();
+        notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Cadastro de Equipamentos", Detail = "Alterações do equipamento foram salvas com sucesso!", Duration = 4000 });
+    }
+
+    private IReadOnlyList<equipamento> equipamentos = Array.Empty<equipamento>();
+    void GetEquipamentos()
+    {
+        equipamentos = ctx.equipamentos.ToArray();
+    }
+    protected override void OnInitialized()
+    {
+        GetEquipamentos();
+    }
+}

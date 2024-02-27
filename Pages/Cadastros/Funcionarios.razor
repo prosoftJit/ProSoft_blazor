@@ -1,4 +1,4 @@
-@page "/Funcionarios"
+@page "/Cadastros/Funcionarios"
 @using ProSoft.Data
 @using ProSoft.Services
 @using ProSoft.Components
@@ -6,7 +6,7 @@
 
 <PageHeader Title="Funcionários" Description="Colaboradores da empresa com ou sem acesso ao sistema">
     <BarItems>
-        <RadzenButton ButtonStyle="Radzen.ButtonStyle.Primary" Icon="add" Size="Radzen.ButtonSize.Medium" Text="Funcionário" Click="()=>AskEdit(null)" />
+        <RadzenButton ButtonStyle="Radzen.ButtonStyle.Primary" Icon="add" Size="Radzen.ButtonSize.Medium" Text="Funcionário" Click="()=>askEdit=new()" />
     </BarItems>
 </PageHeader>
 
@@ -18,10 +18,10 @@
         <th></th>
     </TableHeader>
     <RowTemplate Context="func">
-        <td class="text-center"><a href="" @onclick="()=>AskEdit(func.IdFuncionario)" @onclick:preventDefault>@func.IdFuncionario.ToString("000000")</a></td>
+        <td class="text-center"><a href="" @onclick="()=>askEdit=func" @onclick:preventDefault>@func.IdFuncionario.ToString("000000")</a></td>
         <td>@func.Nome</td>
         <td>@func.IsSystemUser</td>
-        <td><a href="" @onclick="()=>AskDelete(func.IdFuncionario)" @onclick:preventDefault><i class="oi oi-trash"></i></a></td>
+        <td><a href="" @onclick="()=>askDelete=func.IdFuncionario" @onclick:preventDefault><i class="oi oi-trash"></i></a></td>
     </RowTemplate>
     <TableFooter>
     </TableFooter>
@@ -31,58 +31,43 @@
 {
     <ModalDialog Title="Funcionario" Size="modal-fullscreen" OnCancel="()=>askEdit=null">
         <ModalBody>
-            <PageHeader Title="Fornecedor"></PageHeader>
-            <EditForm id="fornForm" Model="askEdit" OnValidSubmit="Submit">
+            <PageHeader Title="Funcionário"></PageHeader>
+            <RadzenTemplateForm id="fornForm" TItem="funcionario" Data="askEdit" Submit="Submit">
                 <Funcionario Model="askEdit" />
-            </EditForm>
+            </RadzenTemplateForm>
         </ModalBody>
         <ModalFooter>
-            <button class="btn btn-success" @onclick="()=>Submit()">Salvar</button>
+            <button class="btn btn-success" @onclick="()=>Submit(askEdit)">Salvar</button>
         </ModalFooter>
     </ModalDialog>
 }
 
-@if (askDelete != null)
+@if (askDelete > 0)
 {
-    <ModalConfirm OnClose="Delete">Confirma exclusão do fornecedor @askDelete?.Nome?</ModalConfirm>
+    <ModalConfirm OnClose="Delete">Confirma exclusão do fornecedor?</ModalConfirm>
 }
 
 @code {
     Contexto ctx = new();
-    [Inject] NotificationService? notificationService {get;set;}
-    funcionario? askEdit = null;
-    funcionario? askDelete = null;
-    private void AskDelete(long idFuncionario)
-    {
-        askDelete = ctx.funcionarios.Find(idFuncionario);
-        if (askDelete != null)
-        {
-            askDelete = null;
-            notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Error, Summary="Cadastro de Fornecedores", Detail = "Não é possível excluir o funcionário", Duration = 4000 });
-            return;
-        }
-    }
+    [Inject] NotificationService notificationService {get;set;}
+    funcionario askEdit = null;
+    long askDelete = 0;
+
     private void Delete(bool confirm)
     {
-        if (askDelete != null && confirm)
+        funcionario f = ctx.funcionarios.Find(askDelete);
+        if (f != null && confirm)
         {
-            ctx.funcionarios.Remove(askDelete);
+            ctx.funcionarios.Remove(f);
             ctx.SaveChanges();
             notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary="Cadastro de Fornecedores", Detail = "Fornecedor excluído com sucesso", Duration = 4000 });
             GetFuncionarios();
         }
-        askDelete = null;
+        askDelete = 0;
         StateHasChanged();
     }
-    void AskEdit(long? idFuncionario)
-    {
-        if (idFuncionario == null)
-            askEdit = new();
-        else
-            askEdit = ctx.funcionarios.Find(idFuncionario);
-    }
 
-    private void Submit()
+    private void Submit(funcionario f)
     {
         if (askEdit == null)
             return;
@@ -105,5 +90,6 @@
     protected override void OnInitialized()
     {
         GetFuncionarios();
+        base.OnInitialized();
     }
 }

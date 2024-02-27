@@ -1,0 +1,102 @@
+@page "/Cadastros/Fornecedores"
+@using ProSoft.Data
+@using ProSoft.Services
+@using ProSoft.Components
+@using ProSoft.Pages
+
+<PageHeader Title="Fornecedores">
+    <BarItems>
+        <RadzenButton Icon="add" Text="Fornecedor" Click="()=>askEdit=new()" />
+    </BarItems>
+</PageHeader>
+
+<GenericTemplate Context="ctx" Items="fornecedores">
+    <TableHeader>
+        <th>Id do Fornecedor</th>
+        <th>Nome</th>
+        <th>CNPJ</th>
+        <th></th>
+    </TableHeader>
+    <RowTemplate Context="forn">
+        <td class="text-center"><a href="" @onclick="()=>askEdit=forn" @onclick:preventDefault>@forn.IdFornecedor.ToString("000000")</a></td>
+        <td>@forn.Nome</td>
+        <td>@forn.CNPJ</td>
+        <td><a href="" @onclick="()=>AskDelete(forn.IdFornecedor)" @onclick:preventDefault><i class="oi oi-trash"></i></a></td>
+    </RowTemplate>
+    <TableFooter>
+    </TableFooter>
+</GenericTemplate>
+
+@if (askEdit != null)
+{
+    <ModalDialog Title="Fornecedor" Size="modal-fullscreen" OnCancel="()=>askEdit=null">
+        <ModalBody>
+            <PageHeader Title="Fornecedor"></PageHeader>
+            <EditForm id="fornForm" Model="askEdit" OnValidSubmit="Submit">
+                <Fornecedor Model="askEdit"></Fornecedor>
+            </EditForm>
+        </ModalBody>
+        <ModalFooter>
+            <button class="btn btn-success" @onclick="()=>Submit()">Salvar</button>
+        </ModalFooter>
+    </ModalDialog>
+}
+
+@if (askDelete != null)
+{
+    <ModalConfirm OnClose="Delete">Confirma exclusão do fornecedor @askDelete?.Nome?</ModalConfirm>
+}
+
+@code {
+    Contexto ctx = new();
+    [Inject] NotificationService notificationService {get;set;}
+    fornecedor askEdit = null;
+    fornecedor askDelete = null;
+    private void AskDelete(long idFornecedor)
+    {
+        askDelete = ctx.fornecedores.Find(idFornecedor);
+        if (askDelete != null && ctx.notascompra.Where(k => k.Fornecedor_IdFornecedor == askDelete.IdFornecedor).Count() > 0)
+        {
+            askDelete = null;
+            notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Error, Summary="Cadastro de Fornecedores", Detail = "Não é possível excluir o fornecedor", Duration = 4000 });
+            return;
+        }
+    }
+    private void Delete(bool confirm)
+    {
+        if (askDelete != null && confirm)
+        {
+            ctx.fornecedores.Remove(askDelete);
+            ctx.SaveChanges();
+            notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary="Cadastro de Fornecedores", Detail = "Fornecedor excluído com sucesso", Duration = 4000 });
+            GetFornecedores();
+        }
+        askDelete = null;
+        StateHasChanged();
+    }
+
+    private void Submit()
+    {
+        if (askEdit == null)
+            return;
+
+        if (askEdit.IdFornecedor == 0)
+            ctx.Entry(askEdit).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+        else
+            ctx.Entry(askEdit).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+        ctx.SaveChanges();
+        askEdit = null;
+        GetFornecedores();
+        notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Cadastro de Fornecedores", Detail = "Alterações do fornecedor foram salvas com sucesso!", Duration = 4000 });
+    }
+
+    private IReadOnlyList<fornecedor> fornecedores = Array.Empty<fornecedor>();
+    void GetFornecedores()
+    {
+        fornecedores = ctx.fornecedores.ToArray();
+    }
+    protected override void OnInitialized()
+    {
+        GetFornecedores();
+    }
+}

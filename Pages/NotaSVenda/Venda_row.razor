@@ -33,9 +33,9 @@
 
 @code {
     [Parameter] public venda Model { get; set; } = new();
-    [Parameter] public Action<float>? TotalChanged { get; set; } = null;
-    [Parameter] public Action<venda>? OnAskDelete { get; set; } = null;
-    [Parameter] public Func<compra[]>? OnNeedCompras { get; set; } = null;
+    [Parameter] public Action<float> TotalChanged { get; set; } = null;
+    [Parameter] public Action<venda> OnAskDelete { get; set; } = null;
+    [Parameter] public Func<compra[]> OnNeedCompras { get; set; } = null;
     [CascadingParameter(Name="ctx")] public Contexto ctx {get;set;} = default!;
 
     float _total = 0;

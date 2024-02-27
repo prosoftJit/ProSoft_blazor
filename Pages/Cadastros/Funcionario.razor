@@ -1,4 +1,4 @@
-@page "/Funcionario/{idFuncionario:long}"
+@page "/Cadastros/Funcionario/{idFuncionario:long}"
 @using System.ComponentModel.DataAnnotations
 @using ProSoft.Data
 
@@ -7,7 +7,7 @@
 
 <RadzenRow class="mb-3">
     <RadzenColumn Size="3">
-        <RadzenFormField Text="Id do Fornecedor" class="w-100">
+        <RadzenFormField Text="Id do Funcionário" class="w-100">
             <RadzenNumeric Value="@Model.IdFuncionario" Format="000000" ShowUpDown=false TextAlign="TextAlign.Center" Disabled=true></RadzenNumeric>
         </RadzenFormField>
     </RadzenColumn>
@@ -21,16 +21,16 @@
 
 <RadzenRow class="mb-3">
     <RadzenColumn Size="4">
-        <RadzenCheckBox Value="@Model.IsSystemUser" />
+        <RadzenCheckBox Value="@Model.IsSystemUser" Name="IsSistemUser" />
+        <RadzenLabel Text="System User?" Component="IsSistemUser" />
     </RadzenColumn>
     <RadzenColumn Size="4">
-        <RadzenFormField Text="CNPJ" class="w-100">
-            <RadzenPassword Mask="**.***.***/****-**" CharacterPattern="[0-9]" @bind-Value="Model.Senha" />
+        <RadzenFormField Text="Senha" class="w-100">
+            <RadzenPassword @bind-Value="Model.Senha" />
         </RadzenFormField>
     </RadzenColumn>
 </RadzenRow>
 
 @code {
     [Parameter] public funcionario Model { get; set; } = new();
-    protected override void OnInitialized() => Model ??= new();
 }
