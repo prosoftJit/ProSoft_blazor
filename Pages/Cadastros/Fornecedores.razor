@@ -2,7 +2,7 @@
 @using ProSoft.Data
 @using ProSoft.Services
 @using ProSoft.Components
-@using ProSoft.Pages
+@using ProSoft.Pages.Cadastros
 
 <PageHeader Title="Fornecedores">
     <BarItems>
@@ -33,7 +33,7 @@
         <ModalBody>
             <PageHeader Title="Fornecedor"></PageHeader>
             <EditForm id="fornForm" Model="askEdit" OnValidSubmit="Submit">
-                <Fornecedor Model="askEdit"></Fornecedor>
+                <Fornecedor Model="askEdit" />
             </EditForm>
         </ModalBody>
         <ModalFooter>
@@ -49,9 +49,9 @@
 
 @code {
     Contexto ctx = new();
-    [Inject] NotificationService notificationService {get;set;}
-    fornecedor askEdit = null;
-    fornecedor askDelete = null;
+    [Inject] NotificationService notificationService {get;set;} = default!;
+    fornecedor? askEdit = null;
+    fornecedor? askDelete = null;
     private void AskDelete(long idFornecedor)
     {
         askDelete = ctx.fornecedores.Find(idFornecedor);

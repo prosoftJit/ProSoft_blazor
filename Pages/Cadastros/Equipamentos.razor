@@ -45,9 +45,9 @@
 }
 
 @code {
-    Contexto ctx = new();
-    [Inject] NotificationService notificationService {get;set;}
-    equipamento askEdit = null;
+    Contexto? ctx = new();
+    [Inject] NotificationService? notificationService {get;set;}
+    equipamento? askEdit = null;
     long askDelete = 0;
     private void AskDelete(long idFornecedor)
     {
@@ -61,9 +61,9 @@
     {
         if (askDelete > 0 && confirm)
         {
-            equipamento eqp = ctx.equipamentos.Find(askDelete);
-            ctx.equipamentos.Remove(eqp);
-            ctx.SaveChanges();
+            equipamento? eqp = ctx?.equipamentos.Find(askDelete);
+            ctx?.equipamentos.Remove(eqp!);
+            ctx?.SaveChanges();
             notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary="Cadastro de Equipamentos", Detail = "Equipamento excluído com sucesso", Duration = 4000 });
             GetEquipamentos();
         }
@@ -78,9 +78,9 @@
             return;
 
         if (askEdit.IdEquipamento == 0)
-            ctx.Entry(askEdit).State = EntityState.Added;
+            ctx!.Entry(askEdit).State = EntityState.Added;
         else
-            ctx.Entry(askEdit).State = EntityState.Modified;
+            ctx!.Entry(askEdit).State = EntityState.Modified;
         ctx.SaveChanges();
         askEdit = null;
         GetEquipamentos();
@@ -90,7 +90,7 @@
     private IReadOnlyList<equipamento> equipamentos = Array.Empty<equipamento>();
     void GetEquipamentos()
     {
-        equipamentos = ctx.equipamentos.ToArray();
+        equipamentos = ctx!.equipamentos.ToArray();
     }
     protected override void OnInitialized()
     {

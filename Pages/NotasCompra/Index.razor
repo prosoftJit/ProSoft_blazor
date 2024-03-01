@@ -30,14 +30,14 @@
             <td>@nfc.Total.ToString("N2")</td>
         </RowTemplate>
         <ItemEditForm Context=nc>
-            <Form Model=nc />
+            <Form Model=nc Contexto=ctx />
         </ItemEditForm>        
     </GenericTemplate2>
 }
 
 @code {
     mercadoria[] Mercadorias = Array.Empty<mercadoria>();
-    notacompra[] notascompra;
+    notacompra[]? notascompra;
     Contexto ctx = new Contexto();
 
     protected override async Task OnInitializedAsync()

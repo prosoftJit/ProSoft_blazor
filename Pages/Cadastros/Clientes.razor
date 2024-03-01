@@ -32,7 +32,7 @@
 {
     <ModalDialog Title="Cliente" Size="modal-fullscreen" OnCancel="_=>askEdit=null">
         <ModalBody>
-            <Cliente idCliente="askEdit.idCliente" />
+            <ProSoft.Pages.Cadastros.Cliente idCliente="askEdit.idCliente" />
         </ModalBody>
         <ModalFooter>
             <RadzenButton Icon=save form=cliForm ButtonType=ButtonType.Submit Text=Salvar />
@@ -41,11 +41,11 @@
 }
 
 @code {
-    cliente askEdit=null;
+    cliente? askEdit=null;
 
     Contexto ctx = new();
 
-    cliente askDelete = null;
+    cliente? askDelete = null;
 
     private void ClientSave()
     {
@@ -85,7 +85,7 @@
         StateHasChanged();
     }
 
-    private cliente[] clientes;
+    private cliente[]? clientes;
 
     protected override async Task OnInitializedAsync()
     {

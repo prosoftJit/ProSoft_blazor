@@ -22,6 +22,10 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/ProSoft_blazor/Components/Dropdown.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xEcm9wZG93bi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/ProSoft_blazor/Components/DropdownHamburguer.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xEcm9wZG93bkhhbWJ1cmd1ZXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
@@ -72,10 +76,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/ProSoft_blazor/Pages/Cadastros/Mercadorias.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FkYXN0cm9zXE1lcmNhZG9yaWFzLnJhem9y
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/ProSoft_blazor/Pages/Endereco.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRW5kZXJlY28ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/ProSoft_blazor/Pages/FetchData.razor]
@@ -148,6 +148,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/ProSoft_blazor/Pages/OrdemServico/OS_row.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JkZW1TZXJ2aWNvXE9TX3Jvdy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/ProSoft_blazor/Shared/Endereco.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEVuZGVyZWNvLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/ProSoft_blazor/Shared/LoginDisplay.razor]

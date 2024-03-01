@@ -54,22 +54,22 @@
 }
 
 @code {
-    [Parameter] public RenderFragment TableHeader { get; set; }
-    [Parameter] public RenderFragment<TItem> RowTemplate { get; set; }
-    [Parameter] public RenderFragment TableFooter { get; set; }
-    [Parameter] public IEnumerable<TItem> Items { get; set; }
-    [Parameter] public string HeaderTitle {get;set;} = null;
-    [Parameter] public string HeaderDescription {get;set;} = null;
-    [Parameter] public RenderFragment HeaderBarItems {get;set;} = null;
-    [Parameter] public RenderFragment<TItem> ItemEditForm {get;set;} = null;
+    [Parameter] public RenderFragment? TableHeader { get; set; }
+    [Parameter] public RenderFragment<TItem>? RowTemplate { get; set; }
+    [Parameter] public RenderFragment? TableFooter { get; set; }
+    [Parameter] public IEnumerable<TItem>? Items { get; set; }
+    [Parameter] public string? HeaderTitle {get;set;} = null;
+    [Parameter] public string? HeaderDescription {get;set;} = null;
+    [Parameter] public RenderFragment? HeaderBarItems {get;set;} = null;
+    [Parameter] public RenderFragment<TItem>? ItemEditForm {get;set;} = null;
     [Parameter] public string ItemEditFormId {get;set;} = "editForm";
-    [Parameter] public Action<TItem> OnDelete {get;set;} = null;
-    [Parameter, EditorRequired] public Contexto Contexto {get;set;}
+    [Parameter] public Action<TItem>? OnDelete {get;set;} = null;
+    [Parameter, EditorRequired] public Contexto? Contexto {get;set;}
 
     [Inject] NotificationService notificationService { get; set; } = default!;
 
-    TItem askEdit = null;
-    TItem askDelete = null;
+    TItem? askEdit = null;
+    TItem? askDelete = null;
 
     void Edit(TItem item) {
         askEdit = item;
@@ -78,7 +78,7 @@
     void OnConfirmClose(bool confirmation) {
         if (confirmation) {
             try {
-                OnDelete?.Invoke(askDelete);
+                OnDelete?.Invoke(askDelete!);
                 notificationService.Notify(NotificationSeverity.Success, "Orçamento", "Orçamento excluído com sucesso!");
             } catch {
                 notificationService.Notify(NotificationSeverity.Error, "Orçamento", "Erro excluindo ítem!");

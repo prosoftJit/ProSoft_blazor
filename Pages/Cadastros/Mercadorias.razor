@@ -10,6 +10,7 @@
     TItem=mercadoria 
     HeaderTitle="Mercadorias" 
     HeaderDescription="Listagem de mercadorias cadastradas no sistema" 
+    Contexto="ctx"
     >
     <TableHeader>
         <th>Id</th>
@@ -25,7 +26,7 @@
 </GenericTemplate2>
 
 @code {
-    mercadoria askEdit = null;
+    mercadoria? askEdit = null;
     [Inject] Radzen.NotificationService notificationService {get;set;} = default!;
     [Inject] Radzen.DialogService dialogService {get;set;} = default!;
 

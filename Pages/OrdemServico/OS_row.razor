@@ -25,7 +25,7 @@
 @if (askEditCompra != null) {
     <ModalDialog Size="modal-fullscreen" Title="Editar Compra" OnCancel="()=>askEditCompra=null">
         <ModalBody>
-            <ProSoft.Pages.NotasCompra.Form Model=askEditCompra />
+            <ProSoft.Pages.NotasCompra.Form Model=askEditCompra Contexto="Contexto" />
         </ModalBody>
         <ModalFooter>
         </ModalFooter>
@@ -34,10 +34,10 @@
 
 @code {
     [Parameter] public itemdoorcamento Model { get; set; } = new();
-    [Parameter] public Action<float> TotalChanged { get; set; } = null;
-    [Parameter] public Action<itemdoorcamento> OnAskDelete { get; set; } = null;
-    [Parameter] public Func<compra[]> OnNeedCompras { get; set; } = null;
-    [Parameter] public Contexto Contexto {get;set;} = null;
+    [Parameter] public Action<float>? TotalChanged { get; set; } = null;
+    [Parameter] public Action<itemdoorcamento>? OnAskDelete { get; set; } = null;
+    [Parameter] public Func<compra[]>? OnNeedCompras { get; set; } = null;
+    [Parameter] public Contexto Contexto {get;set;} = default!;
 
     float _total = 0;
     float Total()
@@ -55,7 +55,7 @@
         StateHasChanged();
     }
 
-    notacompra askEditCompra = null;
+    notacompra? askEditCompra = null;
     void CompraEdit() {
         askEditCompra = Model.Compra?.NotaCompra ?? new();
     }

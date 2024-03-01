@@ -1,0 +1,40 @@
+
+@namespace ProSoft.Components
+
+@typeparam TItem where TItem: class, new()
+
+<RadzenStack Orientation=Orientation.Horizontal Gap=0>
+    <RadzenDropDown 
+        AllowClear="true" 
+        TValue="long" 
+        @bind-Value=Value 
+        AllowVirtualization="true"
+        AllowFiltering="true" 
+        Data=GetItems?.Invoke() 
+        TextProperty=@TextProperty 
+        ValueProperty=@ValueProperty 
+        Change="()=>OnChange?.Invoke()"
+        />
+    <RadzenButton Style="max-width: 35px;" Icon=edit Click="()=>askEdit=Value" />
+</RadzenStack>
+
+@if (askEdit > 0) {
+    <ProSoft.Components.ModalDialog Title="Modal" OnCancel="()=>askEdit = 0">
+        <ModalBody>
+            @(OnEdit)
+        </ModalBody>
+        <ModalFooter>
+        </ModalFooter>
+    </ProSoft.Components.ModalDialog>
+}
+
+@code {
+    [Parameter] public long Value {get;set;} = 0;
+    [Parameter] public Func<IEnumerable<TItem>>? GetItems {get;set;} = null;
+    [Parameter] public string TextProperty {get;set;} = "Text";
+    [Parameter] public string ValueProperty {get;set;} = "Value";
+    [Parameter] public Action? OnChange {get;set;} = null;
+    [Parameter] public RenderFragment<TItem>? OnEdit {get;set;} = null;
+
+    long askEdit = 0;
+}

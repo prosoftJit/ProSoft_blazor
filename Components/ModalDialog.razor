@@ -30,9 +30,9 @@
 
     [Parameter] public EventCallback<string> OnCancel { get; set; }
 
-    [Parameter] public RenderFragment ModalBody { get; set; }
+    [Parameter] public RenderFragment? ModalBody { get; set; }
 
-    [Parameter] public RenderFragment ModalFooter { get; set; }
+    [Parameter] public RenderFragment? ModalFooter { get; set; }
 
     [Parameter] public bool HideCloseButton { get; set; } = false;
 }

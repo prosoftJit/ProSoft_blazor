@@ -3,7 +3,9 @@
 @using Microsoft.EntityFrameworkCore
 @using ProSoft.Components
 
-<GenericTemplate2 TItem=orcamento Items="orcamentos" HeaderTitle=Orçamentos ItemEditFormId=orcForm OnDelete=Delete>
+<GenericTemplate2 TItem=orcamento Items="orcamentos" HeaderTitle=Orçamentos ItemEditFormId=orcForm OnDelete=Delete
+    Contexto="ctx"
+    >
     <TableHeader>
         <th>Id</th>
         <th>Data</th>

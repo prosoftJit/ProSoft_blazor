@@ -9,7 +9,7 @@
     <RadzenTemplateForm TItem="ordemdeservico" Data="Model" Submit="ValidSubmit" id="editForm">
 
         <DataAnnotationsValidator />
-        <ValidationSummary Model="Model" />
+        <ValidationSummary />
 
         <RadzenRow>
             <RadzenColumn Size="2" class="w-100">
@@ -76,8 +76,11 @@
                 <th><button type="button" class="btn btn-link" @onclick="AddOrca"><i class="oi oi-plus"></i></button></th>
             </TableHeader>
             <RowTemplate Context="OrcItem">
-                <Venda_row Model="OrcItem" OnAskDelete="AskDeleteRow" 
-                    OnNeedCompras="()=>ctx.compras.Include(k=>k.Mercadoria).OrderBy(k=>k.Mercadoria.Descricao).ToArray()"></Venda_row>
+                <OrcamentoItem Model="OrcItem" OnAskDelete="AskDeleteRow" 
+                    OnNeedCompras="()=>ctx.compras.Include(k=>k.Mercadoria).OrderBy(k=>k.Mercadoria.Descricao).ToArray()" 
+                    TotalChanged="TotalChanged"
+                    Contexto=ctx
+                    />
             </RowTemplate>
             <TableFooter>
                 <tr>
@@ -138,11 +141,14 @@
         StateHasChanged();
     }
 
-    orcamento askDeleteOrca = null;
-    void AskDeleteRow(orcamento orca)
+    orcamento? askDeleteOrca = null;
+    void AskDeleteRow(itemdoorcamento orca)
     {
-        askDeleteOrca = orca;
+        //askDeleteOrca = orca;
         StateHasChanged();
+    }
+    void TotalChanged(float total) {
+
     }
     void DeleteRow(bool confirm)
     {
@@ -155,7 +161,7 @@
         Model.Equipamento = ctx.equipamentos.Find(Model.Equipamento_IdEquipamento);
     }
 
-    equipamento askEditEqp = null;
+    equipamento? askEditEqp = null;
     void EditEquipamento(equipamento eqp) {
         askEditEqp = eqp ?? new();
     }

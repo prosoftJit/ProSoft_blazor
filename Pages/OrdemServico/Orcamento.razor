@@ -71,7 +71,7 @@
     [Parameter] public orcamento Model { get; set; } = new();
     [Parameter, EditorRequired] public Contexto ctx {get;set;} = new(); // new for designtime purposes
 
-    cliente askEditCliente = null;
+    cliente? askEditCliente = null;
 
     protected override void OnInitialized() {
         if (Model.Items.Count == 0)

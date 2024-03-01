@@ -59,15 +59,15 @@ namespace ProSoft.Data
         public DbSet<pagamento> pagamentos { get; set; }
     }
 
-    public class iendereco
+    public interface iendereco
     {
-        public string Endereco_logradouro;
-        public int Endereco_numero;
-        public string Endereco_complemento;
-        public string Endereco_bairro;
-        public string Endereco_cidade;
-        public string Endereco_cep;
-        public string Endereco_uf;
+        string Endereco_logradouro {get;set;}
+        int Endereco_numero {get;set;}
+        string Endereco_complemento {get;set;}
+        string Endereco_bairro {get;set;}
+        string Endereco_cidade {get;set;}
+        string Endereco_cep {get;set;}
+        string Endereco_uf {get;set;}
     }
 
     public class cliente: iendereco

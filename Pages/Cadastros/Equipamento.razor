@@ -1,7 +1,8 @@
 @page "/Cadastros/Equipamento"
 @using System.ComponentModel.DataAnnotations
 @using ProSoft.Data
-@using ProSoft.Componentes
+@using ProSoft.Components
+@using ProSoft.Pages.Cadastros
 
 @inject DialogService dialogService
 
@@ -19,7 +20,7 @@
             <RadzenFormField Text="Cliente" class="w-100">
 
                 <RadzenDropDown AllowClear="true" TValue="long" @bind-Value="Model.Cliente_IdCliente" AllowVirtualization="true"
-                AllowFiltering="true" Data="ctx.clientes" TextProperty="Nome" ValueProperty="idCliente" Name="Cliente" />
+                AllowFiltering="true" Data="ctx!.clientes" TextProperty="Nome" ValueProperty="idCliente" Name="Cliente" />
                 <RadzenButton Icon="edit" Style="max-width: 35px;" Click="EditCliente" IsBusy="false" />
                 <RadzenRequiredValidator Component="Cliente" Text="É necessário informar o cliente" />
             
@@ -53,23 +54,23 @@
 
 @code {
     [Parameter] public equipamento Model { get; set; } = new();
-    [Parameter] public Contexto ctx {get;set;} = null;
+    [Parameter, EditorRequired] public Contexto? ctx {get;set;} = default!;
 
 
     cliente cli = new();
 
-    cliente askEditCli = null;
+    cliente? askEditCli = null;
 
     void EqpSubmit(equipamento eqp) {
         if (eqp.IdEquipamento == 0)
-            ctx.Entry(eqp).State = EntityState.Added;
+            ctx!.Entry(eqp).State = EntityState.Added;
         else
-            ctx.Entry(eqp).State = EntityState.Modified;
+            ctx!.Entry(eqp).State = EntityState.Modified;
         ctx.SaveChanges();
     }
 
     async void EditCliente() {
-        cliente c = ctx.clientes.Find(Model.Cliente_IdCliente) ?? new();
+        cliente c = ctx!.clientes.Find(Model.Cliente_IdCliente) ?? new();
 
         await dialogService.OpenAsync<Cliente>(
             $"Cliente ID: {c.idCliente.ToString("000000")}",

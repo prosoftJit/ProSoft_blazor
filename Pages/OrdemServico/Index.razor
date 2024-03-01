@@ -45,7 +45,7 @@
 }
 
 @code {
-    ordemdeservico askEdit = null;
+    ordemdeservico? askEdit = null;
     long askDelete = 0;
     [Inject] NotificationService notificationService { get; set; } = default!;
     ordemdeservico[] ordens = Array.Empty<ordemdeservico>();
@@ -53,7 +53,7 @@
     void Delete()
     {
         if (askDelete > 0) {
-            ordemdeservico os = ctx.ordensdeservico.Find(askDelete);
+            ordemdeservico os = ctx.ordensdeservico.Find(askDelete)!;
             ctx.ordensdeservico.Remove(os);
             ctx.SaveChanges();
             LoadOrdens();
@@ -64,7 +64,7 @@
         askEdit = new();
     }
 
-    ordemdeservico[] ordensDeServico;
+    ordemdeservico[]? ordensDeServico;
     Contexto ctx = new Contexto();
 
     protected override async Task OnInitializedAsync()

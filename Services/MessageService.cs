@@ -7,7 +7,7 @@ namespace ProSoft.Services
 {
     public class MessageService
     {
-        public event Action<string, ToastLevel> OnShow;
+        public event Action<string, ToastLevel>? OnShow;
 
         public void ShowToast(string message, ToastLevel level)
         {

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProSoft")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b8c150a2491d3ab3e0fb91dcea32baae590489ba")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3d756cb8aa1fce55aeac291175b4b9be8086d526")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProSoft")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProSoft")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -2,26 +2,30 @@
 @using ProSoft.Data
 @using ProSoft.Components
 @using Microsoft.EntityFrameworkCore
+@using ProSoft.Pages.Cadastros
 
 <td width="10%"><RadzenNumeric ShowUpDown=false TextAlign="TextAlign.Center" TValue="float" @bind-Value="Model!.Quantidade" Format="N2" Change="()=>TotalChanged?.Invoke()" /></td>
 <td width="10%"><RadzenTextBox value="@Model.Mercadoria?.Unidade" Disabled=true /></td>
 <td>
-    <RadzenStack Orientation=Orientation.Horizontal Gap=0>
-        <RadzenDropDown AllowClear="true" class="form-control" TValue="long" @bind-Value=Model.Mercadoria_IdMercadoria AllowVirtualization="true"
-            AllowFiltering="true" Data=GetMercadorias?.Invoke() TextProperty="Descricao" ValueProperty="IdMercadoria" Change="()=>MercadoriaChanged?.Invoke()" />
-        <RadzenButton Style="max-width: 35px;" Icon=edit Click=EditMercadoria />
-    </RadzenStack>
+    <Dropdown 
+        TItem="mercadoria" 
+        GetItems="()=>Contexto.mercadorias.OrderBy(k=>k.Descricao)" 
+        TextProperty="Descricao" ValueProperty="IdMercadoria" 
+        OnChange="()=>Model.Mercadoria = Contexto.mercadorias.FirstOrDefault(k=>k.IdMercadoria == Model.Mercadoria_IdMercadoria)"
+        >
+        <OnEdit Context=merc>
+            <Mercadoria Model="merc" Contexto="Contexto" />
+        </OnEdit>
+    </Dropdown>
 </td>
 <td width="10%"><RadzenNumeric ShowUpDown=false TValue=float @bind-Value="Model.Custo" Format="N2" TextAlign=TextAlign.End Change="()=>TotalChanged?.Invoke()" /></td>
 <td width="10%"><RadzenNumeric ShowUpDown=false TValue=float value="@Model.Total" Format="N2" TextAlign="TextAlign.End" Disabled=true /></td>
 <td width="10%"><RadzenNumeric ShowUpDown=false @bind-Value="Model.Venda" Format="N2" TextAlign="TextAlign.End" /></td>
 
-<td width="1%"><button class="btn btn-link d-print-none" type="button" @onclick="()=>OnDelete?.Invoke(Model)"><i class="oi oi-trash"></i></button></td>
-
 @if (askEditMercadoria != null) {
     <ModalDialog Title="Mercadoria" OnCancel="()=>askEditMercadoria=null" Size="modal-xl">
         <ModalBody>
-            <Mercadoria Model=askEditMercadoria />
+            <Mercadoria Model=askEditMercadoria Contexto="Contexto" />
         </ModalBody>
         <ModalFooter>
             <RadzenButton Icon=save Text=Salvar Click=SaveMercadoria />
@@ -31,13 +35,13 @@
 
 @code {
     [Parameter, EditorRequired] public compra Model { get; set; } = default!;
-    [Parameter] public Func<mercadoria[]> GetMercadorias { get;set; } = null;
-    [Parameter] public Action TotalChanged { get; set; } = null;
-    [Parameter] public Action MercadoriaChanged { get; set; } = null;
-    [Parameter] public Action<compra> OnDelete { get; set; } = null;
-    [Inject] NotificationService notificationService {get;set;} = default!;
+    [Parameter] public Func<mercadoria[]>? GetMercadorias { get;set; } = null;
+    [Parameter] public Action? TotalChanged { get; set; } = null;
+    [Parameter] public Action? MercadoriaChanged { get; set; } = null;
+    [Inject] NotificationService? notificationService {get;set;} = default!;
+    [Parameter, EditorRequired] public Contexto Contexto {get;set;} = default!;
 
-    mercadoria askEditMercadoria = null;
+    mercadoria? askEditMercadoria = null;
     void EditMercadoria() {
         askEditMercadoria = Model.Mercadoria ?? new();
     }

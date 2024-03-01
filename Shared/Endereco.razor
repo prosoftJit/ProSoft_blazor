@@ -1,0 +1,52 @@
+@page "/Pages/Endereco"
+
+@using System.ComponentModel.DataAnnotations
+@using ProSoft.Data
+
+<RadzenRow class="mb-3">
+    <RadzenColumn Size="10">
+        <RadzenFormField Text="Logradouro" class="w-100">
+            <RadzenTextBox @bind-Value="endereco.Endereco_logradouro" AutoComplete="false"></RadzenTextBox>
+        </RadzenFormField>
+    </RadzenColumn>
+    <RadzenColumn Size="2">
+        <RadzenFormField Text="Número" class="w-100">
+            <RadzenNumeric @bind-Value="endereco.Endereco_numero" ShowUpDown="false" AutoCompleteType="Radzen.Blazor.AutoCompleteType.Off" TextAlign="Radzen.TextAlign.Center" />
+        </RadzenFormField>
+    </RadzenColumn>
+</RadzenRow>
+
+<RadzenRow class="mb-3">
+    <RadzenColumn Size="6">
+        <RadzenFormField Text="Complemento" class="w-100">
+            <RadzenTextBox @bind-Value="endereco.Endereco_complemento" AutoComplete="false"></RadzenTextBox>
+        </RadzenFormField>
+    </RadzenColumn>
+    <RadzenColumn Size="6">
+        <RadzenFormField Text="Bairro" class="w-100">
+            <RadzenTextBox @bind-Value="endereco.Endereco_bairro" AutoComplete="false"></RadzenTextBox>
+        </RadzenFormField>
+    </RadzenColumn>
+</RadzenRow>
+
+<RadzenRow class="mb-3">
+    <RadzenColumn Size="2">
+        <RadzenFormField Text="CEP" class="w-100">
+            <RadzenMask Mask="**-***.***" CharacterPattern="[0-9]" @bind-Value="endereco.Endereco_cep" AutoComplete="false" />
+        </RadzenFormField>
+    </RadzenColumn>
+    <RadzenColumn Size="8">
+        <RadzenFormField Text="Cidade" class="w-100">
+            <RadzenTextBox @bind-Value="endereco.Endereco_cidade" AutoComplete="false" />
+        </RadzenFormField>
+    </RadzenColumn>
+    <RadzenColumn Size="2">
+        <RadzenFormField Text="UF" class="w-100">
+            <RadzenMask Mask="**" CharacterPattern="[A-Z]+" @bind-Value="endereco.Endereco_uf" MaxLength="2" AutoComplete="false" />
+        </RadzenFormField>
+    </RadzenColumn>
+</RadzenRow>
+
+@code {
+    [Parameter] public iendereco endereco { get; set; } = default!;
+}

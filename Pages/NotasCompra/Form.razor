@@ -5,11 +5,10 @@
 @using ProSoft.Components
 @using Microsoft.EntityFrameworkCore
 
-<EditForm id="formId" EditContext="@editContext" OnValidSubmit="Submit">
-
+<RadzenTemplateForm Data=Model TItem=notacompra id=formId Submit=Submit>
     <PageHeader Title="Compras" Description="Nota Fiscal de Compras">
         <BarItems>
-            <RadzenButton Icon="save" Click="Submit"><RadzenIcon Icon="save" /> Salvar</RadzenButton>
+            <RadzenButton Icon="save" Click="()=>Submit(Model)"><RadzenIcon Icon="save" /> Salvar</RadzenButton>
             <RadzenButton Icon="add" Click="()=>AddRow()">Novo Item</RadzenButton>
         </BarItems>
     </PageHeader>
@@ -46,7 +45,7 @@
         </RadzenColumn>
     </RadzenRow>
 
-    <GenericTemplate Items=Model.Items Context=Contexto>
+    <GenericTemplate TItem=compra Items=Model.Items Context=Contexto OnAdd=AddRow OnDelete=DeleteRow>
         <TableHeader>
             <th>Qt.</th>
             <th>Un</th>
@@ -57,7 +56,11 @@
         </TableHeader>
         <RowTemplate Context=c>
             <Row GetMercadorias="()=>Contexto.mercadorias.ToArray()" 
-                Model="c" OnDelete="(c)=>{rowToDelete=c;StateHasChanged();}" MercadoriaChanged='()=>MercadoriaChanged(c)' TotalChanged="()=>StateHasChanged()" />
+                Model="c" 
+                MercadoriaChanged='()=>MercadoriaChanged(c)' 
+                TotalChanged="()=>StateHasChanged()" 
+                Contexto="Contexto"
+                />
         </RowTemplate>
         <TableFooter>
             <td colspan="4" class="text-end">Total</td>
@@ -66,17 +69,12 @@
         </TableFooter>
     </GenericTemplate>
 
-</EditForm>
-
-@if (rowToDelete != null)
-{
-    <ModalConfirm Title="Excluir" Message="Confirma exclusão da linha?" OnClose="DeleteRow"></ModalConfirm>
-}
+</RadzenTemplateForm>
 
 @code {
     [Parameter] public notacompra Model{ get; set; } = new();
     [Inject] public NotificationService notificationService {get;set;} = default!;
-    [Parameter, EditorRequired] public Contexto Contexto {get;set;}
+    [Parameter, EditorRequired] public Contexto Contexto {get;set;} = default!;
 
     void AddRow()
     {
@@ -102,7 +100,7 @@
         } *@
     }
 
-    void Submit()
+    void Submit(notacompra nc)
     {
         if (Model!.IdNotaCompra == 0)
             Contexto.Entry(Model).State = EntityState.Added;
@@ -120,28 +118,19 @@
 
     protected override void OnInitialized()
     {
-        if (Model.IdNotaCompra == 0)
-            Contexto.Entry(Model).State = EntityState.Added;
+        //if (Model.Items.Count == 0)
+        //    AddRow();
 
-        if (Model.Items.Count == 0)
-            AddRow();
+        //CalcTotal();
 
-        CalcTotal();
+        //editContext = new EditContext(Model);
 
-        editContext = new EditContext(Model);
-
-        base.OnInitialized();
+        //base.OnInitialized();
     }
 
-    compra rowToDelete;
-    void DeleteRow(bool confirm)
+    void DeleteRow(compra compra)
     {
-        if (confirm)
-        {
-            Model!.Items.Remove(rowToDelete);
-        }
-        rowToDelete = null;
-        StateHasChanged();
+        Model!.Items.Remove(compra);
     }
 
     void MercadoriaChanged(compra c) {

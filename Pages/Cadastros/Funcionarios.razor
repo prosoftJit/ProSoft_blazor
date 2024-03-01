@@ -33,7 +33,7 @@
         <ModalBody>
             <PageHeader Title="Funcionário"></PageHeader>
             <RadzenTemplateForm id="fornForm" TItem="funcionario" Data="askEdit" Submit="Submit">
-                <Funcionario Model="askEdit" />
+                <ProSoft.Pages.Cadastros.Funcionario Model="askEdit" />
             </RadzenTemplateForm>
         </ModalBody>
         <ModalFooter>
@@ -49,13 +49,13 @@
 
 @code {
     Contexto ctx = new();
-    [Inject] NotificationService notificationService {get;set;}
-    funcionario askEdit = null;
+    [Inject] NotificationService notificationService {get;set;} = default!;
+    funcionario? askEdit = null;
     long askDelete = 0;
 
     private void Delete(bool confirm)
     {
-        funcionario f = ctx.funcionarios.Find(askDelete);
+        funcionario? f = ctx.funcionarios.Find(askDelete);
         if (f != null && confirm)
         {
             ctx.funcionarios.Remove(f);

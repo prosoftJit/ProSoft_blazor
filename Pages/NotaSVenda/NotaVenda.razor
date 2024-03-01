@@ -3,7 +3,7 @@
 @using ProSoft.Data
 @using ProSoft.Components
 @using Microsoft.EntityFrameworkCore
-@using BlazorBootstrap
+@using ProSoft.Pages.Cadastros
 
 <CascadingValue Name="ctx" Value="ctx">
     <EditForm Model="Model" OnSubmit="ValidSubmit" id="editForm">
@@ -77,7 +77,7 @@
                 <th><button type="button" class="btn btn-link" @onclick="AddParcela"><i class="oi oi-plus"></i></button></th>
             </TableHeader>
             <RowTemplate Context="parc">
-                <Parcela Model="parc" OnDelete="DeleteParcela" OnTotalChanged="()=>StateHasChanged()"></Parcela>
+                <ProSoft.Pages.NotasVenda.Parcela Model="parc" OnDelete="DeleteParcela" OnTotalChanged="()=>StateHasChanged()" />
             </RowTemplate>
             <TableFooter>
                 <tr>
@@ -112,7 +112,6 @@
     private Contexto ctx = new();
 
     cliente? editCliente = null; 
- //   long? deleteClient = null;
 
     protected override void OnInitialized() {
         Model = ctx.notasvenda.Include(k=>k.Cliente).Include(k=>k.Items).ThenInclude(k=>k.Compra).ThenInclude(k=>k.Mercadoria).Include(k=>k.Parcelas).First(k=>k.IdNotaVenda==idNotaVenda);

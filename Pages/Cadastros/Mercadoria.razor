@@ -43,16 +43,16 @@
 
 @code {
     [Parameter] public mercadoria Model { get; set; } = default!;
-    [Parameter, EditorRequired] public Contexto Contexto {get;set;} = default;
-    [Inject] NotificationService notificationService {get;set;}
-    [Parameter] public Action<string> OnClose {get;set;} = null;
+    [Parameter, EditorRequired] public Contexto? Contexto {get;set;}
+    [Inject] NotificationService? notificationService {get;set;}
+    [Parameter] public Action<string>? OnClose {get;set;} = null;
 
     void Submit(mercadoria merc) {
         if (Model.IdMercadoria == 0)
-            Contexto.Entry(Model).State = EntityState.Added;
+            Contexto!.Entry(Model).State = EntityState.Added;
         else
-            Contexto.Entry(Model).State = EntityState.Modified;
+            Contexto!.Entry(Model).State = EntityState.Modified;
         Contexto.SaveChanges();
-        notificationService.Notify(NotificationSeverity.Success, "Mercadoria", "Alterações feitas na mercadoria foram salvas com sucesso!");
+        notificationService!.Notify(NotificationSeverity.Success, "Mercadoria", "Alterações feitas na mercadoria foram salvas com sucesso!");
     }
 }

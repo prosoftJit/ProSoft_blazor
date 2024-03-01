@@ -1,32 +1,58 @@
 @using ProSoft.Data
+@using ProSoft.Components
 
 @namespace ProSoft.Pages 
 
-@typeparam TItem
+@typeparam TItem where TItem: class, new()
 
 @if (Items is null)
 {
     <p>Nothing to show!</p>
 } else {
-    <table class="table w-100">
+    <table class="table table-hover w-100">
         <thead>
-            <tr>@TableHeader</tr>
+            <tr>
+                @TableHeader
+                @if (OnAdd != null) {
+                <td style="width: 1%;"><RadzenButton Icon=add Click="()=>OnAdd?.Invoke()"/></td>
+                }
+            </tr>
         </thead>
         <tbody>
             @foreach (var item in Items)
             {
-                <tr>@RowTemplate?.Invoke(item)</tr>
+                <tr>
+                    @RowTemplate?.Invoke(item)
+                    @if (OnDelete != null) {
+                    <td><RadzenButton Icon=delete Click="()=>askDelete=item"/></td>
+                    }
+                </tr>
             }
         </tbody>
         <tfoot>
             @TableFooter
         </tfoot>
     </table>
+
+    @if (askDelete != null) {
+        <ModalConfirm Title="Excluir" Message="Confirma exclusão?" OnClose=ConfirmClose />
+    }
 }
 
 @code {
-    [Parameter] public RenderFragment TableHeader { get; set; }
-    [Parameter] public RenderFragment<TItem> RowTemplate { get; set; }
-    [Parameter] public RenderFragment TableFooter { get; set; }
-    [Parameter] public IEnumerable<TItem> Items { get; set; }
+    [Parameter] public RenderFragment? TableHeader { get; set; }
+    [Parameter] public RenderFragment<TItem>? RowTemplate { get; set; }
+    [Parameter] public RenderFragment? TableFooter { get; set; }
+    [Parameter] public IEnumerable<TItem>? Items { get; set; }
+    [Parameter] public Action? OnAdd {get;set;} = null;
+    [Parameter] public Action<TItem>? OnDelete {get;set;} = null;
+
+    TItem? askDelete = null;
+
+    void ConfirmClose(bool confirm) {
+        if (confirm)
+            OnDelete?.Invoke(askDelete!);
+        askDelete = null;
+        StateHasChanged();
+    }
 }
