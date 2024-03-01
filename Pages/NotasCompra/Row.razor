@@ -7,31 +7,22 @@
 <td width="10%"><RadzenNumeric ShowUpDown=false TextAlign="TextAlign.Center" TValue="float" @bind-Value="Model!.Quantidade" Format="N2" Change="()=>TotalChanged?.Invoke()" /></td>
 <td width="10%"><RadzenTextBox value="@Model.Mercadoria?.Unidade" Disabled=true /></td>
 <td>
-    <Dropdown 
+    <Dropdown
         TItem="mercadoria" 
+        @bind-Value=Model.Mercadoria_IdMercadoria
         GetItems="()=>Contexto.mercadorias.OrderBy(k=>k.Descricao)" 
-        TextProperty="Descricao" ValueProperty="IdMercadoria" 
-        OnChange="()=>Model.Mercadoria = Contexto.mercadorias.FirstOrDefault(k=>k.IdMercadoria == Model.Mercadoria_IdMercadoria)"
+        TextProperty="Descricao" 
+        ValueProperty="IdMercadoria" 
+        OnChange="MercadoriaChanged"
         >
-        <OnEdit Context=merc>
-            <Mercadoria Model="merc" Contexto="Contexto" />
+        <OnEdit>
+            <Mercadoria Model="Model.Mercadoria" Contexto="Contexto" />
         </OnEdit>
     </Dropdown>
 </td>
 <td width="10%"><RadzenNumeric ShowUpDown=false TValue=float @bind-Value="Model.Custo" Format="N2" TextAlign=TextAlign.End Change="()=>TotalChanged?.Invoke()" /></td>
 <td width="10%"><RadzenNumeric ShowUpDown=false TValue=float value="@Model.Total" Format="N2" TextAlign="TextAlign.End" Disabled=true /></td>
 <td width="10%"><RadzenNumeric ShowUpDown=false @bind-Value="Model.Venda" Format="N2" TextAlign="TextAlign.End" /></td>
-
-@if (askEditMercadoria != null) {
-    <ModalDialog Title="Mercadoria" OnCancel="()=>askEditMercadoria=null" Size="modal-xl">
-        <ModalBody>
-            <Mercadoria Model=askEditMercadoria Contexto="Contexto" />
-        </ModalBody>
-        <ModalFooter>
-            <RadzenButton Icon=save Text=Salvar Click=SaveMercadoria />
-        </ModalFooter>
-    </ModalDialog>
-}
 
 @code {
     [Parameter, EditorRequired] public compra Model { get; set; } = default!;
@@ -48,5 +39,10 @@
 
     void SaveMercadoria() {
 
+    }
+
+    void MercadoriaChanged() {
+        Model.Mercadoria = Contexto.mercadorias.FirstOrDefault(k=>k.IdMercadoria == Model.Mercadoria_IdMercadoria);
+        Console.WriteLine('changed');
     }
 }

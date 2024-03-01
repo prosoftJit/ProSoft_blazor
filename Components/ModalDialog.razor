@@ -25,14 +25,9 @@
 
 @code {
     [Parameter] public string Size { get; set; } = "";
-
     [Parameter] public string Title { get; set; } = "Modal";
-
     [Parameter] public EventCallback<string> OnCancel { get; set; }
-
     [Parameter] public RenderFragment? ModalBody { get; set; }
-
     [Parameter] public RenderFragment? ModalFooter { get; set; }
-
     [Parameter] public bool HideCloseButton { get; set; } = false;
 }

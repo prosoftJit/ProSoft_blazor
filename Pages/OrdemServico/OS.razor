@@ -75,12 +75,14 @@
                 <th>Total</th>
                 <th><button type="button" class="btn btn-link" @onclick="AddOrca"><i class="oi oi-plus"></i></button></th>
             </TableHeader>
-            <RowTemplate Context="OrcItem">
-                <OrcamentoItem Model="OrcItem" OnAskDelete="AskDeleteRow" 
-                    OnNeedCompras="()=>ctx.compras.Include(k=>k.Mercadoria).OrderBy(k=>k.Mercadoria.Descricao).ToArray()" 
-                    TotalChanged="TotalChanged"
-                    Contexto=ctx
-                    />
+            <RowTemplate Context=Orca>
+                @foreach (itemdoorcamento item in Orca.Items) {
+
+                    <OrcamentoItem Model="item" Contexto="ctx" OnAskDelete="AskDeleteItem" 
+                    OnNeedCompras="()=>ctx.compras.Include(k=>k.Mercadoria).OrderBy(k=>k.Mercadoria.Descricao).ToArray()"
+                    TotalChanged="TotalChanged" />
+
+                }
             </RowTemplate>
             <TableFooter>
                 <tr>
@@ -176,5 +178,9 @@
     }
 
     void FuncionarioChanged() {
+    }
+
+    void AskDeleteItem(itemdoorcamento item) {
+
     }
 }

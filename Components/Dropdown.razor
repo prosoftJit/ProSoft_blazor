@@ -4,7 +4,8 @@
 @typeparam TItem where TItem: class, new()
 
 <RadzenStack Orientation=Orientation.Horizontal Gap=0>
-    <RadzenDropDown 
+    <RadzenDropDown
+        Class="w-100"
         AllowClear="true" 
         TValue="long" 
         @bind-Value=Value 
@@ -13,15 +14,15 @@
         Data=GetItems?.Invoke() 
         TextProperty=@TextProperty 
         ValueProperty=@ValueProperty 
-        Change="()=>OnChange?.Invoke()"
+        Change="DropdownChanged"
         />
     <RadzenButton Style="max-width: 35px;" Icon=edit Click="()=>askEdit=Value" />
 </RadzenStack>
 
 @if (askEdit > 0) {
-    <ProSoft.Components.ModalDialog Title="Modal" OnCancel="()=>askEdit = 0">
+    <ProSoft.Components.ModalDialog Title="Modal" OnCancel="()=>askEdit = 0" Size="modal-fullscreen">
         <ModalBody>
-            @(OnEdit)
+            @OnEdit
         </ModalBody>
         <ModalFooter>
         </ModalFooter>
@@ -34,7 +35,13 @@
     [Parameter] public string TextProperty {get;set;} = "Text";
     [Parameter] public string ValueProperty {get;set;} = "Value";
     [Parameter] public Action? OnChange {get;set;} = null;
-    [Parameter] public RenderFragment<TItem>? OnEdit {get;set;} = null;
+    [Parameter] public RenderFragment? OnEdit {get;set;} = null;
+    [Parameter] public EventCallback<long> ValueChanged {get;set;}
 
     long askEdit = 0;
+
+    void DropdownChanged(object obj) {
+        // object is the new id
+        OnChange?.Invoke();
+     }
 }

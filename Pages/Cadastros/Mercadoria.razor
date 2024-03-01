@@ -1,4 +1,4 @@
-@page "/Mercadoria/{idMercadoria:long}"
+@page "/Mercadoria"
 
 @using System.ComponentModel.DataAnnotations
 @using ProSoft.Data
@@ -42,7 +42,7 @@
 </RadzenTemplateForm>
 
 @code {
-    [Parameter] public mercadoria Model { get; set; } = default!;
+    [Parameter] public mercadoria Model { get; set; } = new();
     [Parameter, EditorRequired] public Contexto? Contexto {get;set;}
     [Inject] NotificationService? notificationService {get;set;}
     [Parameter] public Action<string>? OnClose {get;set;} = null;
