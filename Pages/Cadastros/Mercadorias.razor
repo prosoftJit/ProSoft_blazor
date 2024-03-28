@@ -4,9 +4,7 @@
 
 <GenericTemplate2  
     OnDelete=OnDelete
-    ItemEditFormId=formId
     Items="mercadorias" 
-    Context=ctx 
     TItem=mercadoria 
     HeaderTitle="Mercadorias" 
     HeaderDescription="Listagem de mercadorias cadastradas no sistema" 
@@ -17,7 +15,7 @@
         <th>Descrição</th>
     </TableHeader>
     <RowTemplate Context="merc">
-        <td class="text-center"><a href="" @onclick="()=>askEdit=merc" @onclick:preventDefault>@merc.IdMercadoria.ToString("000000")</a></td>
+        <td class="text-center">@merc.IdMercadoria.ToString("000000")</td>
         <td>@merc.Descricao</td>
     </RowTemplate>
     <ItemEditForm Context=merc>
@@ -67,7 +65,7 @@
 
     Task LoadMercadorias()
     {
-        mercadorias = ctx.mercadorias.OrderBy(k => k.Descricao).ToArray();
+        mercadorias = ctx.mercadorias.OrderByDescending(k => k.IdMercadoria).ToArray();
         return Task.FromResult(mercadorias);
     }
 

@@ -7,18 +7,18 @@
 <td width="10%"><RadzenNumeric ShowUpDown=false TextAlign="TextAlign.Center" TValue="float" @bind-Value="Model!.Quantidade" Format="N2" Change="()=>TotalChanged?.Invoke()" /></td>
 <td width="10%"><RadzenTextBox value="@Model.Mercadoria?.Unidade" Disabled=true /></td>
 <td>
-    <Dropdown
-        TItem="mercadoria" 
-        @bind-Value=Model.Mercadoria_IdMercadoria
+    <Dropdown2
+        TItem="mercadoria"
+        @bind-Value="Model.Mercadoria"
         GetItems="()=>Contexto.mercadorias.OrderBy(k=>k.Descricao)" 
         TextProperty="Descricao" 
-        ValueProperty="IdMercadoria" 
-        OnChange="MercadoriaChanged"
-        >
-        <OnEdit>
-            <Mercadoria Model="Model.Mercadoria" Contexto="Contexto" />
+        OnDelete="(ctx, item)=>{ctx.mercadorias.Remove(item);ctx.SaveChanges();}"
+        OnChange="(item)=>{Model.Mercadoria=item;StateHasChanged();}"
+    >
+        <OnEdit Context=merc>
+            <Mercadoria Model="merc" Contexto="new Contexto()" />
         </OnEdit>
-    </Dropdown>
+    </Dropdown2>
 </td>
 <td width="10%"><RadzenNumeric ShowUpDown=false TValue=float @bind-Value="Model.Custo" Format="N2" TextAlign=TextAlign.End Change="()=>TotalChanged?.Invoke()" /></td>
 <td width="10%"><RadzenNumeric ShowUpDown=false TValue=float value="@Model.Total" Format="N2" TextAlign="TextAlign.End" Disabled=true /></td>
@@ -36,13 +36,15 @@
     void EditMercadoria() {
         askEditMercadoria = Model.Mercadoria ?? new();
     }
-
-    void SaveMercadoria() {
-
-    }
-
-    void MercadoriaChanged() {
+    void OnMercadoriaChanged() {
         Model.Mercadoria = Contexto.mercadorias.FirstOrDefault(k=>k.IdMercadoria == Model.Mercadoria_IdMercadoria);
-        Console.WriteLine('changed');
+        Console.WriteLine("changed");
+    }
+    void MercadoriaSave(Contexto ctx, mercadoria item) {
+        if (item.IdMercadoria == 0)
+            ctx.Entry(item).State = EntityState.Added;
+        else
+            ctx.Entry(item).State = EntityState.Modified;
+        ctx.SaveChanges();
     }
 }

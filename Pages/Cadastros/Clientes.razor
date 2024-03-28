@@ -28,24 +28,38 @@
     @* <ProSoft.Co ConfirmDialog Message="Confirma exclusão?" OnClose="DeleteDialogClosed"></ConfirmDialog> *@
 }
 
-@if (askEdit != null)
+@if (!EditHidden)
+{
+    <FluentDialog @bind-Hidden="EditHidden" TrapFocus="true" >
+    <FluentDialogHeader><h5>Editar cliente</h5></FluentDialogHeader>
+     <ProSoft.Pages.Cadastros.Cliente Model="askEdit" />
+    
+    <FluentDialogFooter>
+        <FluentButton Appearance="Appearance.Hypertext" OnClick="()=>EditHidden=true">Fechar</FluentButton>
+        <FluentButton Id="submit" FormId="cliForm">Salvar</FluentButton>
+    </FluentDialogFooter>
+</FluentDialog>
+}
+
+
+@* @if (askEdit != null)
 {
     <ModalDialog Title="Cliente" Size="modal-fullscreen" OnCancel="_=>askEdit=null">
         <ModalBody>
-            <ProSoft.Pages.Cadastros.Cliente idCliente="askEdit.idCliente" />
         </ModalBody>
         <ModalFooter>
-            <RadzenButton Icon=save form=cliForm ButtonType=ButtonType.Submit Text=Salvar />
+            <RadzenButton Icon=save form=cliForm ButtonType=Radzen.ButtonType.Submit Text=Salvar />
         </ModalFooter>
     </ModalDialog>
 }
-
+ *@
 @code {
     cliente? askEdit=null;
 
     Contexto ctx = new();
 
     cliente? askDelete = null;
+    bool EditHidden { get { return askEdit == null; } set { if (value) askEdit = null; } }
 
     private void ClientSave()
     {

@@ -2,39 +2,25 @@
 
 @using ProSoft.Data
 @using Microsoft.EntityFrameworkCore
+@using ProSoft.Components
 
 <td width="10%"><RadzenNumeric Format="N2" TextAlign="TextAlign.Center" @bind-Value="Model.Quantidade" ShowUpDown=false /></td>
 <td width="10%"><RadzenTextBox TextAlign="TextAlign.Center" Value="@Model.Compra?.Mercadoria?.Unidade" Disabled=true /></td>
 
 <td>
-    @* <InputSelect2
-        TItem="compra"
-        Value="Model.Compra_IdCompra"
-        FormId="formId"
-        ValueProperty="(i)=>i.IdCompra"
-        OnNeedItems="OnNeedCompras"
-        OnSelectionChanged="(i)=>{Model.Compra=i;StateHasChanged();}"
-    >
-        <OnEditRenderFragment Context="cp">
-            <ProSoft.Pages.NotasCompra.Form idNotaCompra="@cp.NotaCompra_IdNotaCompra"></ProSoft.Pages.NotasCompra.Form>
-        </OnEditRenderFragment>
-    </InputSelect2> *@
-   
 
-    <RadzenDropDown AllowClear="true" TValue="long" @bind-Value=Model.Compra_IdCompra AllowVirtualization="true"
-        AllowFiltering="true" Data=OnNeedCompras?.Invoke() TextProperty="Descricao" ValueProperty="IdCompra" Change="args=>CompraChanged(args)" />
+    <Dropdown2 TItem="compra" @bind-Value=Model.Compra TextProperty="Descricao" GetItems="()=>ctx.compras" OnChange="(i)=>Model.Compra=i" OnDelete="(c,i)=>{c.Remove(i);c.SaveChanges();}" >
+    </Dropdown2>
 
 </td>
 
 <td width="10%"><RadzenNumeric Format="N2" ShowUpDown=false Value="@Model.Compra?.Venda" TextAlign=TextAlign.End Disabled=true /></td>
 <td width="10%"><RadzenNumeric Format="N2" ShowUpDown=false @bind-Value="Model!.Desconto" TextAlign=TextAlign.End ></RadzenNumeric></td>
 <td width="10%"><RadzenNumeric Format="N2" Value="@Total()" TextAlign=TextAlign.End Disabled=true ShowUpDown=false /></td>
-<td width="1%"><button type="button" class="btn btn-link text-danger" @onclick="()=>OnAskDelete?.Invoke(Model)"><i class="oi oi-trash"></i></button></td>
 
 @code {
     [Parameter] public venda Model { get; set; } = new();
     [Parameter] public Action<float>? TotalChanged { get; set; } = null;
-    [Parameter] public Action<venda>? OnAskDelete { get; set; } = null;
     [Parameter] public Func<compra[]>? OnNeedCompras { get; set; } = null;
     [CascadingParameter(Name="ctx")] public Contexto ctx {get;set;} = default!;
 

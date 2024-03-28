@@ -3,23 +3,25 @@
 @using Microsoft.EntityFrameworkCore
 @using ProSoft.Components
 
-<GenericTemplate2 TItem=orcamento Items="orcamentos" HeaderTitle=Orçamentos ItemEditFormId=orcForm OnDelete=Delete
+<GenericTemplate2 
+    TItem=orcamento 
+    Items="orcamentos" 
+    HeaderTitle=Orçamentos 
+    OnDelete=Delete
     Contexto="ctx"
     >
     <TableHeader>
         <th>Id</th>
         <th>Data</th>
         <th>Cliente</th>
-        <th></th>
     </TableHeader>
     <RowTemplate Context="orc">
         <td>@orc.IdOrcamento.ToString("000000")</td>
         <td>@orc.Data.ToShortDateString()</td>
-        <td></td>
-        <td width="1%"><a href="" @onclick:preventDefault><i class="oi oi-trash"></i></a></td>
+        <td>@orc.Cliente.Nome</td>
     </RowTemplate>
     <ItemEditForm Context=orc>
-        <Orcamento Model=orc ctx=ctx/>
+        <Orcamento Model=orc ctx=ctx />
     </ItemEditForm>
 </GenericTemplate2>
 

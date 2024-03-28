@@ -6,7 +6,7 @@
 @using ProSoft.Pages.Cadastros
 
 <CascadingValue Name="ctx" Value="ctx">
-    <EditForm Model="Model" OnSubmit="ValidSubmit" id="editForm">
+    <RadzenTemplateForm TItem="notavenda" Data="Model" Submit="Submit" id="editForm">
 
         <DataAnnotationsValidator />
         <ValidationSummary Model="Model" />
@@ -19,34 +19,16 @@
             </RadzenColumn>
             <RadzenColumn Size="3">
                 <RadzenFormField Text="Cliente" >
-                    <RadzenDropDown @bind-Value="Model.Cliente_IdCliente" AllowClear=true AllowFiltering=true AllowVirtualization=true TValue="long?" Data="ctx.clientes" TextProperty="Nome" ValueProperty="idCliente" Change="ClienteChanged" />
+                    <Dropdown2 TItem="cliente" @bind-Value=Model.Cliente TextProperty="Nome" GetItems="()=>ctx.clientes.OrderBy(k=>k.Nome)" OnChange="(i)=>Model.Cliente=i" OnDelete="(c, i)=>{c.Remove(i); c.SaveChanges();}">
+                        <OnEdit Context=cli>
+                            <Cliente idCliente="cli.idCliente" />
+                        </OnEdit>
+                    </Dropdown2>
                 </RadzenFormField>
             </RadzenColumn>
         </RadzenRow>
 
-        <div class="row my-1">
-            @* <FloatingLabel InputId="IdNotaVenda" Text="Id da Nota" Columns="2">
-                <input type="text" value="@Model.IdNotaVenda.ToString("000000")" class="form-control" disabled="disabled" />
-            </FloatingLabel>
-            <FloatingLabel InputId="Data" Text="Data" Columns="2">
-                <InputDate @bind-Value="Model!.Data" class="form-control"></InputDate>
-            </FloatingLabel> *@
-            @* <FloatingLabel InputId="Cliente_IdCliente" Class="d-flex" Text="Cliente" Columns="4">
-                <InputSelect2 
-                    Context="Model" 
-                    FormId="formCli" 
-                    ValueProperty="(c)=>c.idCliente"
-                    TItem="cliente" 
-                    Value="@Model.Cliente?.idCliente" 
-                    OnNeedItems="()=>ctx.clientes.ToArray()"
-                    OnEdit="(c)=>{editCliente=c;StateHasChanged();}"
-                    OnSelectionChanged="(i)=>Model.Cliente=i"
-                >
-                </InputSelect2>
-            </FloatingLabel> *@
-        </div>
-
-        <GenericTemplate Items="Model.Items" TItem="venda">
+        <GenericTemplate Items="Model.Items" TItem="venda" OnAdd="AddVenda" OnDelete="(i)=>Model.Items.Remove(i)">
             <TableHeader>
                 <th>Quant</th>
                 <th>Un</th>
@@ -54,13 +36,9 @@
                 <th>P. Venda</th>
                 <th>Desconto</th>
                 <th>Total</th>
-                <th>
-                    <button type="button" class="btn btn-link" @onclick="AddVenda"><i class="oi oi-plus"></i></button>
-                </th>
             </TableHeader>
             <RowTemplate Context="itemsCtx">
-                <Venda_row Model="itemsCtx" OnAskDelete="AskDeleteRow" 
-                    OnNeedCompras="()=>ctx.compras.Include(k=>k.Mercadoria).OrderBy(k=>k.Mercadoria.Descricao).ToArray()"></Venda_row>
+                <Venda_row Model="itemsCtx" OnNeedCompras="()=>ctx.compras.Include(k=>k.Mercadoria).OrderBy(k=>k.Mercadoria.Descricao).ToArray()" />
             </RowTemplate>
             <TableFooter>
                 <tr>
@@ -87,23 +65,9 @@
             </TableFooter>
         </GenericTemplate>
 
-    </EditForm>
+    </RadzenTemplateForm>
 </CascadingValue>
 
-@if (editCliente != null)
-{
-    <EditForm id="formCli" Model="editCliente">
-        <Cliente idCliente="editCliente.idCliente"></Cliente>
-    </EditForm>
-}
-
-@if (askDeleteVenda != null)
-{
-    <ModalConfirm Title="Excluir" Message="Confirma exclusão da linha?" OnClose="DeleteRow"></ModalConfirm>
-}
-
-<!-- Colocar em um lugar mais no final da página para aparecer sobre os outros componentes -->
-<RadzenDialog></RadzenDialog>
 
 @code {
     private notavenda Model = new();
@@ -114,19 +78,18 @@
     cliente? editCliente = null; 
 
     protected override void OnInitialized() {
-        Model = ctx.notasvenda.Include(k=>k.Cliente).Include(k=>k.Items).ThenInclude(k=>k.Compra).ThenInclude(k=>k.Mercadoria).Include(k=>k.Parcelas).First(k=>k.IdNotaVenda==idNotaVenda);
-        if (Model == null)
-            Model = new notavenda();
+        Model = ctx.notasvenda.Include(k=>k.Cliente).Include(k=>k.Items).ThenInclude(k=>k.Compra).ThenInclude(k=>k.Mercadoria).Include(k=>k.Parcelas).FirstOrDefault(k=>k.IdNotaVenda==idNotaVenda)??new();
+
         if (Model.Items.Count == 0)
             AddVenda();
     }
 
-    void ValidSubmit()
+    void Submit(notavenda nv)
     {
-        if (Model.IdNotaVenda == 0)
-            ctx.Entry(Model).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+        if (nv.IdNotaVenda == 0)
+            ctx.Entry(nv).State = Microsoft.EntityFrameworkCore.EntityState.Added;
         else
-            ctx.Entry(Model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            ctx.Entry(nv).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 
         ctx.SaveChanges();
 

@@ -11,7 +11,6 @@
         @if (HeaderBarItems != null) {
             @HeaderBarItems
         }
-        <RadzenButton Icon=add Text=Novo Click="()=>askEdit=new()" />
         </BarItems>
     </PageHeader>
 }
@@ -22,12 +21,16 @@
 } else {
     <table class="table table-hover w-100">
         <thead>
-            <tr>@TableHeader</tr>
+            <tr>@TableHeader
+            <td style="width: 1%;"><RadzenButton Icon=add Variant=Variant.Text Click="()=>askEdit=new()"/></td>
+            </tr>
         </thead>
         <tbody>
             @foreach (var item in Items)
             {
-                <tr @onclick="()=>Edit(item)" style="cursor:pointer">@RowTemplate?.Invoke(item)</tr>
+                <tr @onclick="()=>Edit(item)" style="cursor:pointer">@RowTemplate?.Invoke(item)
+                    <td><RadzenButton Icon="delete" Variant="Variant.Text" ButtonStyle="ButtonStyle.Danger" Click="()=>askDelete=item" /></td>
+                </tr>
             }
         </tbody>
         <tfoot>
@@ -40,10 +43,12 @@
 {
     <ModalDialog Title="Editar" Size="modal-fullscreen" OnCancel="()=>askEdit=null">
         <ModalBody>
-            @ItemEditForm(askEdit)
+            <RadzenTemplateForm Data="askEdit" id="editForm" TItem="TItem" Submit="Submit" >
+            @ItemEditForm?.Invoke(askEdit)
+            </RadzenTemplateForm>
         </ModalBody>
         <ModalFooter>
-            <RadzenButton Icon=save Text="Salvar" ButtonType=ButtonType.Submit Form="@ItemEditFormId" />
+            <RadzenButton Icon=save Text="Salvar" ButtonType=Radzen.ButtonType.Submit Form="editForm" />
             <RadzenButton Icon=delete Text="Excluir" Click="()=>askDelete=askEdit" ButtonStyle=ButtonStyle.Danger />
         </ModalFooter>
     </ModalDialog>
@@ -62,30 +67,43 @@
     [Parameter] public string? HeaderDescription {get;set;} = null;
     [Parameter] public RenderFragment? HeaderBarItems {get;set;} = null;
     [Parameter] public RenderFragment<TItem>? ItemEditForm {get;set;} = null;
-    [Parameter] public string ItemEditFormId {get;set;} = "editForm";
+    [Parameter] public Action<TItem>? ItemEditClick {get;set;} = null;
     [Parameter] public Action<TItem>? OnDelete {get;set;} = null;
-    [Parameter, EditorRequired] public Contexto? Contexto {get;set;}
+    [Parameter, EditorRequired] public Contexto Contexto { get; set; } = default!;
 
-    [Inject] NotificationService notificationService { get; set; } = default!;
+    [Inject] NotificationService notService { get; set; } = default!;
 
     TItem? askEdit = null;
     TItem? askDelete = null;
 
     void Edit(TItem item) {
-        askEdit = item;
+        if (ItemEditForm != null)
+            askEdit = item;
+        if (ItemEditClick != null)
+            ItemEditClick(item);
     }
 
     void OnConfirmClose(bool confirmation) {
         if (confirmation) {
             try {
                 OnDelete?.Invoke(askDelete!);
-                notificationService.Notify(NotificationSeverity.Success, "Orçamento", "Orçamento excluído com sucesso!");
+                notService.Notify(NotificationSeverity.Success, "ProSoft", "Item excluído com sucesso!");
             } catch {
-                notificationService.Notify(NotificationSeverity.Error, "Orçamento", "Erro excluindo ítem!");
+                notService.Notify(NotificationSeverity.Error, "ProSoft", "Erro excluindo ítem!");
             }
             askEdit = null;
         }
         askDelete = null;
         StateHasChanged();
+    }
+
+    void Submit(TItem item)
+    {
+        if (Contexto.Entry(item).State == EntityState.Detached)
+            Contexto.Add(item);
+
+        Contexto.SaveChanges();
+
+        notService.Notify(NotificationSeverity.Success, "ProSoft", "Item salvo com sucesso!");
     }
 }

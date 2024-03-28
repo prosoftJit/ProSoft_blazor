@@ -8,6 +8,14 @@
     }
 }
 
+fluent-text-field, 
+fluent-numeric-field, 
+fluent-text-area, 
+fluent-combobox 
+{
+    width: 100%;
+}
+
 /*
     Corrige o dimensionamento do Componente Autocomplete3
 */

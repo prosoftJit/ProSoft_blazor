@@ -1,6 +1,8 @@
-@page "/Cadastros/Fornecedor/{idFornecedor:long}"
+@page "/Cadastros/Fornecedor"
 @using System.ComponentModel.DataAnnotations
 @using ProSoft.Data
+
+<RadzenTemplateForm TItem="fornecedor" Data="Model" Submit="Submit" id="editForm">
 
 <DataAnnotationsValidator />
 <ValidationSummary />
@@ -31,8 +33,17 @@
         </RadzenFormField>
     </RadzenColumn>
 </RadzenRow>
+</RadzenTemplateForm>
 
 @code {
     [Parameter] public fornecedor Model { get; set; } = new();
-    protected override void OnInitialized() => Model ??= new();
+    [Parameter, EditorRequired] public Contexto Contexto {get;set;}
+
+    void Submit(fornecedor forn) {
+        if (forn.IdFornecedor == 0)
+            Contexto.Entry(forn).State = EntityState.Added;
+        else
+            Contexto.Entry(forn).State = EntityState.Modified;
+        Contexto.SaveChanges();
+    }
 }

@@ -5,14 +5,6 @@
 @using Microsoft.EntityFrameworkCore
 @using BlazorBootstrap
 
-<PageHeader Title="Orçamento">
-</PageHeader>
-
-<RadzenTemplateForm TItem="orcamento" Data="Model" Submit="Submit" id="editForm">
-
-    <DataAnnotationsValidator />
-    <ValidationSummary Model="Model" />
-
     <RadzenRow>
         <RadzenColumn Size="2" class="w-100">
             <RadzenFormField Text="Id" >
@@ -33,7 +25,11 @@
         </RadzenColumn>
     </RadzenRow>
 
-    <GenericTemplate Items="Model.Items" TItem="itemdoorcamento">
+    <GenericTemplate2
+        Items="Model.Items" 
+        TItem="itemdoorcamento"
+        Contexto="ctx"
+        >
         <TableHeader>
             <th>Quant</th>
             <th>Un</th>
@@ -41,7 +37,6 @@
             <th>P. Venda</th>
             <th>Desconto</th>
             <th>Total</th>
-            <th><button type="button" class="btn btn-link" @onclick="AddRow"><i class="oi oi-plus"></i></button></th>
         </TableHeader>
         <RowTemplate Context="OrcItem">
             <OS_row Model=OrcItem Contexto=ctx OnNeedCompras="()=>ctx.compras.Include(k=>k.Mercadoria).OrderBy(k=>k.Mercadoria.Descricao).ToArray()" />
@@ -52,9 +47,8 @@
                 <td></td>
             </tr>
         </TableFooter>
-    </GenericTemplate>
+    </GenericTemplate2>
 
-</RadzenTemplateForm>
 
 @if (askEditCliente != null) {
     <ModalDialog Title="Editar Cliente" OnCancel="()=>askEditCliente=null" Size="modal-lg">
@@ -69,6 +63,7 @@
 
 @code {
     [Parameter] public orcamento Model { get; set; } = new();
+  
     [Parameter, EditorRequired] public Contexto ctx {get;set;} = new(); // new for designtime purposes
 
     cliente? askEditCliente = null;

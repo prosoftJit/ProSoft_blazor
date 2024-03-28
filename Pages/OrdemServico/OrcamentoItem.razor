@@ -32,12 +32,10 @@
 <td width="10%"><RadzenNumeric Format="N2" ShowUpDown=false Value="@Model.Compra?.Venda" TextAlign=TextAlign.End Disabled=true /></td>
 <td width="10%"><RadzenNumeric Format="N2" ShowUpDown=false @bind-Value="Model!.Desconto" TextAlign=TextAlign.End ></RadzenNumeric></td>
 <td width="10%"><RadzenNumeric Format="N2" Value="_total" TextAlign=TextAlign.End Disabled=true ShowUpDown=false /></td>
-<td width="1%"></td>
 
 @code {
     [Parameter] public itemdoorcamento Model { get; set; } = new();
     [Parameter] public Action<float>? TotalChanged { get; set; } = null;
-    [Parameter] public Action<itemdoorcamento>? OnAskDelete { get; set; } = null;
     [Parameter] public Func<compra[]>? OnNeedCompras { get; set; } = null;
     [Parameter] public Contexto Contexto {get;set;} = default!;
 

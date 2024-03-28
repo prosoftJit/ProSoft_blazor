@@ -8,19 +8,17 @@
 <td width="10%"><RadzenTextBox TextAlign="TextAlign.Center" Value="@Model.Compra?.Mercadoria?.Unidade" Disabled=true /></td>
 
 <td>
-<RadzenStack Orientation=Orientation.Horizontal Gap=0>
+    <RadzenStack Orientation=Radzen.Orientation.Horizontal Gap=0>
     <RadzenDropDown class="w-100" AllowClear="true" TValue="long" @bind-Value=Model.Compra_IdCompra AllowVirtualization="true"
         AllowFiltering="true" Data=OnNeedCompras?.Invoke() TextProperty="Descricao" ValueProperty="IdCompra" Change="args=>CompraChanged(args)" >
     </RadzenDropDown>
     <RadzenButton Style="max-length: 35px;" Icon=edit Click="CompraEdit"></RadzenButton>
 </RadzenStack>
-
 </td>
 
 <td width="10%"><RadzenNumeric Format="N2" ShowUpDown=false Value="@Model.Compra?.Venda" TextAlign=TextAlign.End Disabled=true /></td>
 <td width="10%"><RadzenNumeric Format="N2" ShowUpDown=false @bind-Value="Model!.Desconto" TextAlign=TextAlign.End ></RadzenNumeric></td>
 <td width="10%"><RadzenNumeric Format="N2" Value="@Total()" TextAlign=TextAlign.End Disabled=true ShowUpDown=false /></td>
-<td width="1%"><button type="button" class="btn btn-link text-danger" @onclick="()=>OnAskDelete?.Invoke(Model)"><i class="oi oi-trash"></i></button></td>
 
 @if (askEditCompra != null) {
     <ModalDialog Size="modal-fullscreen" Title="Editar Compra" OnCancel="()=>askEditCompra=null">

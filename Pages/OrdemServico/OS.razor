@@ -5,95 +5,89 @@
 @using Microsoft.EntityFrameworkCore
 @using BlazorBootstrap
 
-<CascadingValue Name="ctx" Value="ctx">
-    <RadzenTemplateForm TItem="ordemdeservico" Data="Model" Submit="ValidSubmit" id="editForm">
+    <RadzenRow>
+        <RadzenColumn Size="2" class="w-100">
+            <RadzenFormField Text="Id" >
+                <RadzenNumeric Format="000000" ShowUpDown=false Disabled=true Value="@Model.IdOrdemDeServico" TextAlign="Radzen.TextAlign.Center" />
+            </RadzenFormField>
+        </RadzenColumn>
+        <RadzenColumn Size="2">
+            <RadzenFormField Text="Data" class="w-100">
+                <RadzenDatePicker @bind-Value=Model.Data DateFormat="dd/MM/yyyy" />
+            </RadzenFormField>
+        </RadzenColumn>
+        <RadzenColumn Size=5>
+            <RadzenFormField Text=Equipamento class="w-100">
+                <RadzenDropDown @bind-Value="Model.Equipamento_IdEquipamento" AllowClear=true AllowFiltering=true AllowVirtualization=true TValue="long" Data="ctx.equipamentos" TextProperty="Descricao" ValueProperty="IdEquipamento" Change="EquipamentoChanged" ClearSearchAfterSelection="true" />
+                <RadzenButton Icon="edit" Style="max-width: 35px;" Click="()=>EditEquipamento(Model.Equipamento)" />
+            </RadzenFormField>
+        </RadzenColumn>
+        <RadzenColumn Size=5>
+            <RadzenFormField Text=Recebido class="w-100">
+                <RadzenDropDown @bind-Value="Model.FuncionarioEnt_IdFuncionario" AllowClear=true AllowFiltering=true AllowVirtualization=true TValue="long" Data="ctx.funcionarios" TextProperty="Nome" ValueProperty="IdFuncionario" @*Change="()=>FuncionarioChanged"*@ ClearSearchAfterSelection="true" />
+            </RadzenFormField>
+        </RadzenColumn>
+    </RadzenRow>
 
-        <DataAnnotationsValidator />
-        <ValidationSummary />
+    <RadzenFormField Text="Detalhes do Equipamento" class="w-100 mt-2 mb-2">
+        <RadzenTextArea @bind-Value="@Model.Acessorios" Rows="3" />
+    </RadzenFormField>
 
-        <RadzenRow>
-            <RadzenColumn Size="2" class="w-100">
-                <RadzenFormField Text="Id" >
-                    <RadzenNumeric Format="000000" ShowUpDown=false Disabled=true Value="@Model.IdOrdemDeServico" TextAlign="Radzen.TextAlign.Center" />
-                </RadzenFormField>
-            </RadzenColumn>
-            <RadzenColumn Size="2">
-                <RadzenFormField Text="Data" class="w-100">
-                    <RadzenDatePicker @bind-Value=Model.Data DateFormat="dd/MM/yyyy" />
-                </RadzenFormField>
-            </RadzenColumn>
-            <RadzenColumn Size=5>
-                <RadzenFormField Text=Equipamento class="w-100">
-                    <RadzenDropDown @bind-Value="Model.Equipamento_IdEquipamento" AllowClear=true AllowFiltering=true AllowVirtualization=true TValue="long" Data="ctx.equipamentos" TextProperty="Descricao" ValueProperty="IdEquipamento" Change="EquipamentoChanged" ClearSearchAfterSelection="true" />
-                    <RadzenButton Icon="edit" Style="max-width: 35px;" Click="()=>EditEquipamento(Model.Equipamento)" />
-                </RadzenFormField>
-            </RadzenColumn>
-            <RadzenColumn Size=5>
-                <RadzenFormField Text=Recebido class="w-100">
-                    <RadzenDropDown @bind-Value="Model.FuncionarioEnt_IdFuncionario" AllowClear=true AllowFiltering=true AllowVirtualization=true TValue="long" Data="ctx.funcionarios" TextProperty="Nome" ValueProperty="IdFuncionario" Change="FuncionarioChanged" ClearSearchAfterSelection="true" />
-                </RadzenFormField>
-            </RadzenColumn>
-        </RadzenRow>
+    <RadzenFormField Text="Defeito apresentado" class="w-100 mt-2 mb-2">
+        <RadzenTextArea @bind-Value="@Model.DefeitoApresentado" Rows="3" />
+    </RadzenFormField>
 
-        <RadzenFormField Text="Detalhes do Equipamento" class="w-100 mt-2 mb-2">
-            <RadzenTextArea @bind-Value="@Model.Acessorios" Rows="3" />
-        </RadzenFormField>
+    <div class="row my-1">
+        @* <FloatingLabel InputId="IdNotaVenda" Text="Id da Nota" Columns="2">
+            <input type="text" value="@Model.IdNotaVenda.ToString("000000")" class="form-control" disabled="disabled" />
+        </FloatingLabel>
+        <FloatingLabel InputId="Data" Text="Data" Columns="2">
+            <InputDate @bind-Value="Model!.Data" class="form-control"></InputDate>
+        </FloatingLabel> *@
+        @* <FloatingLabel InputId="Cliente_IdCliente" Class="d-flex" Text="Cliente" Columns="4">
+            <InputSelect2 
+                Context="Model" 
+                FormId="formCli" 
+                ValueProperty="(c)=>c.idCliente"
+                TItem="cliente" 
+                Value="@Model.Cliente?.idCliente" 
+                OnNeedItems="()=>ctx.clientes.ToArray()"
+                OnEdit="(c)=>{editCliente=c;StateHasChanged();}"
+                OnSelectionChanged="(i)=>Model.Cliente=i"
+            >
+            </InputSelect2>
+        </FloatingLabel> *@
+    </div>
 
-        <RadzenFormField Text="Defeito apresentado" class="w-100 mt-2 mb-2">
-            <RadzenTextArea @bind-Value="@Model.DefeitoApresentado" Rows="3" />
-        </RadzenFormField>
+    <GenericTemplate2 
+        Items="Model.Orcamentos" 
+        TItem="orcamento"
+        Contexto="Contexto"
+        >
+        <TableHeader>
+            <th>Quant</th>
+            <th>Un</th>
+            <th>Descrição</th>
+            <th>P. Venda</th>
+            <th>Desconto</th>
+            <th>Total</th>
+        </TableHeader>
+        <RowTemplate Context=Orca>
+            @foreach (itemdoorcamento item in Orca.Items) {
 
-        <div class="row my-1">
-            @* <FloatingLabel InputId="IdNotaVenda" Text="Id da Nota" Columns="2">
-                <input type="text" value="@Model.IdNotaVenda.ToString("000000")" class="form-control" disabled="disabled" />
-            </FloatingLabel>
-            <FloatingLabel InputId="Data" Text="Data" Columns="2">
-                <InputDate @bind-Value="Model!.Data" class="form-control"></InputDate>
-            </FloatingLabel> *@
-            @* <FloatingLabel InputId="Cliente_IdCliente" Class="d-flex" Text="Cliente" Columns="4">
-                <InputSelect2 
-                    Context="Model" 
-                    FormId="formCli" 
-                    ValueProperty="(c)=>c.idCliente"
-                    TItem="cliente" 
-                    Value="@Model.Cliente?.idCliente" 
-                    OnNeedItems="()=>ctx.clientes.ToArray()"
-                    OnEdit="(c)=>{editCliente=c;StateHasChanged();}"
-                    OnSelectionChanged="(i)=>Model.Cliente=i"
-                >
-                </InputSelect2>
-            </FloatingLabel> *@
-        </div>
+                <OrcamentoItem Model="item" Contexto="ctx" 
+                OnNeedCompras="()=>ctx.compras.Include(k=>k.Mercadoria).OrderBy(k=>k.Mercadoria.Descricao).ToArray()"
+                TotalChanged="TotalChanged" />
 
-        <GenericTemplate Items="Model.Orcamentos" TItem="orcamento">
-            <TableHeader>
-                <th>Quant</th>
-                <th>Un</th>
-                <th>Descrição</th>
-                <th>P. Venda</th>
-                <th>Desconto</th>
-                <th>Total</th>
-                <th><button type="button" class="btn btn-link" @onclick="AddOrca"><i class="oi oi-plus"></i></button></th>
-            </TableHeader>
-            <RowTemplate Context=Orca>
-                @foreach (itemdoorcamento item in Orca.Items) {
-
-                    <OrcamentoItem Model="item" Contexto="ctx" OnAskDelete="AskDeleteItem" 
-                    OnNeedCompras="()=>ctx.compras.Include(k=>k.Mercadoria).OrderBy(k=>k.Mercadoria.Descricao).ToArray()"
-                    TotalChanged="TotalChanged" />
-
-                }
-            </RowTemplate>
-            <TableFooter>
-                <tr>
-                    <td colspan="5" class="text-end">Total</td>
-                    <td></td>
-                </tr>
-            </TableFooter>
-        </GenericTemplate>
-
-    </RadzenTemplateForm>
-</CascadingValue>
+            }
+        </RowTemplate>
+        <TableFooter>
+            <tr>
+                <td colspan="5" class="text-end">Total</td>
+                <td>@_total.ToString("N2")</td>
+            </tr>
+        </TableFooter>
+    </GenericTemplate2>
 
 @if (askEditEqp != null) {
     <ModalDialog Title="Editar Equipamento" OnCancel="()=>askEditEqp=null" Size="modal-lg">
@@ -109,56 +103,17 @@
 }
 
 @code {
-    private ordemdeservico Model = new();
-    [Parameter] public long idOrdemDeServico { get; set; } = 0;
+    [Parameter] public ordemdeservico Model { get; set; } = default!;
+    [Parameter] public Contexto Contexto { get; set; } = default!;
 
     private Contexto ctx = new();
 
-    protected override void OnInitialized() {
-        if (idOrdemDeServico>0) {
-            Model = ctx.ordensdeservico.First(k=>k.IdOrdemDeServico == idOrdemDeServico);
-            if (Model == null)
-                Model = new ordemdeservico();
-            if (Model.Orcamentos.Count == 0)
-                AddOrca();
-        }
-    }
-
-    void ValidSubmit(ordemdeservico os)
+    float _total;
+    void TotalChanged(float total)
     {
-        if (Model.IdOrdemDeServico == 0)
-            ctx.Entry(os).State = EntityState.Added;
-        else
-            ctx.Entry(os).State = EntityState.Modified;
-
-        ctx.SaveChanges();
-
-        StateHasChanged();
+        _total = total;
     }
 
-    void AddOrca()
-    {
-        orcamento orca = new orcamento();
-        Model.Orcamentos.Add(orca);
-        StateHasChanged();
-    }
-
-    orcamento? askDeleteOrca = null;
-    void AskDeleteRow(itemdoorcamento orca)
-    {
-        //askDeleteOrca = orca;
-        StateHasChanged();
-    }
-    void TotalChanged(float total) {
-
-    }
-    void DeleteRow(bool confirm)
-    {
-        if (confirm)
-            Model.Orcamentos.Remove(askDeleteOrca);
-        askDeleteOrca=null;
-        StateHasChanged();
-    }
     void EquipamentoChanged() {
         Model.Equipamento = ctx.equipamentos.Find(Model.Equipamento_IdEquipamento);
     }
@@ -175,12 +130,5 @@
             ctx.Entry(eqp).State = EntityState.Modified;
         ctx.SaveChanges();
         askEditEqp = null;
-    }
-
-    void FuncionarioChanged() {
-    }
-
-    void AskDeleteItem(itemdoorcamento item) {
-
     }
 }

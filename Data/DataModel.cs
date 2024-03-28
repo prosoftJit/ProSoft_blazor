@@ -216,7 +216,7 @@ namespace ProSoft.Data
         public long Compra_IdCompra { get; set; }
         [ForeignKey(nameof(Compra_IdCompra))]
         public virtual compra Compra { get; set; }
-        public float Quantidade { get; set; }
+        public float Quantidade { get; set; } = 1;
         public long Orcamento_IdOrcamento { get; set; }
         [ForeignKey(nameof(Orcamento_IdOrcamento))]
         public virtual orcamento Orcamento { get; set; }
@@ -416,7 +416,7 @@ namespace ProSoft.Data
         public long Compra_IdCompra { get; set; }
         [ForeignKey(nameof(Compra_IdCompra))]
         public virtual compra Compra { get; set; }
-        public float Quantidade { get; set; }
+        public float Quantidade { get; set; } = 1;
         public long NotaSaida_IdNotaSaida { get; set; }
         [ForeignKey(nameof(NotaSaida_IdNotaSaida))]
         public virtual notavenda Nota { get; set; }

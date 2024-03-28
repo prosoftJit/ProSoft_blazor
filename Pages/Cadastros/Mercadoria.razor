@@ -4,38 +4,26 @@
 @using ProSoft.Data
 @using ProSoft.Components
 
-<RadzenTemplateForm TItem=mercadoria Data=Model Submit=Submit >
+<RadzenTemplateForm TItem=mercadoria Data=Model Submit=Submit id=editForm >
 
     <DataAnnotationsValidator />
     <ValidationSummary Model="Model" />
 
     <RadzenRow class="mb-3">
         <RadzenColumn Size=1>
-            <RadzenFormField Text="Id da Mercadoria" class="w-100">
-                <RadzenNumeric Format="000000" @bind-Value="Model.IdMercadoria" Disabled="true" TextAlign="TextAlign.Center" />
-            </RadzenFormField>
+            <FluentTextField Value='@Model.IdMercadoria.ToString("000000")' Disabled=true Label="Id da Mercadoria" />
         </RadzenColumn>
         <RadzenColumn Size="5">
-            <RadzenFormField Text="Descrição" class="w-100">
-                <RadzenTextBox @bind-Value="Model.Descricao" />
-                <RadzenLengthValidator Min="5" Max="200" Text="Descrição precisa ter entre 5 e 200 caracteres" /> 
-            </RadzenFormField>
+            <FluentTextField @bind-Value="Model.Descricao" Label="Descrição" Required=true />
         </RadzenColumn>
         <RadzenColumn Size=2>
-            <RadzenFormField Text="NCM" class="w-100">
-                <RadzenTextBox @bind-Value="Model.NCM" />
-            </RadzenFormField>
+            <FluentTextField @bind-Value="Model.NCM" Label="NCM" />
         </RadzenColumn>
         <RadzenColumn Size=1>
-            <RadzenFormField Text="Unidade" class="w-100">
-                <RadzenTextBox @bind-Value="Model.Unidade" />
-                <RadzenRequiredValidator Text="Unidade é informação obrigatória" />
-            </RadzenFormField>
+            <FluentTextField @bind-Value="Model.Unidade" Label="Unidade" />
         </RadzenColumn>
         <RadzenColumn Size=2>
-            <RadzenFormField Text="Código" class="w-100">
-                <RadzenTextBox @bind-Value="Model.Codigo" />
-            </RadzenFormField>
+            <FluentTextField @bind-Value="Model.Codigo" Label="Código" />
         </RadzenColumn>
     </RadzenRow>
 

@@ -1,0 +1,81 @@
+@using Microsoft.EntityFrameworkCore
+@using ProSoft.Data
+
+@namespace ProSoft.Components
+
+@typeparam TItem where TItem: class, new()
+
+<RadzenStack Orientation="Radzen.Orientation.Horizontal" Gap="0">
+<RadzenDropDown
+    Class="w-100"
+    AllowClear="true" 
+    TValue=TItem
+    @bind-Value=Value 
+    AllowVirtualization="true"
+    AllowFiltering="true" 
+    Data=GetItems?.Invoke() 
+    TextProperty=@TextProperty 
+    Change="OnSelectChanged"
+    />
+
+@if (OnEdit != null)
+{
+    <RadzenButton Style="max-width: 35px;" IconColor="danger" Icon=edit Click="()=>askEdit=Value??new()" />
+}
+</RadzenStack>
+
+@if (askEdit != null && OnEdit != null) {
+    <ModalDialog Title="Modal" OnCancel="()=>askEdit = null" Size="modal-fullscreen">
+        <ModalBody>
+            <RadzenTemplateForm Data="askEdit" id="editForm" Submit="Submit" TItem="TItem">
+                <ValidationSummary />
+                @OnEdit!(askEdit!)
+            </RadzenTemplateForm>
+        </ModalBody>
+        <ModalFooter>
+            <RadzenButton Icon="save" Text="Salvar" Form="editForm" ButtonType="Radzen.ButtonType.Submit" />
+            @if (OnDelete != null) {
+            <RadzenButton Icon="delete" Text="Excluir" ButtonStyle="ButtonStyle.Danger" Click="()=>askDelete=askEdit" />
+            }
+        </ModalFooter>
+    </ModalDialog>
+}
+
+@if (askDelete != null) {
+    <ModalConfirm Title="Excluir" Message="Confirma exclusão?" OnClose="ConfirmClose"/>
+}
+
+@code {
+    [Parameter] public TItem? Value {get;set;} = null;
+    [Parameter] public Func<IEnumerable<TItem>>? GetItems {get;set;} = null;
+    [Parameter, EditorRequired] public string TextProperty { get; set; } = default!;
+    [Parameter] public RenderFragment<TItem>? OnEdit {get;set;} = null;
+    [Parameter] public EventCallback<TItem> ValueChanged {get;set;}
+    [Parameter] public Action<Contexto, TItem>? OnDelete {get;set;} = null;
+    [Parameter] public Action<TItem>? OnChange { get; set; } = null; 
+    TItem? askEdit=null;
+    TItem? askDelete=null;
+    Contexto ctx = new();
+
+    void OnSelectChanged(object obj) {
+        // object is the new selection
+        OnChange?.Invoke((obj as TItem)!);
+    }
+
+    void ConfirmClose(bool confirm) {
+        if (confirm && askEdit != null) {
+            OnDelete?.Invoke(ctx, askEdit);
+            askEdit = null;
+        }
+        askDelete = null;
+        StateHasChanged();
+    }
+
+    void Submit(TItem item)
+    {
+        if (ctx.Entry(item).State == EntityState.Detached)
+            ctx.Add(item);
+
+        ctx.SaveChanges();
+    }
+}

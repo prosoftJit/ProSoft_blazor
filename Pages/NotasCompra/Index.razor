@@ -23,7 +23,7 @@
             <th>Valor</th>
         </TableHeader>
         <RowTemplate Context="nfc">
-            <td class="text-center"><a href="/NotasCompra/Form/@(nfc.IdNotaCompra)">@nfc.IdNotaCompra.ToString("000000")</a></td>
+            <td class="text-center">@nfc.IdNotaCompra.ToString("000000")</td>
             <td>@nfc.NumeroNF</td>
             <td>@nfc.Data.ToShortDateString()</td>
             <td>@nfc.Fornecedor?.Nome</td>

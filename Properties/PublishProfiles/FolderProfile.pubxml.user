@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\ProSoft_blazor_publish</_PublishTargetUrl>
+    <History>True|2024-03-15T19:11:15.4356556Z;True|2024-03-15T16:08:01.7545575-03:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

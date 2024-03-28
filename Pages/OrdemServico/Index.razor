@@ -3,35 +3,33 @@
 @using Microsoft.EntityFrameworkCore
 @using ProSoft.Components
 
-<PageHeader Title="Ordens de Serviço" Description="Ordens de serviço ao cliente">
-    <BarItems>
-        <RadzenButton ButtonStyle="Radzen.ButtonStyle.Primary" Icon="add" Text="Ordem" Click="AddOs" />
-    </BarItems>
-</PageHeader>
-
-<GenericTemplate Items="ordensDeServico">
+<GenericTemplate2 
+    Items="ordensDeServico"
+    HeaderTitle="Ordens de Serviço"
+    ItemEditClick="(os)=>askEdit=os"
+    OnDelete="(os)=>askDelete=os"
+    Contexto="ctx"
+    >
     <TableHeader>
         <th>Id</th>
-        <th>Número</th>
         <th>Data</th>
         <th>Cliente</th>
-        <th></th>
     </TableHeader>
     <RowTemplate Context="os">
-        <td class="text-center"><a href="" @onclick="()=>askEdit=os" @onclick:preventDefault>@os.IdOrdemDeServico.ToString("000000")</a></td>
-        <td></td>
+        <td class="text-center">@os.IdOrdemDeServico.ToString("000000")</td>
         <td>@os.Data.ToShortDateString()</td>
-        <td></td>
-        <td width="1%"><a href="" @onclick="()=>askDelete=os.IdOrdemDeServico" @onclick:preventDefault><i class="oi oi-trash"></i></a></td>
+        <td>@os.Orcamentos.FirstOrDefault()?.Cliente.Nome</td>
     </RowTemplate>
-</GenericTemplate>
+    <ItemEditForm Context="os">
+        <OS Model="os" Contexto="ctx" />
+    </ItemEditForm>
+</GenericTemplate2>
 
 @if (askEdit != null)
 {
     <ModalDialog Title="Ordens de Serviço" Size="modal-fullscreen" OnCancel="()=>askEdit=null">
         <ModalBody>
-            <PageHeader Title="Ordem de Serviço"></PageHeader>
-            <OS idOrdemDeServico="askEdit.IdOrdemDeServico" />
+            <OS Model="askEdit" />
         </ModalBody>
         <ModalFooter>
             <button form="editForm" type="submit" Class="btn btn-success">Salvar</button>
@@ -39,22 +37,21 @@
     </ModalDialog>
 }
 
-@if (askDelete > 0)
+@if (askDelete != null)
 {
     @* <ModalConfirm Title="Excluir" Message="Confirma exclusão?"></ModalConfirm> *@
 }
 
 @code {
     ordemdeservico? askEdit = null;
-    long askDelete = 0;
+    ordemdeservico? askDelete = null;
     [Inject] NotificationService notificationService { get; set; } = default!;
     ordemdeservico[] ordens = Array.Empty<ordemdeservico>();
 
     void Delete()
     {
-        if (askDelete > 0) {
-            ordemdeservico os = ctx.ordensdeservico.Find(askDelete)!;
-            ctx.ordensdeservico.Remove(os);
+        if (askDelete != null) {
+            ctx.ordensdeservico.Remove(askDelete);
             ctx.SaveChanges();
             LoadOrdens();
             notificationService.Notify(NotificationSeverity.Success, "Ordem de Serviço", "Ordem de serviço excluída com sucesso!");
@@ -65,7 +62,7 @@
     }
 
     ordemdeservico[]? ordensDeServico;
-    Contexto ctx = new Contexto();
+    Contexto ctx = new();
 
     protected override async Task OnInitializedAsync()
     {

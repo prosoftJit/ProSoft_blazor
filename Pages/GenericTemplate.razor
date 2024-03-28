@@ -14,7 +14,7 @@
             <tr>
                 @TableHeader
                 @if (OnAdd != null) {
-                <td style="width: 1%;"><RadzenButton Icon=add Click="()=>OnAdd?.Invoke()"/></td>
+                <td style="width: 1%;"><RadzenButton Icon=add Variant=Variant.Text Click="()=>OnAdd?.Invoke()"/></td>
                 }
             </tr>
         </thead>
@@ -24,7 +24,7 @@
                 <tr>
                     @RowTemplate?.Invoke(item)
                     @if (OnDelete != null) {
-                    <td><RadzenButton Icon=delete Click="()=>askDelete=item"/></td>
+                    <td><RadzenButton Icon=delete Variant=Variant.Text Click="()=>askDelete=item"/></td>
                     }
                 </tr>
             }

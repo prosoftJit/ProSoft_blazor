@@ -88,9 +88,6 @@ C:\ProSoft_blazor\obj\Debug\net6.0\ProSoft.MvcApplicationPartsAssemblyInfo.cache
 C:\ProSoft_blazor\obj\Debug\net6.0\ProSoft.RazorAssemblyInfo.cache
 C:\ProSoft_blazor\obj\Debug\net6.0\ProSoft.RazorAssemblyInfo.cs
 C:\ProSoft_blazor\obj\Debug\net6.0\ProSoft.sourcelink.json
-C:\ProSoft_blazor\obj\Debug\net6.0\ProSoft.dll
-C:\ProSoft_blazor\obj\Debug\net6.0\refint\ProSoft.dll
-C:\ProSoft_blazor\obj\Debug\net6.0\ProSoft.pdb
 C:\ProSoft_blazor\bin\Debug\net6.0\appsettings.Development.json
 C:\ProSoft_blazor\bin\Debug\net6.0\appsettings.json
 C:\ProSoft_blazor\bin\Debug\net6.0\ProSoft.staticwebassets.runtime.json
@@ -158,5 +155,8 @@ C:\ProSoft_blazor\obj\Debug\net6.0\scopedcss\Shared\NavMenu.razor.rz.scp.css
 C:\ProSoft_blazor\obj\Debug\net6.0\scopedcss\bundle\ProSoft.styles.css
 C:\ProSoft_blazor\obj\Debug\net6.0\scopedcss\projectbundle\ProSoft.bundle.scp.css
 C:\ProSoft_blazor\obj\Debug\net6.0\ProSoft.csproj.CopyComplete
+C:\ProSoft_blazor\obj\Debug\net6.0\ProSoft.dll
+C:\ProSoft_blazor\obj\Debug\net6.0\refint\ProSoft.dll
+C:\ProSoft_blazor\obj\Debug\net6.0\ProSoft.pdb
 C:\ProSoft_blazor\obj\Debug\net6.0\ProSoft.genruntimeconfig.cache
 C:\ProSoft_blazor\obj\Debug\net6.0\ref\ProSoft.dll

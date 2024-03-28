@@ -1,0 +1,133 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\ProSoft_blazor\\obj\\Release\\net6.0\\scopedcss\\projectbundle\\ProSoft.bundle.scp.css",
+      "PackagePath": "staticwebassets\\ProSoft.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\Rotativa\\GeneratePDFController.cs",
+      "PackagePath": "staticwebassets\\Rotativa\\GeneratePDFController.cs"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\Rotativa\\GeneratePdf.cs",
+      "PackagePath": "staticwebassets\\Rotativa\\GeneratePdf.cs"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\Rotativa\\wkhtmltopdf.exe",
+      "PackagePath": "staticwebassets\\Rotativa\\wkhtmltopdf.exe"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\content\\WhatsApp Image 2021-02-07 at 19.09.43 - Copia.jpeg",
+      "PackagePath": "staticwebassets\\content\\WhatsApp Image 2021-02-07 at 19.09.43 - Copia.jpeg"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\content\\WhatsApp Image 2021-02-07 at 19.09.43 - Copia.png",
+      "PackagePath": "staticwebassets\\content\\WhatsApp Image 2021-02-07 at 19.09.43 - Copia.png"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\content\\WhatsApp_Image_2021-02-07_at_19.09.430113-96-wood.png",
+      "PackagePath": "staticwebassets\\content\\WhatsApp_Image_2021-02-07_at_19.09.430113-96-wood.png"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\css\\Autocomplete.css",
+      "PackagePath": "staticwebassets\\css\\Autocomplete.css"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\css\\Toast_ps.css",
+      "PackagePath": "staticwebassets\\css\\Toast_ps.css"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "PackagePath": "staticwebassets\\css\\open-iconic"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
+      "PackagePath": "staticwebassets\\css\\open-iconic"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\README.md",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\README.md"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.eot"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.otf"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.svg"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.ttf"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\lib\\jquery\\jquery.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\jquery.js"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\lib\\jquery\\jquery.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\jquery.min.js"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\lib\\jquery\\jquery.min.map",
+      "PackagePath": "staticwebassets\\lib\\jquery\\jquery.min.map"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\lib\\jquery\\jquery.slim.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\jquery.slim.js"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\lib\\jquery\\jquery.slim.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\jquery.slim.min.js"
+    },
+    {
+      "Id": "C:\\ProSoft_blazor\\wwwroot\\lib\\jquery\\jquery.slim.min.map",
+      "PackagePath": "staticwebassets\\lib\\jquery\\jquery.slim.min.map"
+    },
+    {
+      "Id": "obj\\Release\\net6.0\\staticwebassets\\msbuild.ProSoft.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Release\\net6.0\\staticwebassets\\msbuild.build.ProSoft.props",
+      "PackagePath": "build\\ProSoft.props"
+    },
+    {
+      "Id": "obj\\Release\\net6.0\\staticwebassets\\msbuild.buildMultiTargeting.ProSoft.props",
+      "PackagePath": "buildMultiTargeting\\ProSoft.props"
+    },
+    {
+      "Id": "obj\\Release\\net6.0\\staticwebassets\\msbuild.buildTransitive.ProSoft.props",
+      "PackagePath": "buildTransitive\\ProSoft.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

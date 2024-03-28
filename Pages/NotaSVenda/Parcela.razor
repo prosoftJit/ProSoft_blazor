@@ -3,12 +3,12 @@
 @using ProSoft.Data
 @using ProSoft.Components
 @using Microsoft.EntityFrameworkCore
-@inject DialogService dialogService
+@inject Radzen.DialogService dialogService
 
 <td width="10%"><RadzenDatePicker @bind-Value="Model.Vencimento" /></td>
 <td width="10%"><RadzenNumeric Format="N2" ShowUpDown=false TextAlign=TextAlign.Right @bind-Value="Model.Valor" Change=OnTotalChanged /></td>
 <td>
-    <RadzenButton Icon="delete" ButtonType=ButtonType.Button Variant=Variant.Filled Click=@(args => AskDeleteParcela(args) )></RadzenButton>
+    <RadzenButton Icon="delete" ButtonType=Radzen.ButtonType.Button Variant=Variant.Filled Click=@(args => AskDeleteParcela(args) )></RadzenButton>
 </td>
 
 @code {

@@ -7,9 +7,6 @@
 
 <RadzenTemplateForm Data=Model TItem=notacompra id=formId Submit=Submit>
     <PageHeader Title="Compras" Description="Nota Fiscal de Compras">
-        <BarItems>
-            <RadzenButton Icon="add" Click="()=>AddRow()">Novo Item</RadzenButton>
-        </BarItems>
     </PageHeader>
 
     <DataAnnotationsValidator />
@@ -17,24 +14,40 @@
 
     <RadzenRow RowGap="1rem">
         <RadzenColumn Size="2">
-            <RadzenFormField class="w-100" Text="Id">
-                <RadzenNumeric Format="000000" Value="@Model.IdNotaCompra" TextAlign="TextAlign.Center" Disabled=true ShowUpDown=false />
-            </RadzenFormField>
+            <FluentTextField Label="Id" Value="@Model.IdNotaCompra.ToString("000000")" Disabled=true />
         </RadzenColumn>
         <RadzenColumn Size="2">
-            <RadzenFormField class="w-100" Text="Número da NF">
-                <RadzenTextBox @bind-Value="Model.NumeroNF" TextAlign=TextAlign.Center />
-            </RadzenFormField>
+            <FluentTextField Label="Número da NF" @bind-Value="Model.NumeroNF" />
         </RadzenColumn>
         <RadzenColumn Size="2">
-            <RadzenFormField class="w-100" Text="Data">
-                <RadzenDatePicker @bind-Value="Model.Data" />
-            </RadzenFormField>
+            <FluentDatePicker Label="Data" Value="Model.Data" ValueChanged="e=>Model.Data=e.Value" />
         </RadzenColumn>
         <RadzenColumn Size="3">
+            <FluentAutocomplete 
+                TOption="fornecedor"  
+                MaximumSelectedOptions="1"
+                AutoComplete="off"
+                Label="Fornecedor"
+                OnOptionsSearch="(e)=>e.Items=Contexto.fornecedores.Where(k=>k.Nome.Contains(e.Text)).OrderBy(k=>k.Nome)"
+                Placeholder="Selecione um fornecedor"
+                OptionText="e=>e.Nome"
+                @bind-SelectedOptions=@fornecedores
+                />
+
+
             <RadzenFormField class="w-100" Text="Fornecedor">
-                <RadzenDropDown AllowClear="true" class="form-control" @bind-Value=Model.Fornecedor_IdFornecedor AllowVirtualization="true"
-                        AllowFiltering="true" Data=Contexto.fornecedores.ToArray() TextProperty="Nome" ValueProperty="IdFornecedor" Change='()=>Contexto.Entry(Model).Navigation("Fornecedor").Load()' />
+            <Dropdown2 
+                TItem="fornecedor"
+                @bind-Value="Model.Fornecedor"
+                GetItems="()=>Contexto.fornecedores.OrderBy(k=>k.Nome)" 
+                TextProperty="Nome" 
+                OnDelete="(ctx, item)=>{ctx.fornecedores.Remove(item);ctx.SaveChanges();}"
+                OnChange="(item)=>{Model.Fornecedor=item;StateHasChanged();}"                
+                >
+                <OnEdit Context=forn>
+                    <ProSoft.Pages.Cadastros.Fornecedor Model=forn Contexto="new Contexto()" />
+                </OnEdit>
+            </Dropdown2>
             </RadzenFormField>
         </RadzenColumn>
         <RadzenColumn Size="3">
@@ -75,36 +88,33 @@
     [Inject] public NotificationService notificationService {get;set;} = default!;
     [Parameter, EditorRequired] public Contexto Contexto {get;set;} = default!;
 
+    IEnumerable<fornecedor> fornecedores = new List<fornecedor>();
+
+    protected override void OnInitialized()
+    {
+        if (Model.Fornecedor != null)
+        {
+            fornecedores = new fornecedor[] { Model.Fornecedor };
+        }
+
+        base.OnInitialized();
+    }
+
     void AddRow()
     {
         compra c = new();
         Model.Items.Add(c);
         StateHasChanged();
     }
-
-    void CalcTotal()
-    {
-            StateHasChanged();
-            return;
-
-        @* float tot = 0;
-        if (Model == null)
-            return;
-            
-         tot = Model.Items.Sum(k => (k.Quantidade * k.Custo));
-        if (tot != _total)
-        {
-            _total = tot;
-            StateHasChanged();
-        } *@
-    }
-
     void Submit(notacompra nc)
     {
         if (Model!.IdNotaCompra == 0)
             Contexto.Entry(Model).State = EntityState.Added;
         else
             Contexto.Entry(Model).State = EntityState.Modified;
+
+        if (fornecedores != null)
+            Model.Fornecedor = fornecedores.First();
 
         Contexto.SaveChanges();
 
@@ -115,18 +125,6 @@
         StateHasChanged();
     }
 
-    protected override void OnInitialized()
-    {
-        //if (Model.Items.Count == 0)
-        //    AddRow();
-
-        //CalcTotal();
-
-        //editContext = new EditContext(Model);
-
-        //base.OnInitialized();
-    }
-
     void DeleteRow(compra compra)
     {
         Model!.Items.Remove(compra);
@@ -134,19 +132,5 @@
 
     void MercadoriaChanged(compra c) {
         c.Mercadoria = Contexto.Find<mercadoria>(c.Mercadoria_IdMercadoria);
-    }
-
-    EditContext editContext = default!;
-    void DropdownClick(string value) {
-        switch (value) {
-            case "1": {
-                editContext.Validate();
-                break;
-            }
-            case "2": {
-                AddRow();
-                break;
-            }
-        }
     }
 }
