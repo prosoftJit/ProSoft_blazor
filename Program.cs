@@ -18,6 +18,7 @@ builder.Services.AddRadzenComponents();
 
 builder.Services.AddHttpClient();
 builder.Services.AddFluentUIComponents();
+builder.Services.AddDataGridEntityFrameworkAdapter();
 
 var app = builder.Build();
 

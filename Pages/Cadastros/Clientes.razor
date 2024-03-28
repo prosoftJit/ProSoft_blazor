@@ -5,23 +5,26 @@
 @using Microsoft.EntityFrameworkCore
 
 <PageHeader Title="Clientes" Description="Listagem de clientes cadastrados no sistema">
-    <BarItems>
-        <RadzenButton Text="Cliente" Icon="add" Click="()=>askEdit=new()" />
-    </BarItems>
 </PageHeader>
 
-<GenericTemplate Items="clientes">
-    <TableHeader>
-        <th>Id</th>
-        <th>Nome</th>
-        <th></th>
-    </TableHeader>
-    <RowTemplate Context="cli">
-        <td class="text-center"><a href="" @onclick="()=>askEdit=cli" @onclick:preventDefault>@cli.idCliente.ToString("000000")</a></td>
-        <td>@cli.Nome</td>
-        <td><button type="button" class="dropdown-item" @onclick="()=>AskDelete(cli.idCliente)"><i class="oi oi-trash"></i> Excluir</button></td>
-    </RowTemplate>
-</GenericTemplate>
+<FluentDataGrid Items="ctx.clientes.OrderBy(k=>k.Nome)" TGridItem="cliente" Pagination="paginator" >
+    <PropertyColumn Title="Id" Property='p => p.idCliente.ToString("000000")' Sortable="true" />
+    <PropertyColumn Title="Nome" Property="p => p.Nome" Sortable="true" />
+    <TemplateColumn Title="Actions" Align="@Align.End" Context="item">
+        <FluentButton IconEnd="@(new Icons.Regular.Size12.Edit())" OnClick="()=>askEdit=item" />
+        <FluentButton IconEnd="@(new Icons.Regular.Size12.Delete())"  />
+    </TemplateColumn>
+</FluentDataGrid>
+
+<FluentPaginator State="paginator" >
+    <PaginationTextTemplate>
+        <strong>@paginator.TotalItemCount</strong> items.
+        <FluentButton Appearance=Appearance.Hypertext IconStart="new Icons.Regular.Size12.Add()" OnClick="()=>askEdit=new()">Adicionar</FluentButton>
+    </PaginationTextTemplate>
+    <PaginationTextTemplate>
+        Página <strong>@(paginator.CurrentPageIndex+1)</strong> de <strong>@(paginator.LastPageIndex+1)</strong>
+    </PaginationTextTemplate>
+</FluentPaginator>
 
 @if (askDelete != null)
 {
@@ -31,14 +34,14 @@
 @if (!EditHidden)
 {
     <FluentDialog @bind-Hidden="EditHidden" TrapFocus="true" >
-    <FluentDialogHeader><h5>Editar cliente</h5></FluentDialogHeader>
-     <ProSoft.Pages.Cadastros.Cliente Model="askEdit" />
+        <FluentDialogHeader><h5>Editar cliente</h5></FluentDialogHeader>
+        <ProSoft.Pages.Cadastros.Cliente Model="askEdit" />
     
-    <FluentDialogFooter>
-        <FluentButton Appearance="Appearance.Hypertext" OnClick="()=>EditHidden=true">Fechar</FluentButton>
-        <FluentButton Id="submit" FormId="cliForm">Salvar</FluentButton>
-    </FluentDialogFooter>
-</FluentDialog>
+        <FluentDialogFooter>
+            <FluentButton Appearance="Appearance.Hypertext" OnClick="()=>EditHidden=true">Fechar</FluentButton>
+            <FluentButton Id="submit" FormId="cliForm">Salvar</FluentButton>
+        </FluentDialogFooter>
+    </FluentDialog>
 }
 
 
@@ -60,6 +63,8 @@
 
     cliente? askDelete = null;
     bool EditHidden { get { return askEdit == null; } set { if (value) askEdit = null; } }
+
+    PaginationState paginator = new PaginationState { ItemsPerPage = 10 };
 
     private void ClientSave()
     {

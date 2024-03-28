@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\ProSoft_blazor\\ProSoft.csproj": {}
+    "E:\\ProSoft_blazor\\ProSoft.csproj": {}
   },
   "projects": {
-    "C:\\ProSoft_blazor\\ProSoft.csproj": {
+    "E:\\ProSoft_blazor\\ProSoft.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\ProSoft_blazor\\ProSoft.csproj",
+        "projectUniqueName": "E:\\ProSoft_blazor\\ProSoft.csproj",
         "projectName": "ProSoft",
-        "projectPath": "C:\\ProSoft_blazor\\ProSoft.csproj",
+        "projectPath": "E:\\ProSoft_blazor\\ProSoft.csproj",
         "packagesPath": "C:\\Users\\paulo\\.nuget\\packages\\",
-        "outputPath": "C:\\ProSoft_blazor\\obj\\",
+        "outputPath": "E:\\ProSoft_blazor\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\paulo\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -55,6 +55,10 @@
               "version": "[6.0.26, )"
             },
             "Microsoft.Fast.Components.FluentUI": {
+              "target": "Package",
+              "version": "[3.6.0, )"
+            },
+            "Microsoft.Fast.Components.FluentUI.DataGrid.EntityFrameworkAdapter": {
               "target": "Package",
               "version": "[3.6.0, )"
             },

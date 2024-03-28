@@ -12,6 +12,7 @@
           "Microsoft.EntityFrameworkCore": "6.0.26",
           "Microsoft.EntityFrameworkCore.Tools": "6.0.26",
           "Microsoft.Fast.Components.FluentUI": "3.6.0",
+          "Microsoft.Fast.Components.FluentUI.DataGrid.EntityFrameworkAdapter": "3.6.0",
           "Microsoft.Fast.Components.FluentUI.Icons": "3.6.0",
           "MySql.EntityFrameworkCore": "6.0.25",
           "MySqlConnector": "2.3.5",
@@ -297,6 +298,18 @@
         },
         "runtime": {
           "lib/net6.0/Microsoft.Fast.Components.FluentUI.dll": {
+            "assemblyVersion": "3.6.0.24067",
+            "fileVersion": "3.6.0.24067"
+          }
+        }
+      },
+      "Microsoft.Fast.Components.FluentUI.DataGrid.EntityFrameworkAdapter/3.6.0": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "6.0.26",
+          "Microsoft.Fast.Components.FluentUI": "3.6.0"
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.Fast.Components.FluentUI.DataGrid.EntityFrameworkAdapter.dll": {
             "assemblyVersion": "3.6.0.24067",
             "fileVersion": "3.6.0.24067"
           }
@@ -891,6 +904,13 @@
       "sha512": "sha512-ZPNL9EG5AynbDakj1Lt42qWjEtCVNI4B06Jk7eNexT6UohPYi7RvRSYX7NrBtURlg3MvH5LJK/ElmaD+QNOLaA==",
       "path": "microsoft.fast.components.fluentui/3.6.0",
       "hashPath": "microsoft.fast.components.fluentui.3.6.0.nupkg.sha512"
+    },
+    "Microsoft.Fast.Components.FluentUI.DataGrid.EntityFrameworkAdapter/3.6.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ziCMec8C/TRm6RfDRArNPZiL+RYEMlVZm4pJ0j1StxcbpKbhKAbZwSy6EfrL4PB+PmdJKsNFXHQzUDqPPplHlg==",
+      "path": "microsoft.fast.components.fluentui.datagrid.entityframeworkadapter/3.6.0",
+      "hashPath": "microsoft.fast.components.fluentui.datagrid.entityframeworkadapter.3.6.0.nupkg.sha512"
     },
     "Microsoft.Fast.Components.FluentUI.Icons/3.6.0": {
       "type": "package",

@@ -537,6 +537,23 @@
           "buildMultiTargeting/Microsoft.Fast.Components.FluentUI.props": {}
         }
       },
+      "Microsoft.Fast.Components.FluentUI.DataGrid.EntityFrameworkAdapter/3.6.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "6.0.25",
+          "Microsoft.Fast.Components.FluentUI": "3.6.0"
+        },
+        "compile": {
+          "lib/net6.0/Microsoft.Fast.Components.FluentUI.DataGrid.EntityFrameworkAdapter.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.Fast.Components.FluentUI.DataGrid.EntityFrameworkAdapter.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Microsoft.Fast.Components.FluentUI.Icons/3.6.0": {
         "type": "package",
         "dependencies": {
@@ -2112,6 +2129,23 @@
         "staticwebassets/lib/monaco-editor/min/vs/loader.min.js"
       ]
     },
+    "Microsoft.Fast.Components.FluentUI.DataGrid.EntityFrameworkAdapter/3.6.0": {
+      "sha512": "ziCMec8C/TRm6RfDRArNPZiL+RYEMlVZm4pJ0j1StxcbpKbhKAbZwSy6EfrL4PB+PmdJKsNFXHQzUDqPPplHlg==",
+      "type": "package",
+      "path": "microsoft.fast.components.fluentui.datagrid.entityframeworkadapter/3.6.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "icon.png",
+        "lib/net6.0/Microsoft.Fast.Components.FluentUI.DataGrid.EntityFrameworkAdapter.dll",
+        "lib/net6.0/Microsoft.Fast.Components.FluentUI.DataGrid.EntityFrameworkAdapter.xml",
+        "lib/net7.0/Microsoft.Fast.Components.FluentUI.DataGrid.EntityFrameworkAdapter.dll",
+        "lib/net7.0/Microsoft.Fast.Components.FluentUI.DataGrid.EntityFrameworkAdapter.xml",
+        "microsoft.fast.components.fluentui.datagrid.entityframeworkadapter.3.6.0.nupkg.sha512",
+        "microsoft.fast.components.fluentui.datagrid.entityframeworkadapter.nuspec"
+      ]
+    },
     "Microsoft.Fast.Components.FluentUI.Icons/3.6.0": {
       "sha512": "H2ZLoQTht/5vNz2afCG7t9QRhXcG+ZBEZHmte4d8i8jEX7oi7BftBLch0a+iijfrPXLwomW7yC4B+8/ZvJofSQ==",
       "type": "package",
@@ -3486,6 +3520,7 @@
       "Microsoft.EntityFrameworkCore >= 6.0.26",
       "Microsoft.EntityFrameworkCore.Tools >= 6.0.26",
       "Microsoft.Fast.Components.FluentUI >= 3.6.0",
+      "Microsoft.Fast.Components.FluentUI.DataGrid.EntityFrameworkAdapter >= 3.6.0",
       "Microsoft.Fast.Components.FluentUI.Icons >= 3.6.0",
       "MySql.EntityFrameworkCore >= 6.0.25",
       "MySqlConnector >= 2.3.5",
@@ -3498,11 +3533,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\ProSoft_blazor\\ProSoft.csproj",
+      "projectUniqueName": "E:\\ProSoft_blazor\\ProSoft.csproj",
       "projectName": "ProSoft",
-      "projectPath": "C:\\ProSoft_blazor\\ProSoft.csproj",
+      "projectPath": "E:\\ProSoft_blazor\\ProSoft.csproj",
       "packagesPath": "C:\\Users\\paulo\\.nuget\\packages\\",
-      "outputPath": "C:\\ProSoft_blazor\\obj\\",
+      "outputPath": "E:\\ProSoft_blazor\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\paulo\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -3546,6 +3581,10 @@
             "version": "[6.0.26, )"
           },
           "Microsoft.Fast.Components.FluentUI": {
+            "target": "Package",
+            "version": "[3.6.0, )"
+          },
+          "Microsoft.Fast.Components.FluentUI.DataGrid.EntityFrameworkAdapter": {
             "target": "Package",
             "version": "[3.6.0, )"
           },

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "FlRpStEP+NfZ+1n/6ZZZG4AjBxVdKwgf6irwX+TtHmcrocpzRUnn6nhldlBSkmUf2zgAwLjiZh+gBrGzUpq8HQ==",
+  "dgSpecHash": "DY6PuAzqIxgHAvIUw5UgTi+ldeS065AdX6ADloYAMSTulZEqXQZs5amGpn6F50rdFSlSiF6ScG9WSpWBO9vf3w==",
   "success": true,
-  "projectFilePath": "C:\\ProSoft_blazor\\ProSoft.csproj",
+  "projectFilePath": "E:\\ProSoft_blazor\\ProSoft.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\paulo\\.nuget\\packages\\blazor.bootstrap\\1.10.5\\blazor.bootstrap.1.10.5.nupkg.sha512",
     "C:\\Users\\paulo\\.nuget\\packages\\bouncycastle.cryptography\\2.2.1\\bouncycastle.cryptography.2.2.1.nupkg.sha512",
@@ -37,6 +37,7 @@
     "C:\\Users\\paulo\\.nuget\\packages\\microsoft.extensions.options\\6.0.0\\microsoft.extensions.options.6.0.0.nupkg.sha512",
     "C:\\Users\\paulo\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
     "C:\\Users\\paulo\\.nuget\\packages\\microsoft.fast.components.fluentui\\3.6.0\\microsoft.fast.components.fluentui.3.6.0.nupkg.sha512",
+    "C:\\Users\\paulo\\.nuget\\packages\\microsoft.fast.components.fluentui.datagrid.entityframeworkadapter\\3.6.0\\microsoft.fast.components.fluentui.datagrid.entityframeworkadapter.3.6.0.nupkg.sha512",
     "C:\\Users\\paulo\\.nuget\\packages\\microsoft.fast.components.fluentui.icons\\3.6.0\\microsoft.fast.components.fluentui.icons.3.6.0.nupkg.sha512",
     "C:\\Users\\paulo\\.nuget\\packages\\microsoft.jsinterop\\6.0.25\\microsoft.jsinterop.6.0.25.nupkg.sha512",
     "C:\\Users\\paulo\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",

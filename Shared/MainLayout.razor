@@ -1,15 +1,50 @@
 ﻿@inherits LayoutComponentBase
 
-<RadzenComponents />
+@using Microsoft.Fast.Components.FluentUI
 
-<NavMenu />
+<FluentLayout Style="margin-top: 10px;">
+    <FluentHeader>
+        ProSoft Informática
+        <FluentSpacer />
+        Aligned to the end
+    </FluentHeader>
 
-<div class="container">
-    @Body
-</div>
+    <FluentStack Orientation="Microsoft.Fast.Components.FluentUI.Orientation.Horizontal" Width="100%">
+        <FluentNavMenu Width="250">
+            <FluentNavGroup Title="Estoque">
+                <FluentNavLink Href="/Mercadorias" >Mercadorias</FluentNavLink>
+                <FluentNavLink Href="/NotasCompra/Index" >Notas de Compra</FluentNavLink>
+                <FluentNavLink Href="/NotasVenda/Index" >Notas de Venda</FluentNavLink>
+            </FluentNavGroup>
 
-<!-- Colocar em um lugar mais no final da página para aparecer sobre os outros componentes -->
-<RadzenDialog></RadzenDialog>
+            <FluentNavGroup Title="Serviços">
+                <FluentNavLink Href="/OrdemServico/Orcamentos">Orçamentos</FluentNavLink>
+                <FluentNavLink Href="/OrdemServico/Index">Ordens de Serviço</FluentNavLink>
+                <FluentNavLink Href="/Cadastros/Equipamentos">Equipamentos</FluentNavLink>
+            </FluentNavGroup>
+
+            <FluentNavGroup Title="Financeiro">
+                <FluentNavLink Href="/Mercadorias">Caixa</FluentNavLink>
+                <FluentNavLink Href="/NotasCompra/Index">Contas a Pagar</FluentNavLink>
+                <FluentNavLink Href="/NotasVenda/Index">Contas a Receber</FluentNavLink>
+            </FluentNavGroup>
+
+            <FluentNavGroup Title="Cadastros">
+                <FluentNavLink Href="/Clientes">Clientes</FluentNavLink>
+                <FluentNavLink Href="/Cadastros/Fornecedores">Fornecedores</FluentNavLink>
+                <FluentNavLink Href="/Cadastros/Funcionarios">Funcionários</FluentNavLink>
+            </FluentNavGroup>
+        </FluentNavMenu>
+
+        <FluentBodyContent>
+            @Body
+        </FluentBodyContent>
+    </FluentStack>
+
+    <FluentFooter Style="@("height: 40px; color: white; text-align: center;")">
+        Footer Text
+    </FluentFooter>
+</FluentLayout>
 
 <FluentDesignSystemProvider />
 <FluentDialogProvider />
