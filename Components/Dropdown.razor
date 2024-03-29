@@ -3,7 +3,10 @@
 
 @typeparam TItem where TItem: class, new()
 
-<RadzenStack Orientation=Radzen.Orientation.Horizontal Gap=0>
+<FluentStack>
+</FluentStack>
+
+@* <RadzenStack Orientation=Radzen.Orientation.Horizontal Gap=0>
     <RadzenDropDown
         Class="w-100"
         AllowClear="true" 
@@ -18,7 +21,7 @@
         />
     <RadzenButton Style="max-width: 35px;" Icon=edit Click="()=>askEdit=Value" />
 </RadzenStack>
-
+ *@
 @if (askEdit > 0) {
     <ProSoft.Components.ModalDialog Title="Modal" OnCancel="()=>askEdit = 0" Size="modal-fullscreen">
         <ModalBody>

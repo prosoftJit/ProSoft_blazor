@@ -25,8 +25,6 @@
 
 @code {
     mercadoria? askEdit = null;
-    [Inject] Radzen.NotificationService notificationService {get;set;} = default!;
-    [Inject] Radzen.DialogService dialogService {get;set;} = default!;
 
     void AskEdit(long? idMercadoria)
     {
@@ -47,7 +45,7 @@
 
             ctx.SaveChangesAsync();
 
-            notificationService.Notify(NotificationSeverity.Success, "Sucesso!", "As alterações foram salvas com sucesso.");
+            //notificationService.Notify(NotificationSeverity.Success, "Sucesso!", "As alterações foram salvas com sucesso.");
 
             LoadMercadorias();
 

@@ -4,26 +4,20 @@
 @using ProSoft.Components
 @using Microsoft.EntityFrameworkCore
 @using BlazorBootstrap
-
-    <RadzenRow>
-        <RadzenColumn Size="2" class="w-100">
-            <RadzenFormField Text="Id" >
-                <RadzenNumeric Format="000000" ShowUpDown=false Disabled=true Value="@Model.IdOrcamento" TextAlign="Radzen.TextAlign.Center" />
-            </RadzenFormField>
-        </RadzenColumn>
-        <RadzenColumn Size="2">
-            <RadzenFormField Text="Data" class="w-100">
-                <RadzenDatePicker @bind-Value=Model.Data DateFormat="dd/MM/yyyy" />
-            </RadzenFormField>
-        </RadzenColumn>
-        <RadzenColumn Size=4>
-            <RadzenFormField Text=Cliente class="w-100">
-                <RadzenDropDown Name=Cliente @bind-Value="Model.Cliente_IdCliente" AllowClear=true AllowFiltering=true AllowVirtualization=true TValue="long" Data="ctx.clientes" TextProperty="Nome" ValueProperty="idCliente" ClearSearchAfterSelection="true" Change=ClienteChanged />
-                <RadzenCustomValidator Component=Cliente Validator="()=>Model.Cliente_IdCliente>0" Text="É necessário selecionar um cliente" />
-                <RadzenButton Icon="edit" Style="max-width: 35px;" Click="()=>askEditCliente=Model.Cliente"  />
-            </RadzenFormField>
-        </RadzenColumn>
-    </RadzenRow>
+    
+    <FluentGrid>
+        <FluentGridItem md="2">
+            <FluentTextField Value="@Model.IdOrcamento.ToString("000000")" Label="Id" />
+        </FluentGridItem>
+        <FluentGridItem md="2">
+            <FluentDatePicker Label="Data" @bind-Value="Data" />
+        </FluentGridItem>
+        <FluentGridItem md="4">
+            <FluentCombobox Label="Cliente" @bind-SelectedOption="Model.Cliente" Items="ctx.clientes" OptionText="c=>c.Nome" />
+            <FluentValidationMessage For="()=>Model.Cliente" />
+            <FluentButton IconStart="new Icons.Regular.Size12.Edit()" OnClick="()=>askEditCliente=Model.Cliente" />
+        </FluentGridItem>
+    </FluentGrid>
 
     <GenericTemplate2
         Items="Model.Items" 
@@ -56,17 +50,23 @@
             <ProSoft.Pages.Cadastros.Cliente idCliente="askEditCliente.idCliente"/>
         </ModalBody>
         <ModalFooter>
-            <RadzenButton Icon="save" Text="Salvar" ButtonType="Radzen.ButtonType.Submit"  Form="eqpForm" />
+            <FluentButton Type="Microsoft.Fast.Components.FluentUI.ButtonType.Submit" FormId="eqpForm" />
         </ModalFooter>
     </ModalDialog>
 }
 
 @code {
     [Parameter] public orcamento Model { get; set; } = new();
-  
+
     [Parameter, EditorRequired] public Contexto ctx {get;set;} = new(); // new for designtime purposes
 
     cliente? askEditCliente = null;
+
+    DateTime? Data
+    {
+        get { return Model.Data; }
+        set { Model.Data = value ?? DateTime.Today; }
+    }
 
     protected override void OnInitialized() {
         if (Model.Items.Count == 0)

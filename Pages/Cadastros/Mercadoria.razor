@@ -4,43 +4,42 @@
 @using ProSoft.Data
 @using ProSoft.Components
 
-<RadzenTemplateForm TItem=mercadoria Data=Model Submit=Submit id=editForm >
+<EditForm Model=Model OnValidSubmit=Submit id=editForm >
 
     <DataAnnotationsValidator />
     <ValidationSummary Model="Model" />
 
-    <RadzenRow class="mb-3">
-        <RadzenColumn Size=1>
+    <FluentGrid>
+        <FluentGridItem md="1">
             <FluentTextField Value='@Model.IdMercadoria.ToString("000000")' Disabled=true Label="Id da Mercadoria" />
-        </RadzenColumn>
-        <RadzenColumn Size="5">
+        </FluentGridItem>
+        <FluentGridItem md="5">
             <FluentTextField @bind-Value="Model.Descricao" Label="Descrição" Required=true />
-        </RadzenColumn>
-        <RadzenColumn Size=2>
+        </FluentGridItem>
+        <FluentGridItem md="2">
             <FluentTextField @bind-Value="Model.NCM" Label="NCM" />
-        </RadzenColumn>
-        <RadzenColumn Size=1>
+        </FluentGridItem>
+        <FluentGridItem md="1">
             <FluentTextField @bind-Value="Model.Unidade" Label="Unidade" />
-        </RadzenColumn>
-        <RadzenColumn Size=2>
+        </FluentGridItem>
+        <FluentGridItem md="2">
             <FluentTextField @bind-Value="Model.Codigo" Label="Código" />
-        </RadzenColumn>
-    </RadzenRow>
-
-</RadzenTemplateForm>
+        </FluentGridItem>
+    </FluentGrid>
+</EditForm>
 
 @code {
     [Parameter] public mercadoria Model { get; set; } = new();
     [Parameter, EditorRequired] public Contexto? Contexto {get;set;}
-    [Inject] NotificationService? notificationService {get;set;}
+    //[Inject] NotificationService? notificationService {get;set;}
     [Parameter] public Action<string>? OnClose {get;set;} = null;
 
-    void Submit(mercadoria merc) {
+    void Submit() {
         if (Model.IdMercadoria == 0)
             Contexto!.Entry(Model).State = EntityState.Added;
         else
             Contexto!.Entry(Model).State = EntityState.Modified;
         Contexto.SaveChanges();
-        notificationService!.Notify(NotificationSeverity.Success, "Mercadoria", "Alterações feitas na mercadoria foram salvas com sucesso!");
+        //notificationService!.Notify(NotificationSeverity.Success, "Mercadoria", "Alterações feitas na mercadoria foram salvas com sucesso!");
     }
 }

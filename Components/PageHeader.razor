@@ -2,18 +2,19 @@
 
 <PageTitle>@Title</PageTitle>
 
-<RadzenRow JustifyContent="Radzen.JustifyContent.Normal">
-    <RadzenColumn>
+<FluentGrid>
+    <FluentGridItem>
         <h1>@Title</h1>
-    </RadzenColumn>
-    <RadzenColumn>
-        <RadzenStack Orientation="Radzen.Orientation.Horizontal" JustifyContent="Radzen.JustifyContent.End" Gap="3px">
-        @if (BarItems != null) {
-            @BarItems
-        }
-        </RadzenStack>
-    </RadzenColumn>
-</RadzenRow>
+    </FluentGridItem>
+    <FluentGridItem>
+        <FluentStack HorizontalAlignment="HorizontalAlignment.End" HorizontalGap="3">
+            @if (BarItems != null)
+            {
+                @BarItems
+            }
+        </FluentStack>
+    </FluentGridItem>
+</FluentGrid>
 
 @if (Description != null)
 {

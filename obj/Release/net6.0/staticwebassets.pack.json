@@ -81,6 +81,10 @@
       "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
     },
     {
+      "Id": "E:\\ProSoft_blazor\\wwwroot\\css\\reboot.css",
+      "PackagePath": "staticwebassets\\css\\reboot.css"
+    },
+    {
       "Id": "E:\\ProSoft_blazor\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },

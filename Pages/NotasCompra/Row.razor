@@ -4,8 +4,8 @@
 @using Microsoft.EntityFrameworkCore
 @using ProSoft.Pages.Cadastros
 
-<td width="10%"><RadzenNumeric ShowUpDown=false TextAlign="TextAlign.Center" TValue="float" @bind-Value="Model!.Quantidade" Format="N2" Change="()=>TotalChanged?.Invoke()" /></td>
-<td width="10%"><RadzenTextBox value="@Model.Mercadoria?.Unidade" Disabled=true /></td>
+<td width="10%"><FluentNumberField TValue="float" @bind-Value="Model!.Quantidade" @onchange="()=>TotalChanged?.Invoke()" /></td>
+<td width="10%"><FluentTextField Value="@Model.Mercadoria?.Unidade" Disabled=true /></td>
 <td>
     <Dropdown2
         TItem="mercadoria"
@@ -20,16 +20,16 @@
         </OnEdit>
     </Dropdown2>
 </td>
-<td width="10%"><RadzenNumeric ShowUpDown=false TValue=float @bind-Value="Model.Custo" Format="N2" TextAlign=TextAlign.End Change="()=>TotalChanged?.Invoke()" /></td>
-<td width="10%"><RadzenNumeric ShowUpDown=false TValue=float value="@Model.Total" Format="N2" TextAlign="TextAlign.End" Disabled=true /></td>
-<td width="10%"><RadzenNumeric ShowUpDown=false @bind-Value="Model.Venda" Format="N2" TextAlign="TextAlign.End" /></td>
+<td width="10%"><FluentNumberField TValue=float @bind-Value="Model.Custo" @onchange="()=>TotalChanged?.Invoke()" /></td>
+<td width="10%"><FluentNumberField TValue=float Value="@Model.Total" Disabled=true /></td>
+<td width="10%"><FluentNumberField @bind-Value="Model.Venda" /></td>
 
 @code {
     [Parameter, EditorRequired] public compra Model { get; set; } = default!;
     [Parameter] public Func<mercadoria[]>? GetMercadorias { get;set; } = null;
     [Parameter] public Action? TotalChanged { get; set; } = null;
     [Parameter] public Action? MercadoriaChanged { get; set; } = null;
-    [Inject] NotificationService? notificationService {get;set;} = default!;
+    //[Inject] NotificationService? notificationService {get;set;} = default!;
     [Parameter, EditorRequired] public Contexto Contexto {get;set;} = default!;
 
     mercadoria? askEditMercadoria = null;

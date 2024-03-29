@@ -5,31 +5,18 @@
 <DataAnnotationsValidator />
 <ValidationSummary />
 
-<RadzenRow class="mb-3">
-    <RadzenColumn Size="3">
-        <RadzenFormField Text="Id do Funcionário" class="w-100">
-            <RadzenNumeric Value="@Model.IdFuncionario" Format="000000" ShowUpDown=false TextAlign="TextAlign.Center" Disabled=true></RadzenNumeric>
-        </RadzenFormField>
-    </RadzenColumn>
-    <RadzenColumn Size="9">
-        <RadzenFormField Text="Nome" class="w-100">
-            <RadzenTextBox @bind-Value="Model.Nome" />
-            <RadzenRequiredValidator Text="Nome obrigatório" />
-        </RadzenFormField>
-    </RadzenColumn>
-</RadzenRow>
-
-<RadzenRow class="mb-3">
-    <RadzenColumn Size="4">
-        <RadzenCheckBox Value="@Model.IsSystemUser" Name="IsSistemUser" />
-        <RadzenLabel Text="System User?" Component="IsSistemUser" />
-    </RadzenColumn>
-    <RadzenColumn Size="4">
-        <RadzenFormField Text="Senha" class="w-100">
-            <RadzenPassword @bind-Value="Model.Senha" />
-        </RadzenFormField>
-    </RadzenColumn>
-</RadzenRow>
+<FluentGrid>
+    <FluentGridItem md="3">
+        <FluentTextField Label="Id do Funcionário" Value="@Model.IdFuncionario.ToString("000000")" Disabled=true />
+    </FluentGridItem>
+    <FluentGridItem md="9">
+        <FluentTextField Label="Nome" @bind-Value=Model.Nome />
+    </FluentGridItem>
+    <FluentGridItem md="4">
+        <FluentCheckbox Label="System user?" @bind-Value=Model.IsSystemUser />
+    </FluentGridItem>
+    <FluentTextField Label="Senha" @bind-Value=Model.Senha />
+</FluentGrid>
 
 @code {
     [Parameter] public funcionario Model { get; set; } = new();

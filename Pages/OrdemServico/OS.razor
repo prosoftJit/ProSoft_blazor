@@ -1,41 +1,28 @@
-@page "/OrdemServico/{idOrdemDeServico:long}"
+@page "/OrdemServico/OS"
 @using System.ComponentModel.DataAnnotations
 @using ProSoft.Data
 @using ProSoft.Components
 @using Microsoft.EntityFrameworkCore
-@using BlazorBootstrap
 
-    <RadzenRow>
-        <RadzenColumn Size="2" class="w-100">
-            <RadzenFormField Text="Id" >
-                <RadzenNumeric Format="000000" ShowUpDown=false Disabled=true Value="@Model.IdOrdemDeServico" TextAlign="Radzen.TextAlign.Center" />
-            </RadzenFormField>
-        </RadzenColumn>
-        <RadzenColumn Size="2">
-            <RadzenFormField Text="Data" class="w-100">
-                <RadzenDatePicker @bind-Value=Model.Data DateFormat="dd/MM/yyyy" />
-            </RadzenFormField>
-        </RadzenColumn>
-        <RadzenColumn Size=5>
-            <RadzenFormField Text=Equipamento class="w-100">
-                <RadzenDropDown @bind-Value="Model.Equipamento_IdEquipamento" AllowClear=true AllowFiltering=true AllowVirtualization=true TValue="long" Data="ctx.equipamentos" TextProperty="Descricao" ValueProperty="IdEquipamento" Change="EquipamentoChanged" ClearSearchAfterSelection="true" />
-                <RadzenButton Icon="edit" Style="max-width: 35px;" Click="()=>EditEquipamento(Model.Equipamento)" />
-            </RadzenFormField>
-        </RadzenColumn>
-        <RadzenColumn Size=5>
-            <RadzenFormField Text=Recebido class="w-100">
-                <RadzenDropDown @bind-Value="Model.FuncionarioEnt_IdFuncionario" AllowClear=true AllowFiltering=true AllowVirtualization=true TValue="long" Data="ctx.funcionarios" TextProperty="Nome" ValueProperty="IdFuncionario" @*Change="()=>FuncionarioChanged"*@ ClearSearchAfterSelection="true" />
-            </RadzenFormField>
-        </RadzenColumn>
-    </RadzenRow>
 
-    <RadzenFormField Text="Detalhes do Equipamento" class="w-100 mt-2 mb-2">
-        <RadzenTextArea @bind-Value="@Model.Acessorios" Rows="3" />
-    </RadzenFormField>
-
-    <RadzenFormField Text="Defeito apresentado" class="w-100 mt-2 mb-2">
-        <RadzenTextArea @bind-Value="@Model.DefeitoApresentado" Rows="3" />
-    </RadzenFormField>
+    <FluentGrid>
+        <FluentGridItem md="1">
+            <FluentTextField Class="text-center" Value="@Model.IdOrdemDeServico.ToString("000000")" Disabled=true Label="Id" />
+        </FluentGridItem>
+        <FluentGridItem md="2">
+            <FluentDatePicker  @bind-Value="Data" Required Label="Data" />
+        </FluentGridItem>
+        <FluentGridItem md="4">
+            <FluentCombobox @bind-SelectedOption=Model.Equipamento Label="Equipamento" Items="ctx.equipamentos" OptionText="e=>e.Descricao" />
+            <FluentButton IconStart="new Icons.Regular.Size12.Edit()" OnClick="()=>EditEquipamento(Model.Equipamento)" />
+        </FluentGridItem>
+        <FluentGridItem md="5">
+            <FluentCombobox @bind-SelectedOption=Model.FuncionarioEnt Label="Recebido" Items="ctx.funcionarios" OptionText="f=>f.Nome" />
+            <FluentButton IconStart="new Icons.Regular.Size12.Edit()" OnClick="()=>askEditFunc=Model.FuncionarioEnt??new()" />
+        </FluentGridItem>
+        <FluentTextArea Label="Detalhes do equipamento" @bind-Value=Model.Acessorios />
+        <FluentTextArea Label="Defeito apresentado" @bind-Value=Model.DefeitoApresentado />
+    </FluentGrid>
 
     <div class="row my-1">
         @* <FloatingLabel InputId="IdNotaVenda" Text="Id da Nota" Columns="2">
@@ -89,18 +76,28 @@
         </TableFooter>
     </GenericTemplate2>
 
-@if (askEditEqp != null) {
-    <ModalDialog Title="Editar Equipamento" OnCancel="()=>askEditEqp=null" Size="modal-lg">
-        <ModalBody>
-            <RadzenTemplateForm TItem=equipamento Data=askEditEqp Submit=EqpSubmit id="eqpForm">
-                <ProSoft.Pages.Cadastros.Equipamento Model="askEditEqp" ctx=ctx />
-            </RadzenTemplateForm>
-        </ModalBody>
-        <ModalFooter>
-            <RadzenButton Icon="save" Text="Salvar" ButtonType="Radzen.ButtonType.Submit"  Form="eqpForm" />
-        </ModalFooter>
-    </ModalDialog>
-}
+<ModalDialog Title="Editar equipamento" Size="modal-lg" @bind-Visible=ShowDialogEq>
+    <ModalBody>
+        <EditForm Model=askEditEqp OnValidSubmit=EqpSubmit id="eqpForm">
+            <ProSoft.Pages.Cadastros.Equipamento Model="askEditEqp" ctx=ctx />
+        </EditForm>
+    </ModalBody>
+    <ModalFooter>
+        <FluentButton Type=ButtonType.Submit FormId="eqpForm" Id="submit">Salvar</FluentButton>
+    </ModalFooter>
+</ModalDialog>
+
+<ModalDialog Title="Editar funcionario" Size="modal-lg" @bind-Visible=ShowDialogFunc>
+    <ModalBody>
+        <EditForm Model=askEditFunc OnValidSubmit=FuncSubmit id="funcForm">
+            <ProSoft.Pages.Cadastros.Funcionario Model="askEditFunc" />
+        </EditForm>
+    </ModalBody>
+    <ModalFooter>
+        <FluentButton Type=ButtonType.Submit FormId="funcForm" Id="submit">Salvar</FluentButton>
+    </ModalFooter>
+</ModalDialog>
+
 
 @code {
     [Parameter] public ordemdeservico Model { get; set; } = default!;
@@ -108,26 +105,39 @@
 
     private Contexto ctx = new();
 
+    DateTime? Data
+    {
+        get { return Model.Data; }
+        set { Model.Data = value ?? DateTime.Today; }
+    }
+
     float _total;
     void TotalChanged(float total)
     {
         _total = total;
     }
 
-    void EquipamentoChanged() {
-        Model.Equipamento = ctx.equipamentos.Find(Model.Equipamento_IdEquipamento);
+    funcionario? askEditFunc = null;
+    bool ShowDialogFunc { get { return askEditFunc != null; } set { if (!value) askEditFunc = null; } }
+    void FuncSubmit()
+    {
+        if (askEditFunc.IdFuncionario == 0)
+            ctx.funcionarios.Add(askEditFunc);
+        ctx.SaveChanges();
+        askEditFunc = null;
     }
 
     equipamento? askEditEqp = null;
-    void EditEquipamento(equipamento eqp) {
+    bool ShowDialogEq { get { return askEditEqp != null; } set { if (!value) askEditEqp = null; } }
+    void EditEquipamento(equipamento? eqp)
+    {
         askEditEqp = eqp ?? new();
     }
 
-    void EqpSubmit(equipamento eqp) {
-        if (eqp.IdEquipamento == 0)
-            ctx.Entry(eqp).State = EntityState.Added;
-        else
-            ctx.Entry(eqp).State = EntityState.Modified;
+    void EqpSubmit() {
+        if (askEditEqp.IdEquipamento == 0)
+            ctx.equipamentos.Add(askEditEqp);
+
         ctx.SaveChanges();
         askEditEqp = null;
     }

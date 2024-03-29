@@ -4,8 +4,7 @@
 @using ProSoft.Services
 @using Microsoft.EntityFrameworkCore
 
-<PageHeader Title="Clientes" Description="Listagem de clientes cadastrados no sistema">
-</PageHeader>
+<PageHeader Title="Clientes" Description="Listagem de clientes cadastrados no sistema" />
 
 <FluentDataGrid Items="ctx.clientes.OrderBy(k=>k.Nome)" TGridItem="cliente" Pagination="paginator" >
     <PropertyColumn Title="Id" Property='p => p.idCliente.ToString("000000")' Sortable="true" />
@@ -19,60 +18,53 @@
 <FluentPaginator State="paginator" >
     <PaginationTextTemplate>
         <strong>@paginator.TotalItemCount</strong> items.
-        <FluentButton Appearance=Appearance.Hypertext IconStart="new Icons.Regular.Size12.Add()" OnClick="()=>askEdit=new()">Adicionar</FluentButton>
     </PaginationTextTemplate>
     <PaginationTextTemplate>
         Página <strong>@(paginator.CurrentPageIndex+1)</strong> de <strong>@(paginator.LastPageIndex+1)</strong>
     </PaginationTextTemplate>
 </FluentPaginator>
 
+<FluentButton Appearance=Appearance.Hypertext IconStart="new Icons.Regular.Size12.Add()" OnClick="()=>askEdit=new()">Adicionar</FluentButton>
+
+
 @if (askDelete != null)
 {
     @* <ProSoft.Co ConfirmDialog Message="Confirma exclusão?" OnClose="DeleteDialogClosed"></ConfirmDialog> *@
 }
 
-@if (!EditHidden)
-{
-    <FluentDialog @bind-Hidden="EditHidden" TrapFocus="true" >
-        <FluentDialogHeader><h5>Editar cliente</h5></FluentDialogHeader>
-        <ProSoft.Pages.Cadastros.Cliente Model="askEdit" />
-    
-        <FluentDialogFooter>
-            <FluentButton Appearance="Appearance.Hypertext" OnClick="()=>EditHidden=true">Fechar</FluentButton>
-            <FluentButton Id="submit" FormId="cliForm">Salvar</FluentButton>
-        </FluentDialogFooter>
-    </FluentDialog>
-}
 
+<ModalDialog Title="Cliente" Size="modal-fullscreen" @bind-Visible=ModalVisible>
+    <ModalBody>
+        <EditForm Model="askEdit" id="cliForm" OnValidSubmit="Submit" >
+            <ProSoft.Pages.Cadastros.Cliente Model="askEdit" />
+        </EditForm>
+    </ModalBody>
+    <ModalFooter>
+        <FluentButton FormId="cliForm" Id="submit" Type="ButtonType.Submit">Salvar</FluentButton>
+    </ModalFooter>
+</ModalDialog>
 
-@* @if (askEdit != null)
-{
-    <ModalDialog Title="Cliente" Size="modal-fullscreen" OnCancel="_=>askEdit=null">
-        <ModalBody>
-        </ModalBody>
-        <ModalFooter>
-            <RadzenButton Icon=save form=cliForm ButtonType=Radzen.ButtonType.Submit Text=Salvar />
-        </ModalFooter>
-    </ModalDialog>
-}
- *@
+ 
 @code {
     cliente? askEdit=null;
 
     Contexto ctx = new();
 
+    bool ModalVisible { get { return askEdit != null; } set { if (!value) askEdit = null; } }
+
     cliente? askDelete = null;
-    bool EditHidden { get { return askEdit == null; } set { if (value) askEdit = null; } }
 
     PaginationState paginator = new PaginationState { ItemsPerPage = 10 };
 
-    private void ClientSave()
+    void Submit()
     {
-        @* showDialogNewClient = false;
-        await clienteForm?.Submit();
-        await LoadClientes();
-        StateHasChanged(); *@
+        if (askEdit!.idCliente == 0)
+            ctx.clientes.Add(askEdit);
+
+        ctx.SaveChanges();
+        //notificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Cadastro de clientes", Detail = "Alterações do cliente foram salvas com sucesso!", Duration = 4000 });
     }
+
     public void AskDelete(long idCliente)
     {
         cliente cli = ctx.clientes.First(k => k.idCliente == idCliente);

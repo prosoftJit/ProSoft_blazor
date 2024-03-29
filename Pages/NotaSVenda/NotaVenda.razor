@@ -6,27 +6,19 @@
 @using ProSoft.Pages.Cadastros
 
 <CascadingValue Name="ctx" Value="ctx">
-    <RadzenTemplateForm TItem="notavenda" Data="Model" Submit="Submit" id="editForm">
+    <EditForm Model="Model" OnValidSubmit="Submit" id="editForm">
 
         <DataAnnotationsValidator />
         <ValidationSummary Model="Model" />
 
-        <RadzenRow>
-            <RadzenColumn Size="1">
-                <RadzenFormField Text="Id" >
-                    <RadzenNumeric Format="000000" ShowUpDown=false Disabled=true Value="@Model.IdNotaVenda" />
-                </RadzenFormField>
-            </RadzenColumn>
-            <RadzenColumn Size="3">
-                <RadzenFormField Text="Cliente" >
-                    <Dropdown2 TItem="cliente" @bind-Value=Model.Cliente TextProperty="Nome" GetItems="()=>ctx.clientes.OrderBy(k=>k.Nome)" OnChange="(i)=>Model.Cliente=i" OnDelete="(c, i)=>{c.Remove(i); c.SaveChanges();}">
-                        <OnEdit Context=cli>
-                            <Cliente idCliente="cli.idCliente" />
-                        </OnEdit>
-                    </Dropdown2>
-                </RadzenFormField>
-            </RadzenColumn>
-        </RadzenRow>
+        <FluentGrid>
+            <FluentGridItem md="1">
+                <FluentTextField Label="Id" Value="@Model.IdNotaVenda.ToString("000000")"/>
+            </FluentGridItem>
+            <FluentGridItem md="3">
+                <FluentCombobox Label="Cliente" @bind-SelectedOption=Model.Cliente OptionText="(c)=>c.Nome" Items="ctx.clientes.OrderBy(k=>k.Nome)" />
+            </FluentGridItem>
+        </FluentGrid>
 
         <GenericTemplate Items="Model.Items" TItem="venda" OnAdd="AddVenda" OnDelete="(i)=>Model.Items.Remove(i)">
             <TableHeader>
@@ -43,7 +35,7 @@
             <TableFooter>
                 <tr>
                     <td colspan="5" class="text-end">Total</td>
-                    <td><RadzenNumeric Format="N2" Value="@TotalVendas()" TextAlign="TextAlign.End" ShowUpDown=false /></td>
+                    <td><FluentTextField Value="@TotalVendas().ToString("N2")" /></td>
                 </tr>
             </TableFooter>
         </GenericTemplate>
@@ -60,12 +52,12 @@
             <TableFooter>
                 <tr>
                     <td class="text-end">Total</td>
-                    <td><RadzenNumeric Format="N2" TextAlign="TextAlign.End" ShowUpDown=false Disabled=true Value="@Model.Parcelas.Sum(k=>k.Valor)" /></td>
+                    <td><FluentTextField Value="@Model.Parcelas.Sum(k=>k.Valor).ToString("N2")" Disabled=true /></td>
                 </tr>
             </TableFooter>
         </GenericTemplate>
 
-    </RadzenTemplateForm>
+    </EditForm>
 </CascadingValue>
 
 
@@ -84,12 +76,12 @@
             AddVenda();
     }
 
-    void Submit(notavenda nv)
+    void Submit()
     {
-        if (nv.IdNotaVenda == 0)
-            ctx.Entry(nv).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+        if (Model.IdNotaVenda == 0)
+            ctx.Entry(Model).State = Microsoft.EntityFrameworkCore.EntityState.Added;
         else
-            ctx.Entry(nv).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            ctx.Entry(Model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 
         ctx.SaveChanges();
 

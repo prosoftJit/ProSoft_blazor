@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProSoft")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+123e8aff901cc6a87b46ca1483dfce581ac10ab0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c6aad3f3b7a04a28c230c1c1b2084588ef914b22")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProSoft")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProSoft")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

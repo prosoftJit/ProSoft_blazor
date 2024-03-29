@@ -1,49 +1,29 @@
 @page "/Cadastros/Cliente/{idCliente:long}"
 @using System.ComponentModel.DataAnnotations
 @using ProSoft.Data
-@using ProSoft.Services
 
-<EditForm Model=Model OnValidSubmit="Submit" id="cliForm">
+<FluentGrid>
+    <FluentGridItem md="3">
+        <FluentTextField Label="Id do Cliente" Value="@Model.idCliente.ToString("000000")" Disabled=true />
+    </FluentGridItem>
+    <FluentGridItem md="9">
+        <FluentTextField Label="Nome" @bind-Value="Model.Nome" Required=true />
+        <FluentValidationMessage For="()=>Model.Nome" />
+    </FluentGridItem>
 
-    <FluentGrid>
-        <FluentGridItem md="3">
-            <FluentTextField Label="Id do Cliente" Value="@Model.idCliente.ToString("000000")" Disabled=true />
-        </FluentGridItem>
-        <FluentGridItem md="9">
-            <FluentTextField Label="Nome" @bind-Value="Model.Nome" />
-        </FluentGridItem>
+    <ProSoft.Shared.Endereco endereco="Model" />
 
-        <ProSoft.Shared.Endereco endereco="Model" />
-
-        <FluentGridItem md="4">
-            <FluentTextField Label="CPF" @bind-Value="Model.CPF" />
-        </FluentGridItem>
-        <FluentGridItem>
-            <FluentTextField Label="E-mail" @bind-Value="Model.Email" />
-        </FluentGridItem>
-        <FluentGridItem>
-            <FluentTextField Label="RG" @bind-Value="Model.RG" />
-        </FluentGridItem>
-    </FluentGrid>
-</EditForm>
+    <FluentGridItem md="4">
+        <FluentTextField Label="CPF" @bind-Value="Model.CPF" />
+    </FluentGridItem>
+    <FluentGridItem>
+        <FluentTextField Label="E-mail" @bind-Value="Model.Email" />
+    </FluentGridItem>
+    <FluentGridItem>
+        <FluentTextField Label="RG" @bind-Value="Model.RG" />
+    </FluentGridItem>
+</FluentGrid>
 
 @code {
     [Parameter] public cliente Model { get; set; } = default!;
-
-    Contexto ctx = new();
-
-    void Submit()
-    {
-        Console.Write("Salvando...");
-        Console.WriteLine(Model.idCliente.ToString());
-        if (Model.idCliente == 0)
-            ctx.Entry(Model).State = EntityState.Added;
-        else
-            ctx.Entry(Model).State = EntityState.Modified;
-
-        ctx.SaveChanges();
-
-        Console.WriteLine("Saved");
-        //notificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Cadastro de clientes", Detail = "Alterações do cliente foram salvas com sucesso!", Duration = 4000 });
-    }
 }

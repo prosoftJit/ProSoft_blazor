@@ -2,48 +2,37 @@
 @using System.ComponentModel.DataAnnotations
 @using ProSoft.Data
 
-<RadzenTemplateForm TItem="fornecedor" Data="Model" Submit="Submit" id="editForm">
+<EditForm Model="Model" OnValidSubmit="Submit" id="editForm">
 
 <DataAnnotationsValidator />
 <ValidationSummary />
 
-<RadzenRow class="mb-3">
-    <RadzenColumn Size="3">
-        <RadzenFormField Text="Id do Fornecedor" class="w-100">
-            <RadzenNumeric Value="@Model.IdFornecedor" Format="000000" ShowUpDown=false TextAlign="TextAlign.Center" Disabled=true></RadzenNumeric>
-        </RadzenFormField>
-    </RadzenColumn>
-    <RadzenColumn Size="9">
-        <RadzenFormField Text="Nome" class="w-100">
-            <RadzenTextBox @bind-Value="Model.Nome" />
-            <RadzenRequiredValidator Text="Nome obrigatório" />
-        </RadzenFormField>
-    </RadzenColumn>
-</RadzenRow>
+    <FluentGrid>
+        <FluentGridItem md="3">
+            <FluentTextField Label="Id do Fornecedor" Value="@Model.IdFornecedor.ToString("000000")" Disabled=true/>
+        </FluentGridItem>
+        <FluentGridItem md="9">
+            <FluentTextField Label="Nome" @bind-Value="@Model.Nome" />
+        </FluentGridItem>
+        <FluentGridItem md="4">
+            <FluentTextField Label="Nome fantasia" @bind-Value="@Model.Fantasia" />
+        </FluentGridItem>
+        <FluentGridItem md="4">
+            <FluentTextField Label="CNPJ" @bind-Value="@Model.CNPJ" />
+        </FluentGridItem>
+    </FluentGrid>
 
-<RadzenRow class="mb-3">
-    <RadzenColumn Size="4">
-        <RadzenFormField Text="Nome Fantasia" class="w-100">
-            <RadzenTextBox Value="@Model.Fantasia" />
-        </RadzenFormField>
-    </RadzenColumn>
-    <RadzenColumn Size="4">
-        <RadzenFormField Text="CNPJ" class="w-100">
-            <RadzenMask Mask="**.***.***/****-**" CharacterPattern="[0-9]" @bind-Value="Model.CNPJ" />
-        </RadzenFormField>
-    </RadzenColumn>
-</RadzenRow>
-</RadzenTemplateForm>
+</EditForm>
 
 @code {
     [Parameter] public fornecedor Model { get; set; } = new();
     [Parameter, EditorRequired] public Contexto Contexto {get;set;}
 
-    void Submit(fornecedor forn) {
-        if (forn.IdFornecedor == 0)
-            Contexto.Entry(forn).State = EntityState.Added;
+    void Submit() {
+        if (Model.IdFornecedor == 0)
+            Contexto.Entry(Model).State = EntityState.Added;
         else
-            Contexto.Entry(forn).State = EntityState.Modified;
+            Contexto.Entry(Model).State = EntityState.Modified;
         Contexto.SaveChanges();
     }
 }

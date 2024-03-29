@@ -25,17 +25,14 @@
     </ItemEditForm>
 </GenericTemplate2>
 
-@if (askEdit != null)
-{
-    <ModalDialog Title="Ordens de Serviço" Size="modal-fullscreen" OnCancel="()=>askEdit=null">
-        <ModalBody>
-            <OS Model="askEdit" />
-        </ModalBody>
-        <ModalFooter>
-            <button form="editForm" type="submit" Class="btn btn-success">Salvar</button>
-        </ModalFooter>
-    </ModalDialog>
-}
+<ModalDialog Title="Ordens de Serviço" Size="modal-fullscreen" @bind-Visible=ModalVisible >
+    <ModalBody>
+        <OS Model="askEdit" />
+    </ModalBody>
+    <ModalFooter>
+        <button form="editForm" type="submit" Class="btn btn-success">Salvar</button>
+    </ModalFooter>
+</ModalDialog>
 
 @if (askDelete != null)
 {
@@ -45,8 +42,10 @@
 @code {
     ordemdeservico? askEdit = null;
     ordemdeservico? askDelete = null;
-    [Inject] NotificationService notificationService { get; set; } = default!;
+    //[Inject] NotificationService notificationService { get; set; } = default!;
     ordemdeservico[] ordens = Array.Empty<ordemdeservico>();
+
+    bool ModalVisible { get { return askEdit != null; } set { if (!value) askEdit = null; } }
 
     void Delete()
     {
@@ -54,7 +53,7 @@
             ctx.ordensdeservico.Remove(askDelete);
             ctx.SaveChanges();
             LoadOrdens();
-            notificationService.Notify(NotificationSeverity.Success, "Ordem de Serviço", "Ordem de serviço excluída com sucesso!");
+            //notificationService.Notify(NotificationSeverity.Success, "Ordem de Serviço", "Ordem de serviço excluída com sucesso!");
         }
     }
     void AddOs() {

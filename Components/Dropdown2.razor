@@ -5,7 +5,7 @@
 
 @typeparam TItem where TItem: class, new()
 
-<RadzenStack Orientation="Radzen.Orientation.Horizontal" Gap="0">
+@* <RadzenStack Orientation="Radzen.Orientation.Horizontal" Gap="0">
 <RadzenDropDown
     Class="w-100"
     AllowClear="true" 
@@ -22,10 +22,10 @@
 {
     <RadzenButton Style="max-width: 35px;" IconColor="danger" Icon=edit Click="()=>askEdit=Value??new()" />
 }
-</RadzenStack>
+</RadzenStack> *@
 
 @if (askEdit != null && OnEdit != null) {
-    <ModalDialog Title="Modal" OnCancel="()=>askEdit = null" Size="modal-fullscreen">
+@*     <ModalDialog Title="Modal" OnCancel="()=>askEdit = null" Size="modal-fullscreen">
         <ModalBody>
             <RadzenTemplateForm Data="askEdit" id="editForm" Submit="Submit" TItem="TItem">
                 <ValidationSummary />
@@ -38,7 +38,7 @@
             <RadzenButton Icon="delete" Text="Excluir" ButtonStyle="ButtonStyle.Danger" Click="()=>askDelete=askEdit" />
             }
         </ModalFooter>
-    </ModalDialog>
+    </ModalDialog> *@
 }
 
 @if (askDelete != null) {

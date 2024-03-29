@@ -6,7 +6,7 @@
 
 <PageHeader Title="Equipamentos" Description="Listagem de equipamentos dos clientes, enviados para serviço">
     <BarItems>
-        <RadzenButton Text="Equipamento" Icon="add" Click="()=>askEdit=new()" />
+        <FluentButton OnClick="()=>askEdit=new()">Equipamento</FluentButton>
     </BarItems>
 </PageHeader>
 
@@ -27,17 +27,16 @@
     </TableFooter>
 </GenericTemplate>
 
-@if (askEdit != null)
-{
-    <ModalDialog Title="Equipamento" Size="modal-fullscreen" OnCancel="()=>askEdit=null">
-        <ModalBody>
-            <Equipamento Model="askEdit" ctx=ctx></Equipamento>
-        </ModalBody>
-        <ModalFooter>
-            <RadzenButton ButtonType="Radzen.ButtonType.Submit" Icon="save" Form="formEqp"> Salvar</RadzenButton>
-        </ModalFooter>
-    </ModalDialog>
-}
+<ModalDialog Title="Equipamento" Size="modal-fullscreen" @bind-Visible=ModalVisible>
+    <ModalBody>
+        <EditForm Model="askEdit" OnValidSubmit="SubmitEqp">
+            <Equipamento Model="askEdit" ctx="ctx" />
+        </EditForm>
+    </ModalBody>
+    <ModalFooter>
+        <FluentButton Type="ButtonType.Submit" Id="submit" FormId="formEqp">Salvar</FluentButton>
+    </ModalFooter>
+</ModalDialog>
 
 @if (askDelete > 0)
 {
@@ -46,8 +45,9 @@
 
 @code {
     Contexto? ctx = new();
-    [Inject] NotificationService? notificationService {get;set;}
+    //[Inject] NotificationService? notificationService {get;set;}
     equipamento? askEdit = null;
+    bool ModalVisible { get { return askEdit != null; } set { if (!value) askEdit = null; } }
     long askDelete = 0;
     private void AskDelete(long idFornecedor)
     {
@@ -64,7 +64,7 @@
             equipamento? eqp = ctx?.equipamentos.Find(askDelete);
             ctx?.equipamentos.Remove(eqp!);
             ctx?.SaveChanges();
-            notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary="Cadastro de Equipamentos", Detail = "Equipamento excluído com sucesso", Duration = 4000 });
+            //notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary="Cadastro de Equipamentos", Detail = "Equipamento excluído com sucesso", Duration = 4000 });
             GetEquipamentos();
         }
         askDelete = 0;
@@ -84,7 +84,16 @@
         ctx.SaveChanges();
         askEdit = null;
         GetEquipamentos();
-        notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Cadastro de Equipamentos", Detail = "Alterações do equipamento foram salvas com sucesso!", Duration = 4000 });
+        //notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Cadastro de Equipamentos", Detail = "Alterações do equipamento foram salvas com sucesso!", Duration = 4000 });
+    }
+
+    void SubmitEqp()
+    {
+        if (askEdit.IdEquipamento == 0)
+            ctx.equipamentos.Add(askEdit);
+        ctx.SaveChanges();
+
+        askEdit = null;
     }
 
     private IReadOnlyList<equipamento> equipamentos = Array.Empty<equipamento>();

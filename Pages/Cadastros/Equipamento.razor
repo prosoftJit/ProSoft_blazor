@@ -4,59 +4,42 @@
 @using ProSoft.Components
 @using ProSoft.Pages.Cadastros
 
-@inject Radzen.DialogService dialogService
 
-<EditForm OnValidSubmit=EqpSubmit id=formEqp Model="Model">
+<DataAnnotationsValidator />
 
-    <DataAnnotationsValidator />
+<FluentGrid>
+    <FluentGridItem md="3">
+        <FluentTextField Label="Id do Equipamento" Value=@Model.IdEquipamento.ToString("000000") Disabled=true />
+    </FluentGridItem>
+    <FluentGridItem md="9">
 
-    <FluentGrid>
-        <FluentGridItem md="3">
-            <FluentTextField Label="Id do Equipamento" Value=@Model.IdEquipamento.ToString("000000") Disabled=true />
+        <FluentCombobox Label="Cliente" Autocomplete=ComboboxAutocomplete.Inline Items="ctx!.clientes" TOption="cliente" OptionText="(o)=>o.Nome" @bind-SelectedOption=Model.Cliente Required />
+        <FluentButton IconStart="new Icons.Regular.Size12.Edit()" OnClick="()=>askEditCli=Model.Cliente??new()" />
+
+        <FluentValidationMessage For="()=>Model.Cliente" />
         </FluentGridItem>
-        <FluentGridItem md="9">
+    <FluentGridItem md="12">
+        <FluentTextArea @bind-Value="Model.Descricao" Label="Descrição" Rows="5" Required />
+        <FluentValidationMessage For="()=>Model.Descricao" />
+        </FluentGridItem>
+</FluentGrid>
 
-            <FluentStack HorizontalGap="0" >
-                <FluentCombobox Label="Cliente" Autocomplete=ComboboxAutocomplete.Inline Items="ctx!.clientes" TOption="cliente" OptionText="(o)=>o.Nome" @bind-SelectedOption=Model.Cliente Required />
-                <FluentButton IconStart="new Icons.Regular.Size12.Edit()" OnClick="()=>askEditCli=Model.Cliente??new()" />
-            </FluentStack>
+<ModalDialog Title="Cliente" Size="modal-fullscreen" @bind-Visible=ModalVisible>
+    <ModalBody>
+        <EditForm Model="askEditCli" id="cliForm" OnValidSubmit="ClienteSubmit">
+            <Cliente Model="askEditCli" />
+        </EditForm>
+    </ModalBody>
+    <ModalFooter>
+        <FluentButton Type="ButtonType.Submit" Id="submit" FormId="cliForm">Salvar</FluentButton>
+    </ModalFooter>
+</ModalDialog>
 
-            <FluentValidationMessage For="()=>Model.Cliente" />
-         </FluentGridItem>
-        <FluentGridItem md="12">
-            <FluentTextArea @bind-Value="Model.Descricao" Label="Descrição" Rows="5" Required />
-             <FluentValidationMessage For="()=>Model.Descricao" />
-         </FluentGridItem>
-    </FluentGrid>
-
-</EditForm>
-
-@* @if (askEditCli != null) {
-    <ModalDialog Title="Cliente" Size="modal-fullscreen" OnCancel="()=>askEditCli=null">
-        <ModalBody>
-            <Cliente idCliente="askEditCli.idCliente" />
-        </ModalBody>
-        <ModalFooter>
-            <RadzenButton Icon="save" Text="Salvar" ButtonType=Radzen.ButtonType.Submit form="cliForm" />
-        </ModalFooter>
-    </ModalDialog>
-} *@
-
-<FluentDialog @bind-Hidden="EditClienteHidden" aria-label="Simple dialog" Modal=true TrapFocus=true PreventScroll=true >
-    <FluentDialogHeader>
-        <h5>Editar cliente</h5>
-    </FluentDialogHeader>
-    <Cliente idCliente="askEditCli!.idCliente" />
-    <FluentDialogFooter>
-         <FluentButton Appearance="Appearance.Accent" Autofocus="true" @onclick="()=>EditClienteHidden=true">Close dialog</FluentButton>
-         <FluentButton>Another button</FluentButton>
-    </FluentDialogFooter>
-</FluentDialog>
-
-@code {
+ @code {
     [Parameter] public equipamento Model { get; set; } = new();
-    [Parameter, EditorRequired] public Contexto? ctx {get;set;} = default!;
+    [Parameter, EditorRequired] public Contexto ctx {get;set;} = default!;
 
+    bool ModalVisible { get { return askEditCli != null; } set { if (!value) askEditCli = null; } }
 
     cliente cli = new();
 
@@ -68,12 +51,14 @@
         set { if (value == true) askEditCli = null; }
     }
 
-    void EqpSubmit() {
-        if (Model.IdEquipamento == 0)
-            ctx!.Entry(Model).State = EntityState.Added;
-        else
-            ctx!.Entry(Model).State = EntityState.Modified;
+    void ClienteSubmit()
+    {
+        if (askEditCli!.idCliente == 0)
+            ctx.clientes.Add(askEditCli);
+
         ctx.SaveChanges();
+
+        askEditCli = null;
     }
 
     // async void EditCliente() {

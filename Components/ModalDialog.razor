@@ -1,33 +1,44 @@
 @namespace ProSoft.Components 
 
-<div class="modal d-block" tabindex="-1">
-    <div class="modal-dialog @Size">
-        <div class="modal-content @Size">
-            <div class="modal-header d-print-none">
-                <h5 class="modal-title">@Title</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" action="ModalClose" @onclick='()=>OnCancel.InvokeAsync("ModalClose")' ></button>
-            </div>
-            <div class="modal-body">
-                @ModalBody
-            </div>
-            <div class="modal-footer d-print-none">
-                @if (!HideCloseButton)
-                {
-                    <button type="button" class="btn btn-default" @onclick='()=>OnCancel.InvokeAsync("ModalClose")'>Fechar</button>
-                }
-                @ModalFooter
+@if (Visible)
+{
+    <div class="modal d-block" tabindex="-1">
+        <div class="modal-dialog @Size">
+            <div class="modal-content @Size">
+                <div class="modal-header d-print-none">
+                    <h5 class="modal-title">@Title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick='()=>Hide()' ></button>
+                </div>
+                <div class="modal-body">
+                    @ModalBody
+                </div>
+                <div class="modal-footer d-print-none">
+                    @if (!HideCloseButton)
+                    {
+                        <button type="button" class="btn btn-default" @onclick='()=>Hide()'>Fechar</button>
+                    }
+                    @ModalFooter
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="modal-backdrop fade show"></div>
+    <div class="modal-backdrop fade show"></div>
+}
 
 @code {
     [Parameter] public string Size { get; set; } = "";
     [Parameter] public string Title { get; set; } = "Modal";
-    [Parameter] public EventCallback<string> OnCancel { get; set; }
     [Parameter] public RenderFragment? ModalBody { get; set; }
     [Parameter] public RenderFragment? ModalFooter { get; set; }
     [Parameter] public bool HideCloseButton { get; set; } = false;
+
+    [Parameter] public bool Visible { get; set; } = false;
+    [Parameter] public EventCallback<bool> VisibleChanged { get; set; }
+
+    public void Hide()
+    {
+        Visible = false;
+        VisibleChanged.InvokeAsync(false);
+    }
 }

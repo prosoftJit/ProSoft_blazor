@@ -5,57 +5,37 @@
 @using ProSoft.Components
 @using Microsoft.EntityFrameworkCore
 
-<RadzenTemplateForm Data=Model TItem=notacompra id=formId Submit=Submit>
+<EditForm Model="Model" id=formId OnValidSubmit=Submit>
     <PageHeader Title="Compras" Description="Nota Fiscal de Compras">
     </PageHeader>
 
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <RadzenRow RowGap="1rem">
-        <RadzenColumn Size="2">
+    <FluentGrid>
+        <FluentGridItem md="2">
             <FluentTextField Label="Id" Value="@Model.IdNotaCompra.ToString("000000")" Disabled=true />
-        </RadzenColumn>
-        <RadzenColumn Size="2">
+        </FluentGridItem>
+        <FluentGridItem md="2">
             <FluentTextField Label="Número da NF" @bind-Value="Model.NumeroNF" />
-        </RadzenColumn>
-        <RadzenColumn Size="2">
+        </FluentGridItem>
+        <FluentGridItem md="2">
             <FluentDatePicker Label="Data" Value="Model.Data" ValueChanged="e=>Model.Data=e.Value" />
-        </RadzenColumn>
-        <RadzenColumn Size="3">
-            <FluentAutocomplete 
-                TOption="fornecedor"  
-                MaximumSelectedOptions="1"
-                AutoComplete="off"
-                Label="Fornecedor"
-                OnOptionsSearch="(e)=>e.Items=Contexto.fornecedores.Where(k=>k.Nome.Contains(e.Text)).OrderBy(k=>k.Nome)"
-                Placeholder="Selecione um fornecedor"
-                OptionText="e=>e.Nome"
-                @bind-SelectedOptions=@fornecedores
-                />
-
-
-            <RadzenFormField class="w-100" Text="Fornecedor">
-            <Dropdown2 
-                TItem="fornecedor"
-                @bind-Value="Model.Fornecedor"
-                GetItems="()=>Contexto.fornecedores.OrderBy(k=>k.Nome)" 
-                TextProperty="Nome" 
-                OnDelete="(ctx, item)=>{ctx.fornecedores.Remove(item);ctx.SaveChanges();}"
-                OnChange="(item)=>{Model.Fornecedor=item;StateHasChanged();}"                
-                >
-                <OnEdit Context=forn>
-                    <ProSoft.Pages.Cadastros.Fornecedor Model=forn Contexto="new Contexto()" />
-                </OnEdit>
-            </Dropdown2>
-            </RadzenFormField>
-        </RadzenColumn>
-        <RadzenColumn Size="3">
-            <RadzenFormField class="w-100" Text="Xml">
-                <RadzenTextBox @bind-Value="Model.Xml"/>
-            </RadzenFormField>
-        </RadzenColumn>
-    </RadzenRow>
+        </FluentGridItem>
+        <FluentGridItem md="3">
+            <FluentAutocomplete TOption="fornecedor"
+                                MaximumSelectedOptions="1"
+                                AutoComplete="off"
+                                Label="Fornecedor"
+                                OnOptionsSearch="(e)=>e.Items=Contexto.fornecedores.Where(k=>k.Nome.Contains(e.Text)).OrderBy(k=>k.Nome)"
+                                Placeholder="Selecione um fornecedor"
+                                OptionText="e=>e.Nome"
+                                @bind-SelectedOptions=@fornecedores />
+        </FluentGridItem>
+        <FluentGridItem md="3">
+            <FluentTextField Label="Xml" @bind-Value=Model.Xml/>
+        </FluentGridItem>
+    </FluentGrid>
 
     <GenericTemplate TItem=compra Items=Model.Items Context=Contexto OnAdd=AddRow OnDelete=DeleteRow>
         <TableHeader>
@@ -76,16 +56,18 @@
         </RowTemplate>
         <TableFooter>
             <td colspan="4" class="text-end">Total</td>
-            <td><RadzenNumeric Format="N2" TextAlign="TextAlign.End" Value="Model.Total" Disabled=true ShowUpDown=false /></td>
+            <td>
+                <FluentTextField Value="@Model.Total.ToString("N2")" Disabled=true/>
+            </td>
             <td colspan="2"></td>
         </TableFooter>
     </GenericTemplate>
 
-</RadzenTemplateForm>
+</EditForm>
 
 @code {
     [Parameter] public notacompra Model{ get; set; } = new();
-    [Inject] public NotificationService notificationService {get;set;} = default!;
+    //[Inject] public NotificationService notificationService {get;set;} = default!;
     [Parameter, EditorRequired] public Contexto Contexto {get;set;} = default!;
 
     IEnumerable<fornecedor> fornecedores = new List<fornecedor>();
@@ -106,7 +88,7 @@
         Model.Items.Add(c);
         StateHasChanged();
     }
-    void Submit(notacompra nc)
+    void Submit()
     {
         if (Model!.IdNotaCompra == 0)
             Contexto.Entry(Model).State = EntityState.Added;
@@ -120,7 +102,7 @@
 
         Model = Contexto.notascompra.First(k=>k.IdNotaCompra == Model.IdNotaCompra);
 
-        notificationService.Notify(NotificationSeverity.Success, "Venda", "Todos os dados da Venda foram salvos  com sucesso");
+        //notificationService.Notify(NotificationSeverity.Success, "Venda", "Todos os dados da Venda foram salvos  com sucesso");
 
         StateHasChanged();
     }

@@ -3,12 +3,11 @@
 @using ProSoft.Data
 @using ProSoft.Components
 @using Microsoft.EntityFrameworkCore
-@inject Radzen.DialogService dialogService
 
-<td width="10%"><RadzenDatePicker @bind-Value="Model.Vencimento" /></td>
-<td width="10%"><RadzenNumeric Format="N2" ShowUpDown=false TextAlign=TextAlign.Right @bind-Value="Model.Valor" Change=OnTotalChanged /></td>
+<td width="10%"><FluentDatePicker @bind-Value="Vencimento" /></td>
+<td width="10%"><FluentNumberField @bind-Value="Model.Valor"  /></td>
 <td>
-    <RadzenButton Icon="delete" ButtonType=Radzen.ButtonType.Button Variant=Variant.Filled Click=@(args => AskDeleteParcela(args) )></RadzenButton>
+    <FluentButton IconStart="new Icons.Regular.Size12.Delete()" OnClick=@(args => AskDeleteParcela(args) ) />
 </td>
 
 @code {
@@ -16,10 +15,15 @@
     [Parameter] public Action<contaareceber>? OnDelete { get; set; } = null;
     [Parameter] public EventCallback<float> OnTotalChanged { get; set; }
 
+    DateTime? Vencimento
+    {
+        get { return Model.Vencimento; }
+        set { Model.Vencimento = value ?? DateTime.Today; }
+    }
+
     async void AskDeleteParcela(MouseEventArgs args)
     {
-        bool? b = await dialogService.Confirm("Confirma exclusão do registro?", "Excluir", new ConfirmOptions() { OkButtonText = "Sim", CancelButtonText = "Não" });
-        if (b == true)
-            OnDelete?.Invoke(Model);
+        /*
+        */
     }
 }

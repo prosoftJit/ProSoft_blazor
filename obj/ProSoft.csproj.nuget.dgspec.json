@@ -73,10 +73,6 @@
             "MySqlConnector": {
               "target": "Package",
               "version": "[2.3.5, )"
-            },
-            "Radzen.Blazor": {
-              "target": "Package",
-              "version": "[4.24.7, )"
             }
           },
           "imports": [

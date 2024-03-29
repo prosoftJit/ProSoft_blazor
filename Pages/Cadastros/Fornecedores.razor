@@ -6,7 +6,7 @@
 
 <PageHeader Title="Fornecedores">
     <BarItems>
-        <RadzenButton Icon="add" Text="Fornecedor" Click="()=>askEdit=new()" />
+        <FluentButton OnClick="()=>askEdit=new()">Fornecedor</FluentButton>
     </BarItems>
 </PageHeader>
 
@@ -49,7 +49,6 @@
 
 @code {
     Contexto ctx = new();
-    [Inject] NotificationService notificationService {get;set;} = default!;
     fornecedor? askEdit = null;
     fornecedor? askDelete = null;
     private void AskDelete(long idFornecedor)
@@ -58,7 +57,7 @@
         if (askDelete != null && ctx.notascompra.Where(k => k.Fornecedor_IdFornecedor == askDelete.IdFornecedor).Count() > 0)
         {
             askDelete = null;
-            notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Error, Summary="Cadastro de Fornecedores", Detail = "Não é possível excluir o fornecedor", Duration = 4000 });
+            //notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Error, Summary="Cadastro de Fornecedores", Detail = "Não é possível excluir o fornecedor", Duration = 4000 });
             return;
         }
     }
@@ -68,7 +67,7 @@
         {
             ctx.fornecedores.Remove(askDelete);
             ctx.SaveChanges();
-            notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary="Cadastro de Fornecedores", Detail = "Fornecedor excluído com sucesso", Duration = 4000 });
+            //notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary="Cadastro de Fornecedores", Detail = "Fornecedor excluído com sucesso", Duration = 4000 });
             GetFornecedores();
         }
         askDelete = null;
@@ -87,7 +86,7 @@
         ctx.SaveChanges();
         askEdit = null;
         GetFornecedores();
-        notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Cadastro de Fornecedores", Detail = "Alterações do fornecedor foram salvas com sucesso!", Duration = 4000 });
+        //notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Cadastro de Fornecedores", Detail = "Alterações do fornecedor foram salvas com sucesso!", Duration = 4000 });
     }
 
     private IReadOnlyList<fornecedor> fornecedores = Array.Empty<fornecedor>();
