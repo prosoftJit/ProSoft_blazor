@@ -1,4 +1,5 @@
 @import '_content/Blazor.Bootstrap/Blazor.Bootstrap.bundle.scp.css';
+@import '_content/Microsoft.Fast.Components.FluentUI/Microsoft.Fast.Components.FluentUI.bundle.scp.css';
 
 /* _content/ProSoft/Shared/MainLayout.razor.rz.scp.css */
 .page[b-puyjvi6c56] {

@@ -9,203 +9,207 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ProSoft
 build_property.RootNamespace = ProSoft
-build_property.ProjectDir = C:\ProSoft_blazor\
+build_property.ProjectDir = D:\ProSoft_blazor\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\ProSoft_blazor
+build_property.MSBuildProjectDirectory = D:\ProSoft_blazor
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/ProSoft_blazor/App.razor]
+[D:/ProSoft_blazor/App.razor]
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Components/Dropdown.razor]
+[D:/ProSoft_blazor/Components/Dropdown.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xEcm9wZG93bi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Components/Dropdown2.razor]
+[D:/ProSoft_blazor/Components/Dropdown2.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xEcm9wZG93bjIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Components/DropdownHamburguer.razor]
+[D:/ProSoft_blazor/Components/DropdownHamburguer.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xEcm9wZG93bkhhbWJ1cmd1ZXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Components/ModalConfirm.razor]
+[D:/ProSoft_blazor/Components/ModalConfirm.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNb2RhbENvbmZpcm0ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Components/ModalDialog.razor]
+[D:/ProSoft_blazor/Components/ModalDialog.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNb2RhbERpYWxvZy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Components/PageHeader.razor]
+[D:/ProSoft_blazor/Components/PageHeader.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlSGVhZGVyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/Cadastros/Cliente.razor]
+[D:/ProSoft_blazor/Pages/Cadastros/Cliente.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FkYXN0cm9zXENsaWVudGUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/Cadastros/Clientes.razor]
+[D:/ProSoft_blazor/Pages/Cadastros/Clientes.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FkYXN0cm9zXENsaWVudGVzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/Cadastros/Equipamento.razor]
+[D:/ProSoft_blazor/Pages/Cadastros/Equipamento.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FkYXN0cm9zXEVxdWlwYW1lbnRvLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/Cadastros/Equipamentos.razor]
+[D:/ProSoft_blazor/Pages/Cadastros/Equipamentos.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FkYXN0cm9zXEVxdWlwYW1lbnRvcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/Cadastros/Fornecedor.razor]
+[D:/ProSoft_blazor/Pages/Cadastros/Fornecedor.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FkYXN0cm9zXEZvcm5lY2Vkb3IucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/Cadastros/Fornecedores.razor]
+[D:/ProSoft_blazor/Pages/Cadastros/Fornecedores.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FkYXN0cm9zXEZvcm5lY2Vkb3Jlcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/Cadastros/Funcionario.razor]
+[D:/ProSoft_blazor/Pages/Cadastros/Funcionario.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FkYXN0cm9zXEZ1bmNpb25hcmlvLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/Cadastros/Funcionarios.razor]
+[D:/ProSoft_blazor/Pages/Cadastros/Funcionarios.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FkYXN0cm9zXEZ1bmNpb25hcmlvcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/Cadastros/Mercadoria.razor]
+[D:/ProSoft_blazor/Pages/Cadastros/Mercadoria.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FkYXN0cm9zXE1lcmNhZG9yaWEucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/Cadastros/Mercadorias.razor]
+[D:/ProSoft_blazor/Pages/Cadastros/Mercadorias.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FkYXN0cm9zXE1lcmNhZG9yaWFzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/FetchData.razor]
+[D:/ProSoft_blazor/Pages/FetchData.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmV0Y2hEYXRhLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/GenericTemplate.razor]
+[D:/ProSoft_blazor/Pages/GenericTemplate.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VuZXJpY1RlbXBsYXRlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/GenericTemplate2.razor]
+[D:/ProSoft_blazor/Pages/GenericTemplate2.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VuZXJpY1RlbXBsYXRlMi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/Index.razor]
+[D:/ProSoft_blazor/Pages/GenericTemplate3.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2VuZXJpY1RlbXBsYXRlMy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/ProSoft_blazor/Pages/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/Login.razor]
+[D:/ProSoft_blazor/Pages/Login.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/NotasCompra/Form.razor]
+[D:/ProSoft_blazor/Pages/NotasCompra/Form.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTm90YXNDb21wcmFcRm9ybS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/NotasCompra/Index.razor]
+[D:/ProSoft_blazor/Pages/NotasCompra/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTm90YXNDb21wcmFcSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/NotasCompra/Row.razor]
+[D:/ProSoft_blazor/Pages/NotasCompra/Row.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTm90YXNDb21wcmFcUm93LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/NotaSVenda/Index.razor]
+[D:/ProSoft_blazor/Pages/NotaSVenda/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTm90YVNWZW5kYVxJbmRleC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/NotaSVenda/NotaVenda.razor]
+[D:/ProSoft_blazor/Pages/NotaSVenda/NotaVenda.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTm90YVNWZW5kYVxOb3RhVmVuZGEucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/NotaSVenda/Parcela.razor]
+[D:/ProSoft_blazor/Pages/NotaSVenda/Parcela.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTm90YVNWZW5kYVxQYXJjZWxhLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/NotaSVenda/Venda_row.razor]
+[D:/ProSoft_blazor/Pages/NotaSVenda/Venda_row.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTm90YVNWZW5kYVxWZW5kYV9yb3cucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/OrdemServico/Index.razor]
+[D:/ProSoft_blazor/Pages/OrdemServico/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JkZW1TZXJ2aWNvXEluZGV4LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/OrdemServico/Orcamento.razor]
+[D:/ProSoft_blazor/Pages/OrdemServico/Orcamento.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JkZW1TZXJ2aWNvXE9yY2FtZW50by5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/OrdemServico/OrcamentoItem.razor]
+[D:/ProSoft_blazor/Pages/OrdemServico/OrcamentoItem.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JkZW1TZXJ2aWNvXE9yY2FtZW50b0l0ZW0ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/OrdemServico/Orcamentos.razor]
+[D:/ProSoft_blazor/Pages/OrdemServico/Orcamentos.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JkZW1TZXJ2aWNvXE9yY2FtZW50b3MucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/OrdemServico/OS.razor]
+[D:/ProSoft_blazor/Pages/OrdemServico/OS.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JkZW1TZXJ2aWNvXE9TLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/OrdemServico/OS_row.razor]
+[D:/ProSoft_blazor/Pages/OrdemServico/OS_row.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3JkZW1TZXJ2aWNvXE9TX3Jvdy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Shared/Endereco.razor]
+[D:/ProSoft_blazor/Shared/Endereco.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEVuZGVyZWNvLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Shared/LoginDisplay.razor]
+[D:/ProSoft_blazor/Shared/LoginDisplay.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXExvZ2luRGlzcGxheS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Shared/SurveyPrompt.razor]
+[D:/ProSoft_blazor/Shared/SurveyPrompt.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/_Imports.razor]
+[D:/ProSoft_blazor/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Shared/MainLayout.razor]
+[D:/ProSoft_blazor/Shared/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-puyjvi6c56
 
-[C:/ProSoft_blazor/Shared/NavMenu.razor]
+[D:/ProSoft_blazor/Shared/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-hgct4e6xm6
 
-[C:/ProSoft_blazor/Pages/Error.cshtml]
+[D:/ProSoft_blazor/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/Shared/_Layout.cshtml]
+[D:/ProSoft_blazor/Pages/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/Shared/_LoginPartial.cshtml]
+[D:/ProSoft_blazor/Pages/Shared/_LoginPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9Mb2dpblBhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/Shared/_ValidationScriptsPartial.cshtml]
+[D:/ProSoft_blazor/Pages/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/_Host.cshtml]
+[D:/ProSoft_blazor/Pages/_Host.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/_Layout.cshtml]
+[D:/ProSoft_blazor/Pages/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0xheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/ProSoft_blazor/Pages/_ViewImports.cshtml]
+[D:/ProSoft_blazor/Pages/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

@@ -21,16 +21,21 @@
     </EmptyContent>
     <ChildContent>
         @GridContent
-        <TemplateColumn Align="Align.End" Context="item">
-            <FluentButton IconEnd="new Icons.Regular.Size12.Edit()" OnClick="()=>askEdit=item" />
-            <FluentButton IconEnd="new Icons.Regular.Size12.Delete()" OnClick="()=>askDelete=item" />
+        <TemplateColumn Align="Align.End" Context="item" >
+            <HeaderCellItemTemplate>
+                <FluentButton Class="mr-2" IconEnd="new Icons.Regular.Size12.Add()" OnClick="()=>askEdit=new()"></FluentButton>
+            </HeaderCellItemTemplate>
+            <ChildContent>
+                <FluentButton IconEnd="new Icons.Regular.Size12.Edit()" OnClick="()=>askEdit=item" />
+                <FluentButton IconEnd="new Icons.Regular.Size12.Delete()" OnClick="()=>askDelete=item" />
+            </ChildContent>
         </TemplateColumn>
     </ChildContent>
 </FluentDataGrid>
 
 <FluentPaginator State="paginator">
     <PaginationTextTemplate>
-        <strong>@paginator.TotalItemCount</strong> item(s). <a href="" @onclick="()=>askEdit=new()">Incluir</a>
+        Foram encontrados <strong>@paginator.TotalItemCount</strong> item(s). <a href="" @onclick="()=>askEdit=new()">Incluir</a>
     </PaginationTextTemplate>
     <PaginationTextTemplate>
         Página <strong>@(paginator.CurrentPageIndex + 1)</strong> de <strong>@(paginator.LastPageIndex + 1)</strong>
@@ -47,10 +52,6 @@
         <FluentButton Type=ButtonType.Submit Id="submit" FormId="editForm" >
             <FluentIcon Value="new Icons.Filled.Size12.Briefcase()" Color="Color.Success" Slot="start" />
             Salvar
-        </FluentButton>
-        <FluentButton FormId="editForm" OnClick="()=>askDelete=askEdit">
-            <FluentIcon Value="new Icons.Filled.Size12.Delete()" Color="Color.Error" Slot="start" />
-            Excluir
         </FluentButton>
     </ModalFooter>
 </ModalDialog>
