@@ -22,8 +22,13 @@
     <ChildContent>
         @GridContent
         <TemplateColumn Align="Align.End" Context="item">
-            <FluentButton IconEnd="new Icons.Regular.Size12.Edit()" OnClick="()=>askEdit=item" />
-            <FluentButton IconEnd="new Icons.Regular.Size12.Delete()" OnClick="()=>askDelete=item" />
+            <HeaderCellItemTemplate >
+                <FluentButton Class="me-4" IconEnd="new Icons.Regular.Size20.AddCircle()" OnClick="()=>askEdit=new()"></FluentButton>
+            </HeaderCellItemTemplate>
+            <ChildContent>
+                <FluentButton IconEnd="new Icons.Regular.Size20.Edit()" OnClick="()=>askEdit=item" />
+                <FluentButton IconEnd="new Icons.Regular.Size20.Delete()" OnClick="()=>askDelete=item" />
+            </ChildContent>
         </TemplateColumn>
     </ChildContent>
 </FluentDataGrid>
@@ -47,10 +52,6 @@
         <FluentButton Type=ButtonType.Submit Id="submit" FormId="editForm" >
             <FluentIcon Value="new Icons.Filled.Size12.Briefcase()" Color="Color.Success" Slot="start" />
             Salvar
-        </FluentButton>
-        <FluentButton FormId="editForm" OnClick="()=>askDelete=askEdit">
-            <FluentIcon Value="new Icons.Filled.Size12.Delete()" Color="Color.Error" Slot="start" />
-            Excluir
         </FluentButton>
     </ModalFooter>
 </ModalDialog>

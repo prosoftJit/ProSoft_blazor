@@ -2,73 +2,16 @@
 @using ProSoft.Data
 @using ProSoft.Components
 
-<GenericTemplate2  
-    OnDelete=OnDelete
-    Items="mercadorias" 
-    TItem=mercadoria 
-    HeaderTitle="Mercadorias" 
-    HeaderDescription="Listagem de mercadorias cadastradas no sistema" 
-    Contexto="ctx"
-    >
-    <TableHeader>
-        <th>Id</th>
-        <th>Descrição</th>
-    </TableHeader>
-    <RowTemplate Context="merc">
-        <td class="text-center">@merc.IdMercadoria.ToString("000000")</td>
-        <td>@merc.Descricao</td>
-    </RowTemplate>
-    <ItemEditForm Context=merc>
-        <Mercadoria Model=merc Contexto=ctx />
+<GenericTemplate3 TItem=mercadoria Contexto="ctx" HeaderTitle="Mercadorias" Items="ctx.mercadorias.OrderBy(k=>k.Descricao)" ModalSize="modal-lg">
+    <GridContent>
+        <PropertyColumn TProp=string TGridItem=mercadoria Title="Id" Property='p => p.IdMercadoria.ToString("000000")' Sortable="true" />
+        <PropertyColumn TProp=string TGridItem=mercadoria Title="Nome" Property="p => p.Descricao" Sortable="true" />
+    </GridContent>
+    <ItemEditForm Context="item">
+        <Mercadoria Model="item" Contexto="ctx" />
     </ItemEditForm>
-</GenericTemplate2>
+</GenericTemplate3>
 
 @code {
-    mercadoria? askEdit = null;
-
-    void AskEdit(long? idMercadoria)
-    {
-        if (idMercadoria == null) {
-            askEdit = new();
-            askEdit.Tipo = TipoMercadoria.Produto;
-        }
-        else
-            askEdit = ctx.mercadorias.First(k=>k.IdMercadoria == idMercadoria);
-    }
-    void Submit()
-    {
-        if (askEdit != null) {
-            if (askEdit?.IdMercadoria == 0)
-                ctx.Entry(askEdit).State = EntityState.Added;
-            else
-                ctx.Entry(askEdit!).State = EntityState.Modified;
-
-            ctx.SaveChangesAsync();
-
-            //notificationService.Notify(NotificationSeverity.Success, "Sucesso!", "As alterações foram salvas com sucesso.");
-
-            LoadMercadorias();
-
-            StateHasChanged();
-        }
-    }
-
-    mercadoria[]? mercadorias;
-    Contexto ctx = new Contexto();
-
-    protected override async Task OnInitializedAsync()
-    {
-        await LoadMercadorias();
-    }
-
-    Task LoadMercadorias()
-    {
-        mercadorias = ctx.mercadorias.OrderByDescending(k => k.IdMercadoria).ToArray();
-        return Task.FromResult(mercadorias);
-    }
-
-    void OnDelete(mercadoria merc) {
-        ctx.mercadorias.Remove(merc);
-        ctx.SaveChanges();
-    }
+    Contexto ctx = new();
 }
