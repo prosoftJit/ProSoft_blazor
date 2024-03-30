@@ -23,24 +23,19 @@
         <td>@func.IsSystemUser</td>
         <td><a href="" @onclick="()=>askDelete=func.IdFuncionario" @onclick:preventDefault><i class="oi oi-trash"></i></a></td>
     </RowTemplate>
-    <TableFooter>
-    </TableFooter>
 </GenericTemplate>
 
-@if (askEdit != null)
-{
-    <ModalDialog Title="Funcionario" Size="modal-fullscreen" OnCancel="()=>askEdit=null">
-        <ModalBody>
-            <PageHeader Title="Funcionário"></PageHeader>
-            <EditForm id="fornForm" Model=askEdit TItem="funcionario" OnValidSubmit="Submit">
-                <ProSoft.Pages.Cadastros.Funcionario Model="askEdit" />
-            </EditForm>
-        </ModalBody>
-        <ModalFooter>
-            <button class="btn btn-success" @onclick="()=>Submit()">Salvar</button>
-        </ModalFooter>
-    </ModalDialog>
-}
+<ModalDialog Title="Funcionario" Size="modal-lg" @bind-Visible=ModalVisible >
+    <ModalBody>
+        <PageHeader Title="Funcionário" />
+        <EditForm id="fornForm" Model=askEdit OnValidSubmit="Submit">
+            <ProSoft.Pages.Cadastros.Funcionario Model="askEdit" />
+        </EditForm>
+    </ModalBody>
+    <ModalFooter>
+        <FluentButton IconStart="new Icons.Regular.Size12.Briefcase()" Type="ButtonType.Submit" Id="submit" FormId="fornForm" >Salvar</FluentButton>
+    </ModalFooter>
+</ModalDialog>
 
 @if (askDelete > 0)
 {
@@ -52,6 +47,8 @@
     //[Inject] NotificationService notificationService {get;set;} = default!;
     funcionario? askEdit = null;
     long askDelete = 0;
+
+    bool ModalVisible { get { return askEdit != null; } set { if (!value) askEdit = null; } }
 
     private void Delete(bool confirm)
     {
@@ -73,9 +70,7 @@
             return;
 
         if (askEdit.IdFuncionario == 0)
-            ctx.Entry(askEdit).State = EntityState.Added;
-        else
-            ctx.Entry(askEdit).State = EntityState.Modified;
+            ctx.funcionarios.Add(askEdit);
         ctx.SaveChanges();
         askEdit = null;
         GetFuncionarios();

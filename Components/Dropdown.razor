@@ -22,15 +22,13 @@
     <RadzenButton Style="max-width: 35px;" Icon=edit Click="()=>askEdit=Value" />
 </RadzenStack>
  *@
-@if (askEdit > 0) {
-    <ProSoft.Components.ModalDialog Title="Modal" OnCancel="()=>askEdit = 0" Size="modal-fullscreen">
-        <ModalBody>
-            @OnEdit
-        </ModalBody>
-        <ModalFooter>
-        </ModalFooter>
-    </ProSoft.Components.ModalDialog>
-}
+<ProSoft.Components.ModalDialog Title="Modal" Size="modal-fullscreen" @bind-Visible=ModalVisible>
+    <ModalBody>
+        @OnEdit
+    </ModalBody>
+    <ModalFooter>
+    </ModalFooter>
+</ProSoft.Components.ModalDialog>
 
 @code {
     [Parameter] public long Value {get;set;} = 0;
@@ -42,6 +40,7 @@
     [Parameter] public EventCallback<long> ValueChanged {get;set;}
 
     long askEdit = 0;
+    bool ModalVisible { get { return askEdit != 0; } set { if (!value) askEdit = 0; } }
 
     void DropdownChanged(object obj) {
         // object is the new id

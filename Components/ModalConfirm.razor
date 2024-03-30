@@ -1,26 +1,38 @@
 ﻿@namespace ProSoft.Components 
 
-<ModalDialog Title="Confirmação" OnCancel="_=>Close(false)" HideCloseButton="true">
-    <ModalBody>
-        @Message
-    </ModalBody>
-    <ModalFooter>
-        <button type="button" Class="btn btn-primary" @onclick="() => Close(true)">Ok</button>
-        <button type="button" Class="btn btn-secondary" @onclick="() => Close(false)">Cancel</button>
-    </ModalFooter>
-</ModalDialog>
+@if (_visible)
+{
+    <ModalDialog Title="Confirmação" HideCloseButton="true" @bind-Visible=Visible >
+        <ModalBody>
+            @Message
+        </ModalBody>
+        <ModalFooter>
+            <FluentButton OnClick="()=>Close(true)">Ok</FluentButton>
+            <FluentButton OnClick="()=>Close(false)">Cancel</FluentButton>
+        </ModalFooter>
+    </ModalDialog>
+}
 
 @code {
     [Parameter] public string Title { get; set; } = "Confirmação";
-
     [Parameter] public string Message { get; set; } = "";
-
     [Parameter] public Action<bool>? OnClose { get; set; }
-
     [Parameter] public Action? OnConfirm { get; set; }
+
+    bool _visible = true;
+    bool Visible
+    {
+        get { return _visible; }
+        set {
+            _visible = value;
+            if (!_visible)
+                Close(false);
+        }
+    }
 
     private void Close(bool response)
     {
+        _visible = false;
         OnClose?.Invoke(response);
         if (response)
             OnConfirm?.Invoke();

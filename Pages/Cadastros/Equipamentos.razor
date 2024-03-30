@@ -4,105 +4,17 @@
 @using ProSoft.Components
 @using ProSoft.Pages
 
-<PageHeader Title="Equipamentos" Description="Listagem de equipamentos dos clientes, enviados para serviço">
-    <BarItems>
-        <FluentButton OnClick="()=>askEdit=new()">Equipamento</FluentButton>
-    </BarItems>
-</PageHeader>
-
-<GenericTemplate Context="ctx" Items="equipamentos">
-    <TableHeader>
-        <th>Id do Equipamento</th>
-        <th>Descrição</th>
-        <th>Cliente</th>
-        <th></th>
-    </TableHeader>
-    <RowTemplate Context="eqp">
-        <td class="text-center"><a href="" @onclick="()=>askEdit = eqp" @onclick:preventDefault>@eqp.IdEquipamento.ToString("000000")</a></td>
-        <td>@eqp.Descricao</td>
-        <td>@eqp.Cliente?.Nome</td>
-        <td><a href="" @onclick="()=>AskDelete(eqp.IdEquipamento)" @onclick:preventDefault><i class="oi oi-trash"></i></a></td>
-    </RowTemplate>
-    <TableFooter>
-    </TableFooter>
-</GenericTemplate>
-
-<ModalDialog Title="Equipamento" Size="modal-fullscreen" @bind-Visible=ModalVisible>
-    <ModalBody>
-        <EditForm Model="askEdit" OnValidSubmit="SubmitEqp">
-            <Equipamento Model="askEdit" ctx="ctx" />
-        </EditForm>
-    </ModalBody>
-    <ModalFooter>
-        <FluentButton Type="ButtonType.Submit" Id="submit" FormId="formEqp">Salvar</FluentButton>
-    </ModalFooter>
-</ModalDialog>
-
-@if (askDelete > 0)
-{
-    <ModalConfirm OnClose="Delete">Confirma exclusão?</ModalConfirm>
-}
+<GenericTemplate3 TItem=equipamento Contexto="ctx" HeaderTitle="Equipamentos" Items="ctx.equipamentos" ModalSize="modal-lg">
+    <GridContent>
+        <PropertyColumn TProp=string TGridItem=equipamento Title="Id" Property='p => p.IdEquipamento.ToString("000000")' Sortable="true" />
+        <PropertyColumn TProp=string TGridItem=equipamento Title="Descricão" Property="p => p.Descricao" Sortable="true" />
+        <PropertyColumn TProp=string TGridItem=equipamento Title="Cliente" Property="p => p.Cliente.Nome" Sortable="true" />
+    </GridContent>
+    <ItemEditForm Context="item">
+        <Equipamento Model="item" ctx="ctx" />
+    </ItemEditForm>
+</GenericTemplate3>
 
 @code {
     Contexto? ctx = new();
-    //[Inject] NotificationService? notificationService {get;set;}
-    equipamento? askEdit = null;
-    bool ModalVisible { get { return askEdit != null; } set { if (!value) askEdit = null; } }
-    long askDelete = 0;
-    private void AskDelete(long idFornecedor)
-    {
-        askDelete = idFornecedor;
-        if (askDelete > 0)
-        {
-            askDelete = 0;
-        }
-    }
-    private void Delete(bool confirm)
-    {
-        if (askDelete > 0 && confirm)
-        {
-            equipamento? eqp = ctx?.equipamentos.Find(askDelete);
-            ctx?.equipamentos.Remove(eqp!);
-            ctx?.SaveChanges();
-            //notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary="Cadastro de Equipamentos", Detail = "Equipamento excluído com sucesso", Duration = 4000 });
-            GetEquipamentos();
-        }
-        askDelete = 0;
-        StateHasChanged();
-    }
-
-    private void Submit()
-    {
-        Console.WriteLine("Submit");
-        if (askEdit == null)
-            return;
-
-        if (askEdit.IdEquipamento == 0)
-            ctx!.Entry(askEdit).State = EntityState.Added;
-        else
-            ctx!.Entry(askEdit).State = EntityState.Modified;
-        ctx.SaveChanges();
-        askEdit = null;
-        GetEquipamentos();
-        //notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Cadastro de Equipamentos", Detail = "Alterações do equipamento foram salvas com sucesso!", Duration = 4000 });
-    }
-
-    void SubmitEqp()
-    {
-        if (askEdit.IdEquipamento == 0)
-            ctx.equipamentos.Add(askEdit);
-        ctx.SaveChanges();
-
-        askEdit = null;
-    }
-
-    private IReadOnlyList<equipamento> equipamentos = Array.Empty<equipamento>();
-    void GetEquipamentos()
-    {
-        equipamentos = ctx!.equipamentos.ToArray();
-    }
-    protected override void OnInitialized()
-    {
-        GetEquipamentos();
-    }
 }

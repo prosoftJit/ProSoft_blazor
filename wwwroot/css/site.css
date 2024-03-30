@@ -16,6 +16,12 @@ fluent-combobox
     width: 100%;
 }
 
+fluent-data-grid-cell
+{
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
 /*
     Corrige o dimensionamento do Componente Autocomplete3
 */

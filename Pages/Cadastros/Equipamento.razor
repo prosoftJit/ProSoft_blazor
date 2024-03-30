@@ -12,26 +12,29 @@
         <FluentTextField Label="Id do Equipamento" Value=@Model.IdEquipamento.ToString("000000") Disabled=true />
     </FluentGridItem>
     <FluentGridItem md="9">
-
+        <FluentStack HorizontalGap="0" VerticalAlignment="VerticalAlignment.Bottom">
+        <div class="w-100">
         <FluentCombobox Label="Cliente" Autocomplete=ComboboxAutocomplete.Inline Items="ctx!.clientes" TOption="cliente" OptionText="(o)=>o.Nome" @bind-SelectedOption=Model.Cliente Required />
+        </div>
         <FluentButton IconStart="new Icons.Regular.Size12.Edit()" OnClick="()=>askEditCli=Model.Cliente??new()" />
+         </FluentStack>
 
         <FluentValidationMessage For="()=>Model.Cliente" />
-        </FluentGridItem>
+    </FluentGridItem>
     <FluentGridItem md="12">
         <FluentTextArea @bind-Value="Model.Descricao" Label="Descrição" Rows="5" Required />
         <FluentValidationMessage For="()=>Model.Descricao" />
         </FluentGridItem>
 </FluentGrid>
 
-<ModalDialog Title="Cliente" Size="modal-fullscreen" @bind-Visible=ModalVisible>
+<ModalDialog Title="Cliente" Size="modal-lg" @bind-Visible=ModalVisible>
     <ModalBody>
         <EditForm Model="askEditCli" id="cliForm" OnValidSubmit="ClienteSubmit">
             <Cliente Model="askEditCli" />
         </EditForm>
     </ModalBody>
     <ModalFooter>
-        <FluentButton Type="ButtonType.Submit" Id="submit" FormId="cliForm">Salvar</FluentButton>
+        <FluentButton Appearance=Appearance.Accent Type="ButtonType.Submit" Id="submit" FormId="cliForm" IconStart="new Icons.Regular.Size12.Briefcase()">Salvar</FluentButton>
     </ModalFooter>
 </ModalDialog>
 

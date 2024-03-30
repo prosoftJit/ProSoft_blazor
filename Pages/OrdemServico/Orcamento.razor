@@ -44,16 +44,15 @@
     </GenericTemplate2>
 
 
-@if (askEditCliente != null) {
-    <ModalDialog Title="Editar Cliente" OnCancel="()=>askEditCliente=null" Size="modal-lg">
-        <ModalBody>
-            <ProSoft.Pages.Cadastros.Cliente idCliente="askEditCliente.idCliente"/>
-        </ModalBody>
-        <ModalFooter>
-            <FluentButton Type="Microsoft.Fast.Components.FluentUI.ButtonType.Submit" FormId="eqpForm" />
-        </ModalFooter>
-    </ModalDialog>
-}
+<ModalDialog Title="Editar Cliente" Size="modal-lg" @bind-Visible=ModalVisible>
+    <ModalBody>
+        <ProSoft.Pages.Cadastros.Cliente idCliente="askEditCliente.idCliente"/>
+    </ModalBody>
+    <ModalFooter>
+        <FluentButton Type="Microsoft.Fast.Components.FluentUI.ButtonType.Submit" FormId="eqpForm" />
+    </ModalFooter>
+</ModalDialog>
+
 
 @code {
     [Parameter] public orcamento Model { get; set; } = new();
@@ -61,6 +60,8 @@
     [Parameter, EditorRequired] public Contexto ctx {get;set;} = new(); // new for designtime purposes
 
     cliente? askEditCliente = null;
+
+    bool ModalVisible { get { return askEditCliente != null; } set { if (!value) askEditCliente = null; } }
 
     DateTime? Data
     {

@@ -15,7 +15,9 @@
     <FluentGridItem md="4">
         <FluentCheckbox Label="System user?" @bind-Value=Model.IsSystemUser />
     </FluentGridItem>
-    <FluentTextField Label="Senha" @bind-Value=Model.Senha />
+    <FluentGridItem md="8">
+        <FluentTextField Label="Senha" @bind-Value=Model.Senha />
+    </FluentGridItem>
 </FluentGrid>
 
 @code {

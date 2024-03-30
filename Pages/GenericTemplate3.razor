@@ -1,0 +1,117 @@
+@using ProSoft.Data
+@using ProSoft.Components
+
+@namespace ProSoft.Pages 
+
+@typeparam TItem where TItem : class, new()
+
+@if (HeaderTitle != null) {
+    <PageHeader Title="@HeaderTitle" Description=@HeaderDescription>
+        <BarItems>
+        @if (HeaderBarItems != null) {
+            @HeaderBarItems
+        }
+        </BarItems>
+    </PageHeader>
+}
+
+<FluentDataGrid Items="Items" TGridItem="TItem" Pagination="paginator">
+    <EmptyContent>
+        <p>Nenhum item encontrado...</p>
+    </EmptyContent>
+    <ChildContent>
+        @GridContent
+        <TemplateColumn Align="Align.End" Context="item">
+            <FluentButton IconEnd="new Icons.Regular.Size12.Edit()" OnClick="()=>askEdit=item" />
+            <FluentButton IconEnd="new Icons.Regular.Size12.Delete()" OnClick="()=>askDelete=item" />
+        </TemplateColumn>
+    </ChildContent>
+</FluentDataGrid>
+
+<FluentPaginator State="paginator">
+    <PaginationTextTemplate>
+        <strong>@paginator.TotalItemCount</strong> item(s). <a href="" @onclick="()=>askEdit=new()">Incluir</a>
+    </PaginationTextTemplate>
+    <PaginationTextTemplate>
+        Página <strong>@(paginator.CurrentPageIndex + 1)</strong> de <strong>@(paginator.LastPageIndex + 1)</strong>
+    </PaginationTextTemplate>
+</FluentPaginator>
+
+<ModalDialog Title="Editar" Size="@ModalSize" @bind-Visible=DialogVisible >
+    <ModalBody>
+        <EditForm Model="askEdit" id="editForm" OnValidSubmit="Submit" >
+        @ItemEditForm?.Invoke(askEdit!)
+        </EditForm>
+    </ModalBody>
+    <ModalFooter>
+        <FluentButton Type=ButtonType.Submit Id="submit" FormId="editForm" >
+            <FluentIcon Value="new Icons.Filled.Size12.Briefcase()" Color="Color.Success" Slot="start" />
+            Salvar
+        </FluentButton>
+        <FluentButton FormId="editForm" OnClick="()=>askDelete=askEdit">
+            <FluentIcon Value="new Icons.Filled.Size12.Delete()" Color="Color.Error" Slot="start" />
+            Excluir
+        </FluentButton>
+    </ModalFooter>
+</ModalDialog>
+
+@if (askDelete != null) {
+    <ModalConfirm Message="Confirma exclusão?" Title=Excluir OnClose=OnConfirmClose />
+}
+
+@code {
+    [Parameter] public RenderFragment GridContent { get; set; } = default!;
+    [Parameter] public IQueryable<TItem>? Items { get; set; }
+    [Parameter] public string? HeaderTitle {get;set;} = null;
+    [Parameter] public string? HeaderDescription {get;set;} = null;
+    [Parameter] public RenderFragment? HeaderBarItems {get;set;} = null;
+    [Parameter] public RenderFragment<TItem>? ItemEditForm {get;set;} = null;
+    [Parameter] public Action<TItem>? ItemEditClick {get;set;} = null;
+    [Parameter] public Action<TItem>? OnDelete {get;set;} = null;
+    [Parameter, EditorRequired] public Contexto Contexto { get; set; } = default!;
+    [Parameter] public string ModalSize { get; set; } = "modal-fullscreen";
+
+    //[Inject] NotificationService notService { get; set; } = default!;
+
+    PaginationState paginator = new PaginationState { ItemsPerPage = 10 };
+
+    bool DialogVisible { get { return askEdit != null && ItemEditForm != null; } set { if (!value) askEdit = null; } }
+
+    TItem? askEdit = null;
+    TItem? askDelete = null;
+
+    void Edit(TItem item) {
+        if (ItemEditForm != null)
+            askEdit = item;
+        if (ItemEditClick != null)
+            ItemEditClick(item);
+    }
+
+    void OnConfirmClose(bool confirmation) {
+        if (confirmation) {
+            try {
+                OnDelete?.Invoke(askDelete!);
+
+                Contexto.Remove(askDelete);
+                Contexto.SaveChanges();
+
+                //notService.Notify(NotificationSeverity.Success, "ProSoft", "Item excluído com sucesso!");
+            } catch {
+                //notService.Notify(NotificationSeverity.Error, "ProSoft", "Erro excluindo ítem!");
+            }
+            askEdit = null;
+        }
+        askDelete = null;
+        StateHasChanged();
+    }
+
+    void Submit()
+    {
+        if (Contexto.Entry(askEdit).State == EntityState.Detached)
+            Contexto.Add(askEdit);
+
+        Contexto.SaveChanges();
+
+        //notService.Notify(NotificationSeverity.Success, "ProSoft", "Item salvo com sucesso!");
+    }
+}

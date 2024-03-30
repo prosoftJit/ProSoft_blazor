@@ -1,4 +1,4 @@
-@page "/Cadastros/Cliente/{idCliente:long}"
+@page "/Cadastros/Cliente"
 @using System.ComponentModel.DataAnnotations
 @using ProSoft.Data
 
@@ -16,10 +16,10 @@
     <FluentGridItem md="4">
         <FluentTextField Label="CPF" @bind-Value="Model.CPF" />
     </FluentGridItem>
-    <FluentGridItem>
+    <FluentGridItem md="4">
         <FluentTextField Label="E-mail" @bind-Value="Model.Email" />
     </FluentGridItem>
-    <FluentGridItem>
+    <FluentGridItem md="4">
         <FluentTextField Label="RG" @bind-Value="Model.RG" />
     </FluentGridItem>
 </FluentGrid>

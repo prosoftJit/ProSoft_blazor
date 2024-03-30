@@ -30,18 +30,16 @@
     </ItemEditForm>
 </GenericTemplate2>
 
-@if (askEdit > 0)
-{
-    <ModalDialog Title="Notas de Venda" Size="modal-fullscreen" OnCancel="()=>askEdit=0">
-        <ModalBody>
-            <PageHeader Title="Nota de Venda"></PageHeader>
-            <NotaVenda idNotaVenda="askEdit"></NotaVenda>
-        </ModalBody>
-        <ModalFooter>
-            <button form="editForm" type="submit" Class="btn btn-success">Salvar</button>
-        </ModalFooter>
-    </ModalDialog>
-}
+<ModalDialog Title="Notas de Venda" Size="modal-fullscreen" @bind-Visible=ModalVisible>
+    <ModalBody>
+        <PageHeader Title="Nota de Venda"></PageHeader>
+        <NotaVenda idNotaVenda="askEdit"></NotaVenda>
+    </ModalBody>
+    <ModalFooter>
+        <button form="editForm" type="submit" Class="btn btn-success">Salvar</button>
+    </ModalFooter>
+</ModalDialog>
+
 
 @if (askDelete!=null)
 {
@@ -53,6 +51,8 @@
     notavenda? askDelete = null;
     //[Inject] NotificationService notificationService { get; set; } = default!;
     compra[] compras = Array.Empty<compra>();
+
+    bool ModalVisible { get { return askEdit != 0; } set { if (!value) askEdit = 0; } }
 
     void OnDelete(notavenda nv) {
 

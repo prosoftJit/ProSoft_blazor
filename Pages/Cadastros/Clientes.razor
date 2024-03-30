@@ -4,108 +4,16 @@
 @using ProSoft.Services
 @using Microsoft.EntityFrameworkCore
 
-<PageHeader Title="Clientes" Description="Listagem de clientes cadastrados no sistema" />
-
-<FluentDataGrid Items="ctx.clientes.OrderBy(k=>k.Nome)" TGridItem="cliente" Pagination="paginator" >
-    <PropertyColumn Title="Id" Property='p => p.idCliente.ToString("000000")' Sortable="true" />
-    <PropertyColumn Title="Nome" Property="p => p.Nome" Sortable="true" />
-    <TemplateColumn Title="Actions" Align="@Align.End" Context="item">
-        <FluentButton IconEnd="@(new Icons.Regular.Size12.Edit())" OnClick="()=>askEdit=item" />
-        <FluentButton IconEnd="@(new Icons.Regular.Size12.Delete())"  />
-    </TemplateColumn>
-</FluentDataGrid>
-
-<FluentPaginator State="paginator" >
-    <PaginationTextTemplate>
-        <strong>@paginator.TotalItemCount</strong> items.
-    </PaginationTextTemplate>
-    <PaginationTextTemplate>
-        Página <strong>@(paginator.CurrentPageIndex+1)</strong> de <strong>@(paginator.LastPageIndex+1)</strong>
-    </PaginationTextTemplate>
-</FluentPaginator>
-
-<FluentButton Appearance=Appearance.Hypertext IconStart="new Icons.Regular.Size12.Add()" OnClick="()=>askEdit=new()">Adicionar</FluentButton>
-
-
-@if (askDelete != null)
-{
-    @* <ProSoft.Co ConfirmDialog Message="Confirma exclusão?" OnClose="DeleteDialogClosed"></ConfirmDialog> *@
-}
-
-
-<ModalDialog Title="Cliente" Size="modal-fullscreen" @bind-Visible=ModalVisible>
-    <ModalBody>
-        <EditForm Model="askEdit" id="cliForm" OnValidSubmit="Submit" >
-            <ProSoft.Pages.Cadastros.Cliente Model="askEdit" />
-        </EditForm>
-    </ModalBody>
-    <ModalFooter>
-        <FluentButton FormId="cliForm" Id="submit" Type="ButtonType.Submit">Salvar</FluentButton>
-    </ModalFooter>
-</ModalDialog>
-
+<GenericTemplate3 TItem=cliente Contexto="ctx" HeaderTitle="Clientes" Items="ctx.clientes.OrderBy(k=>k.Nome)" ModalSize="modal-lg" >
+    <GridContent>
+        <PropertyColumn TProp=string TGridItem=cliente Title="Id" Property='p => p.idCliente.ToString("000000")' Sortable="true" />
+        <PropertyColumn TProp=string TGridItem=cliente Title="Nome" Property="p => p.Nome" Sortable="true" />
+    </GridContent>
+    <ItemEditForm Context="item">
+        <ProSoft.Pages.Cadastros.Cliente Model="item" />
+    </ItemEditForm>
+</GenericTemplate3>
  
 @code {
-    cliente? askEdit=null;
-
     Contexto ctx = new();
-
-    bool ModalVisible { get { return askEdit != null; } set { if (!value) askEdit = null; } }
-
-    cliente? askDelete = null;
-
-    PaginationState paginator = new PaginationState { ItemsPerPage = 10 };
-
-    void Submit()
-    {
-        if (askEdit!.idCliente == 0)
-            ctx.clientes.Add(askEdit);
-
-        ctx.SaveChanges();
-        //notificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Cadastro de clientes", Detail = "Alterações do cliente foram salvas com sucesso!", Duration = 4000 });
-    }
-
-    public void AskDelete(long idCliente)
-    {
-        cliente cli = ctx.clientes.First(k => k.idCliente == idCliente);
-
-        var c = (from cl in ctx.clientes
-                where cl.idCliente == idCliente
-                let c1 = cl.Compras.Count()
-                let c2 = cl.Equipamentos.Count()
-                let c3 = cl.Pagamentos.Count()
-                let c4 = cl.Orcamentos.Count()
-                select c1 + c2 + c3 + c4).First();
-
-        if (c > 0)
-        {
-//            toastService.ShowToast("Impossível excluir o cliente: " + cli.Nome, ToastLevel.Warning);
-            return;
-        }
-
-        askDelete = cli;
-    }
-    public void DeleteDialogClosed(bool value)
-    {
-        if (value && askDelete != null)
-        {
-            ctx.clientes.Remove(askDelete);
-            ctx.SaveChanges();
-        }
-        askDelete = null;
-        StateHasChanged();
-    }
-
-    private cliente[]? clientes;
-
-    protected override async Task OnInitializedAsync()
-    {
-        await LoadClientes();
-    }
-
-    Task LoadClientes()
-    {
-        clientes = ctx.clientes.OrderBy(k => k.Nome).ToArray();
-        return Task.FromResult(clientes);
-    }
 }

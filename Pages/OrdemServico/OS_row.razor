@@ -18,15 +18,14 @@
 <td width="10%"><FluentNumberField @bind-Value="Model!.Desconto" /></td>
 <td width="10%"><FluentNumberField Value="@Total()" Disabled=true /></td>
 
-@if (askEditCompra != null) {
-    <ModalDialog Size="modal-fullscreen" Title="Editar Compra" OnCancel="()=>askEditCompra=null">
-        <ModalBody>
-            <ProSoft.Pages.NotasCompra.Form Model=askEditCompra Contexto="Contexto" />
-        </ModalBody>
-        <ModalFooter>
-        </ModalFooter>
-    </ModalDialog>
-}
+<ModalDialog Size="modal-fullscreen" Title="Editar Compra" @bind-Visible=ModalVisible >
+    <ModalBody>
+        <ProSoft.Pages.NotasCompra.Form Model=askEditCompra Contexto="Contexto" />
+    </ModalBody>
+    <ModalFooter>
+    </ModalFooter>
+</ModalDialog>
+
 
 @code {
     [Parameter] public itemdoorcamento Model { get; set; } = new();
@@ -34,6 +33,8 @@
     [Parameter] public Action<itemdoorcamento>? OnAskDelete { get; set; } = null;
     [Parameter] public Func<compra[]>? OnNeedCompras { get; set; } = null;
     [Parameter] public Contexto Contexto {get;set;} = default!;
+
+    bool ModalVisible { get { return askEditCompra != null; } set { if (!value) askEditCompra = null; } }
 
     float _total = 0;
     float Total()

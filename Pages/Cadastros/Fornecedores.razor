@@ -27,20 +27,17 @@
     </TableFooter>
 </GenericTemplate>
 
-@if (askEdit != null)
-{
-    <ModalDialog Title="Fornecedor" Size="modal-fullscreen" OnCancel="()=>askEdit=null">
-        <ModalBody>
-            <PageHeader Title="Fornecedor"></PageHeader>
-            <EditForm id="fornForm" Model="askEdit" OnValidSubmit="Submit">
-                <Fornecedor Model="askEdit" />
-            </EditForm>
-        </ModalBody>
-        <ModalFooter>
-            <button class="btn btn-success" @onclick="()=>Submit()">Salvar</button>
-        </ModalFooter>
-    </ModalDialog>
-}
+<ModalDialog Title="Fornecedor" Size="modal-fullscreen" @bind-Visible=ModalVisible>
+    <ModalBody>
+        <PageHeader Title="Fornecedor"></PageHeader>
+        <EditForm id="fornForm" Model="askEdit" OnValidSubmit="Submit">
+            <Fornecedor Model="askEdit" />
+        </EditForm>
+    </ModalBody>
+    <ModalFooter>
+        <button class="btn btn-success" @onclick="()=>Submit()">Salvar</button>
+    </ModalFooter>
+</ModalDialog>
 
 @if (askDelete != null)
 {
@@ -51,6 +48,9 @@
     Contexto ctx = new();
     fornecedor? askEdit = null;
     fornecedor? askDelete = null;
+
+    bool ModalVisible { get { return askEdit != null; } set { if (!value) askEdit = null; } }
+
     private void AskDelete(long idFornecedor)
     {
         askDelete = ctx.fornecedores.Find(idFornecedor);
