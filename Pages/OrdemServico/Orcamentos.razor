@@ -3,59 +3,18 @@
 @using Microsoft.EntityFrameworkCore
 @using ProSoft.Components
 
-<GenericTemplate2 
-    TItem=orcamento 
-    Items="orcamentos" 
-    HeaderTitle=Orçamentos 
-    OnDelete=Delete
-    Contexto="ctx"
-    >
-    <TableHeader>
-        <th>Id</th>
-        <th>Data</th>
-        <th>Cliente</th>
-    </TableHeader>
-    <RowTemplate Context="orc">
-        <td>@orc.IdOrcamento.ToString("000000")</td>
-        <td>@orc.Data.ToShortDateString()</td>
-        <td>@orc.Cliente.Nome</td>
-    </RowTemplate>
-    <ItemEditForm Context=orc>
-        <Orcamento Model=orc ctx=ctx />
+<GenericTemplate3 TItem=orcamento Contexto="ctx" HeaderTitle="Orçamentos" 
+    Items="ctx.orcamentos.Include(k=>k.Cliente).Include(k=>k.Items).ThenInclude(k=>k.Compra).ThenInclude(k=>k.Mercadoria)"
+    ModalSize="modal-lg">
+    <GridContent>
+        <PropertyColumn TProp=string TGridItem=orcamento Title="Id" Property='p => p.IdOrcamento.ToString("000000")' Sortable="true" />
+        <PropertyColumn TProp=string TGridItem=orcamento Title="Nome" Property="p => p.Cliente.Nome" Sortable="true" />
+    </GridContent>
+    <ItemEditForm Context="item">
+        <Orcamento Model="item" ctx="ctx" />
     </ItemEditForm>
-</GenericTemplate2>
+</GenericTemplate3>
 
 @code {
-    //[Inject] NotificationService notificationService { get; set; } = default!;
-    orcamento[] orcamentos = Array.Empty<orcamento>();
-
     Contexto ctx = new Contexto();
-
-    protected override async Task OnInitializedAsync()
-    {
-        orcamentos = await LoadOrcs();
-    }
-
-    Task<orcamento[]> LoadOrcs()
-    {
-        try
-        {
-//            PreloadService.Show();
-            return Task.FromResult(ctx.orcamentos.Include(k=>k.Cliente).OrderBy(k => k.Data).ToArray());
-        }
-        catch
-        {
-
-        }
-        finally
-        {
-//           PreloadService.Hide();
-        }
-        return Task.FromResult(Array.Empty<orcamento>() );
-    }
-
-    void Delete(orcamento orc) {
-        ctx.orcamentos.Remove(orc);
-        ctx.SaveChanges();
-    }
 }

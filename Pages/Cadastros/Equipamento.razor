@@ -12,13 +12,11 @@
         <FluentTextField Label="Id do Equipamento" Value=@Model.IdEquipamento.ToString("000000") Disabled=true />
     </FluentGridItem>
     <FluentGridItem md="9">
-        <FluentStack HorizontalGap="0" VerticalAlignment="VerticalAlignment.Bottom">
-        <div class="w-100">
-        <FluentCombobox Label="Cliente" Autocomplete=ComboboxAutocomplete.Inline Items="ctx!.clientes" TOption="cliente" OptionText="(o)=>o.Nome" @bind-SelectedOption=Model.Cliente Required />
-        </div>
-        <FluentButton IconStart="new Icons.Regular.Size12.Edit()" OnClick="()=>askEditCli=Model.Cliente??new()" />
-         </FluentStack>
-
+        <FluentCombo TItem="cliente" Items="ctx.clientes" Label="Cliente" OptionText="e=>e.Nome" @bind-Value=Model.Cliente>
+            <OnEdit Context="edt">
+                <Cliente Model="edt" />
+            </OnEdit>
+        </FluentCombo>
         <FluentValidationMessage For="()=>Model.Cliente" />
     </FluentGridItem>
     <FluentGridItem md="12">

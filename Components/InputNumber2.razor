@@ -1,0 +1,44 @@
+
+@namespace ProSoft.Components
+
+<FluentTextField InputMode=InputMode.Decimal Pattern="[-]?[0-9]*\.?[0-9]+." Value=@Value.ToString("N2") @oninput="on_input" />
+
+@code {
+    [Parameter] public float Value { get; set; }
+
+    [Parameter] public EventCallback<float> ValueChanged { get; set; } = default;
+
+    // string _lastValue = "0";
+
+    // void on_changed(ChangeEventArgs e)
+    // {
+    //     string v = e.Value?.ToString() ?? "0";
+    //     float.Parse(v);
+    // }
+
+    // string ValueStr
+    // {
+    //     get { return Value.ToString("N2"); }
+    //     set
+    //     {
+    //         float f;
+    //         if (float.TryParse(value, out f)) {
+    //             Value = f;
+    //             _lastValue = ValueStr;
+    //         }
+    //         Value = 0;
+    //     }
+    // }
+
+    void on_input(ChangeEventArgs e)
+    {
+        string newval = e.Value.ToString();
+        float f = Value;
+        float ov = Value;
+        if (!float.TryParse(newval, out f))
+            Value = ov;
+        else
+            ValueChanged.InvokeAsync(f);
+        StateHasChanged();
+    }
+}

@@ -16,46 +16,39 @@
                 <FluentTextField Label="Id" Value="@Model.IdNotaVenda.ToString("000000")"/>
             </FluentGridItem>
             <FluentGridItem md="3">
+                <FluentCombo Label="Cliente" @bind-Value=Model.Cliente OptionText="c=>c.Nome" Items="ctx.clientes.OrderBy(k=>k.Nome)">
+                    <OnEdit Context="itm">
+                        <Cliente Model="itm" />
+                    </OnEdit>
+                </FluentCombo>
                 <FluentCombobox Label="Cliente" @bind-SelectedOption=Model.Cliente OptionText="(c)=>c.Nome" Items="ctx.clientes.OrderBy(k=>k.Nome)" />
             </FluentGridItem>
         </FluentGrid>
 
-        <GenericTemplate Items="Model.Items" TItem="venda" OnAdd="AddVenda" OnDelete="(i)=>Model.Items.Remove(i)">
-            <TableHeader>
-                <th>Quant</th>
-                <th>Un</th>
-                <th>Descrição</th>
-                <th>P. Venda</th>
-                <th>Desconto</th>
-                <th>Total</th>
-            </TableHeader>
-            <RowTemplate Context="itemsCtx">
-                <Venda_row Model="itemsCtx" OnNeedCompras="()=>ctx.compras.Include(k=>k.Mercadoria).OrderBy(k=>k.Mercadoria.Descricao).ToArray()" />
-            </RowTemplate>
-            <TableFooter>
-                <tr>
-                    <td colspan="5" class="text-end">Total</td>
-                    <td><FluentTextField Value="@TotalVendas().ToString("N2")" /></td>
-                </tr>
-            </TableFooter>
-        </GenericTemplate>
-
-        <GenericTemplate Items="Model.Parcelas" TItem="contaareceber">
-            <TableHeader>
-                <th>Vencimento</th>
-                <th>Valor</th>
-                <th><button type="button" class="btn btn-link" @onclick="AddParcela"><i class="oi oi-plus"></i></button></th>
-            </TableHeader>
-            <RowTemplate Context="parc">
-                <ProSoft.Pages.NotasVenda.Parcela Model="parc" OnDelete="DeleteParcela" OnTotalChanged="()=>StateHasChanged()" />
-            </RowTemplate>
-            <TableFooter>
-                <tr>
-                    <td class="text-end">Total</td>
-                    <td><FluentTextField Value="@Model.Parcelas.Sum(k=>k.Valor).ToString("N2")" Disabled=true /></td>
-                </tr>
-            </TableFooter>
-        </GenericTemplate>
+        <FluentDataGrid GenerateHeader=GenerateHeaderOption.None TGridItem="venda" role="grid">
+            <FluentDataGridRow RowType="DataGridRowType.Header">
+                <FluentDataGridCell GridColumn=1 CellType="DataGridCellType.ColumnHeader">Quant.</FluentDataGridCell>
+                <FluentDataGridCell GridColumn=2 CellType="DataGridCellType.ColumnHeader">Un.</FluentDataGridCell>
+                <FluentDataGridCell GridColumn=3 CellType="DataGridCellType.ColumnHeader">Descrição</FluentDataGridCell>
+                <FluentDataGridCell GridColumn=4 CellType="DataGridCellType.ColumnHeader">Unitário</FluentDataGridCell>
+                <FluentDataGridCell GridColumn=5 CellType="DataGridCellType.ColumnHeader">Desconto</FluentDataGridCell>
+                <FluentDataGridCell GridColumn=6 CellType="DataGridCellType.ColumnHeader">Total</FluentDataGridCell>
+            </FluentDataGridRow>
+            @foreach (venda v in Model.Items)
+            {
+                <FluentDataGridRow Item="v" TGridItem="venda">
+                    <FluentDataGridCell GridColumn=1><FluentNumberField @bind-Value=v.Quantidade /></FluentDataGridCell>
+                    <FluentDataGridCell GridColumn=2><FluentTextField Value="@v.Compra?.Mercadoria.Unidade" /></FluentDataGridCell>
+                    <FluentDataGridCell GridColumn=3>
+                        <FluentCombo Context="ctx" Items="ctx.compras" OptionText="e=>e.Descricao" TItem="compra">
+                        </FluentCombo>
+                    </FluentDataGridCell>
+                    <FluentDataGridCell GridColumn=4><FluentNumberField Value=@(v.Compra?.Venda) Step="0.01" /></FluentDataGridCell>
+                    <FluentDataGridCell GridColumn=5><FluentNumberField @bind-Value=v.Desconto Step="0.01" /></FluentDataGridCell>
+                    <FluentDataGridCell GridColumn=6><FluentNumberField Value="@((v.Quantidade*(v.Compra?.Venda??0))-v.Desconto)" Step="0.01" /></FluentDataGridCell>
+                </FluentDataGridRow>
+            }
+        </FluentDataGrid>
 
     </EditForm>
 </CascadingValue>

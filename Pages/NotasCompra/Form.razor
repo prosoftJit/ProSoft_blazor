@@ -23,45 +23,57 @@
             <FluentDatePicker Label="Data" Value="Model.Data" ValueChanged="e=>Model.Data=e.Value" />
         </FluentGridItem>
         <FluentGridItem md="3">
-            <FluentAutocomplete TOption="fornecedor"
-                                MaximumSelectedOptions="1"
-                                AutoComplete="off"
-                                Label="Fornecedor"
-                                OnOptionsSearch="(e)=>e.Items=Contexto.fornecedores.Where(k=>k.Nome.Contains(e.Text)).OrderBy(k=>k.Nome)"
-                                Placeholder="Selecione um fornecedor"
-                                OptionText="e=>e.Nome"
-                                @bind-SelectedOptions=@fornecedores />
+            <FluentCombo @bind-Value=Model.Fornecedor ModalSize="modal-lg" Items="Contexto.fornecedores" Label="Fornecedor" OptionText="e=>e.Nome" TItem="fornecedor">
+                <OnEdit Context="itm">
+                    <ProSoft.Pages.Cadastros.Fornecedor Contexto="Contexto" Model="Model.Fornecedor??new()" />
+                </OnEdit>
+            </FluentCombo>
         </FluentGridItem>
         <FluentGridItem md="3">
             <FluentTextField Label="Xml" @bind-Value=Model.Xml/>
         </FluentGridItem>
     </FluentGrid>
 
-    <GenericTemplate TItem=compra Items=Model.Items Context=Contexto OnAdd=AddRow OnDelete=DeleteRow>
-        <TableHeader>
-            <th>Qt.</th>
-            <th>Un</th>
-            <th>Descrição</th>
-            <th>P. Custo</th>
-            <th>Total</th>
-            <th>P. Venda</th>
-        </TableHeader>
-        <RowTemplate Context=c>
-            <Row GetMercadorias="()=>Contexto.mercadorias.ToArray()" 
-                Model="c" 
-                MercadoriaChanged='()=>MercadoriaChanged(c)' 
-                TotalChanged="()=>StateHasChanged()" 
-                Contexto="Contexto"
-                />
-        </RowTemplate>
-        <TableFooter>
-            <td colspan="4" class="text-end">Total</td>
-            <td>
-                <FluentTextField Value="@Model.Total.ToString("N2")" Disabled=true/>
-            </td>
-            <td colspan="2"></td>
-        </TableFooter>
-    </GenericTemplate>
+    <FluentDataGrid Class="mt-3" GenerateHeader=GenerateHeaderOption.None TGridItem="compra" role="grid" GridTemplateColumns="10% 10% 34% 10% 10% 10% 10% 5%" >
+        <FluentDataGridRow RowType="DataGridRowType.Header">
+            <FluentDataGridCell GridColumn=1 CellType="DataGridCellType.ColumnHeader">Quant.</FluentDataGridCell>
+            <FluentDataGridCell GridColumn=2 CellType="DataGridCellType.ColumnHeader">Un.</FluentDataGridCell>
+            <FluentDataGridCell GridColumn=3 CellType="DataGridCellType.ColumnHeader">Descrição</FluentDataGridCell>
+            <FluentDataGridCell GridColumn=4 CellType="DataGridCellType.ColumnHeader">Unitário</FluentDataGridCell>
+            <FluentDataGridCell GridColumn=5 CellType="DataGridCellType.ColumnHeader">Total</FluentDataGridCell>
+            <FluentDataGridCell GridColumn=6 CellType="DataGridCellType.ColumnHeader">Margem</FluentDataGridCell>
+            <FluentDataGridCell GridColumn=7 CellType="DataGridCellType.ColumnHeader">P. Venda</FluentDataGridCell>
+            <FluentDataGridCell GridColumn="8" CellType="DataGridCellType.ColumnHeader"><FluentButton IconEnd="new Icons.Regular.Size20.AddCircle()" OnClick="()=>Model.Items.Add(new compra())" /></FluentDataGridCell>
+        </FluentDataGridRow>
+        @foreach (compra v in Model.Items)
+        {
+            <FluentDataGridRow Item="v" TGridItem="compra">
+                <FluentDataGridCell GridColumn=1><FluentNumberField HideStep=true @bind-Value=v.Quantidade /></FluentDataGridCell>
+                <FluentDataGridCell GridColumn=2><FluentTextField Value="@v.Mercadoria?.Unidade" Disabled=true /></FluentDataGridCell>
+                <FluentDataGridCell GridColumn=3>
+                    <FluentCombobox Required=true Context="ctx" @bind-SelectedOption=v.Mercadoria Items="Contexto.mercadorias" OptionText="e=>e.Descricao" TOption="mercadoria">
+                    </FluentCombobox>
+                    <FluentValidationMessage TValue=mercadoria For="()=>v.Mercadoria" />
+                </FluentDataGridCell>
+                <FluentDataGridCell GridColumn=4><FluentNumberField HideStep=true @bind-Value=@v.Custo /></FluentDataGridCell>
+                <FluentDataGridCell GridColumn=5><FluentNumberField HideStep=true Value="v.Quantidade*v.Custo" Disabled=true /></FluentDataGridCell>
+                <FluentDataGridCell GridColumn=6><FluentNumberField HideStep=true @bind-Value=v.Margem /></FluentDataGridCell>
+                <FluentDataGridCell GridColumn=7><FluentNumberField HideStep=true Value="v.Custo*(1f+v.Margem)" /></FluentDataGridCell>
+                <FluentDataGridCell GridColumn=8 Class="">
+                    <FluentButton IconStart="new Icons.Regular.Size20.Delete()" OnClick="()=>Model.Items.Remove(v)" />
+                </FluentDataGridCell>
+            </FluentDataGridRow>
+        }
+        <FluentDataGridRow>
+            <FluentDataGridCell GridColumn=1></FluentDataGridCell>
+            <FluentDataGridCell GridColumn=2></FluentDataGridCell>
+            <FluentDataGridCell GridColumn=3></FluentDataGridCell>
+            <FluentDataGridCell GridColumn=4><strong>Total</strong></FluentDataGridCell>
+            <FluentDataGridCell GridColumn=5><strong>@Model.Items.Sum(k=>k.Quantidade*k.Custo)</strong></FluentDataGridCell>
+            <FluentDataGridCell GridColumn=6></FluentDataGridCell>
+            <FluentDataGridCell GridColumn=7></FluentDataGridCell>
+        </FluentDataGridRow>
+    </FluentDataGrid>
 
 </EditForm>
 

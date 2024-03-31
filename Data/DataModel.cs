@@ -334,6 +334,8 @@ namespace ProSoft.Data
         {
             return Descricao;
         }
+        [NotMapped]
+        public float Margem { get; set; } = 0.5f;
 
         /// <summary>
         /// Cria um produto a partir de uma descri��o, se ele n�o existir no arquivo.

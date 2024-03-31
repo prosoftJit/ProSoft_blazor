@@ -3,86 +3,16 @@
 @using Microsoft.EntityFrameworkCore
 @using ProSoft.Components
 
-<GenericTemplate2 
-    Items="ordensDeServico"
-    HeaderTitle="Ordens de Serviço"
-    ItemEditClick="(os)=>askEdit=os"
-    OnDelete="(os)=>askDelete=os"
-    Contexto="ctx"
-    >
-    <TableHeader>
-        <th>Id</th>
-        <th>Data</th>
-        <th>Cliente</th>
-    </TableHeader>
-    <RowTemplate Context="os">
-        <td class="text-center">@os.IdOrdemDeServico.ToString("000000")</td>
-        <td>@os.Data.ToShortDateString()</td>
-        <td>@os.Orcamentos.FirstOrDefault()?.Cliente.Nome</td>
-    </RowTemplate>
-    <ItemEditForm Context="os">
-        <OS Model="os" Contexto="ctx" />
+<GenericTemplate3 TItem=ordemdeservico Contexto="ctx" HeaderTitle="Ordens de Serviço" Items="ctx.ordensdeservico.Include(k=>k.Equipamento).Include(k=>k.FuncionarioEnt)" ModalSize="modal-xl">
+    <GridContent>
+        <PropertyColumn TProp=string TGridItem=ordemdeservico Title="Id" Property='p => p.IdOrdemDeServico.ToString("000000")' Sortable="true" />
+        <PropertyColumn TProp=string TGridItem=ordemdeservico Title="Nome" Property="p => p.Data.ToShortDateString()" Sortable="true" />
+    </GridContent>
+    <ItemEditForm Context="item">
+        <OS Model="item" Contexto="ctx" />
     </ItemEditForm>
-</GenericTemplate2>
-
-<ModalDialog Title="Ordens de Serviço" Size="modal-fullscreen" @bind-Visible=ModalVisible >
-    <ModalBody>
-        <OS Model="askEdit" />
-    </ModalBody>
-    <ModalFooter>
-        <button form="editForm" type="submit" Class="btn btn-success">Salvar</button>
-    </ModalFooter>
-</ModalDialog>
-
-@if (askDelete != null)
-{
-    @* <ModalConfirm Title="Excluir" Message="Confirma exclusão?"></ModalConfirm> *@
-}
+</GenericTemplate3>
 
 @code {
-    ordemdeservico? askEdit = null;
-    ordemdeservico? askDelete = null;
-    //[Inject] NotificationService notificationService { get; set; } = default!;
-    ordemdeservico[] ordens = Array.Empty<ordemdeservico>();
-
-    bool ModalVisible { get { return askEdit != null; } set { if (!value) askEdit = null; } }
-
-    void Delete()
-    {
-        if (askDelete != null) {
-            ctx.ordensdeservico.Remove(askDelete);
-            ctx.SaveChanges();
-            LoadOrdens();
-            //notificationService.Notify(NotificationSeverity.Success, "Ordem de Serviço", "Ordem de serviço excluída com sucesso!");
-        }
-    }
-    void AddOs() {
-        askEdit = new();
-    }
-
-    ordemdeservico[]? ordensDeServico;
     Contexto ctx = new();
-
-    protected override async Task OnInitializedAsync()
-    {
-        ordensDeServico = await LoadOrdens();
-    }
-
-    Task<ordemdeservico[]> LoadOrdens()
-    {
-        try
-        {
-//            PreloadService.Show();
-            return Task.FromResult(ctx.ordensdeservico.OrderBy(k => k.Data).ToArray());
-        }
-        catch
-        {
-
-        }
-        finally
-        {
-//           PreloadService.Hide();
-        }
-        return Task.FromResult( Array.Empty<ordemdeservico>() );
-    }
 }

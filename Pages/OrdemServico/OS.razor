@@ -13,12 +13,18 @@
             <FluentDatePicker  @bind-Value="Data" Required Label="Data" />
         </FluentGridItem>
         <FluentGridItem md="4">
-            <FluentCombobox @bind-SelectedOption=Model.Equipamento Label="Equipamento" Items="ctx.equipamentos" OptionText="e=>e.Descricao" />
-            <FluentButton IconStart="new Icons.Regular.Size12.Edit()" OnClick="()=>EditEquipamento(Model.Equipamento)" />
+            <FluentCombo @bind-Value=Equip Items="ctx.equipamentos" Label="Equipamento" OptionText="e=>e.Descricao" TItem="equipamento">
+                <OnEdit Context="edt">
+                    <ProSoft.Pages.Cadastros.Equipamento Model="edt" ctx="ctx" />
+                </OnEdit>
+            </FluentCombo>
         </FluentGridItem>
         <FluentGridItem md="5">
-            <FluentCombobox @bind-SelectedOption=Model.FuncionarioEnt Label="Recebido" Items="ctx.funcionarios" OptionText="f=>f.Nome" />
-            <FluentButton IconStart="new Icons.Regular.Size12.Edit()" OnClick="()=>askEditFunc=Model.FuncionarioEnt??new()" />
+            <FluentCombo @bind-Value=FuncEnt Items="ctx.funcionarios" Label="Resp. Entrada" OptionText="e=>e.Nome" TItem="funcionario">
+                <OnEdit Context="edt">
+                    <ProSoft.Pages.Cadastros.Funcionario Model="edt" />
+                </OnEdit>
+            </FluentCombo>
         </FluentGridItem>
         <FluentTextArea Label="Detalhes do equipamento" @bind-Value=Model.Acessorios />
         <FluentTextArea Label="Defeito apresentado" @bind-Value=Model.DefeitoApresentado />
@@ -102,6 +108,17 @@
 @code {
     [Parameter] public ordemdeservico Model { get; set; } = default!;
     [Parameter] public Contexto Contexto { get; set; } = default!;
+
+    equipamento? Equip
+    {
+        get { return Model.Equipamento; }
+        set { Model.Equipamento = value; }
+    }
+    funcionario? FuncEnt
+    {
+        get { return Model.FuncionarioEnt; }
+        set { Model.FuncionarioEnt = value; }
+    }
 
     private Contexto ctx = new();
 
