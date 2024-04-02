@@ -3,7 +3,7 @@
 @using Microsoft.EntityFrameworkCore
 @using ProSoft.Components
 
-<GenericTemplate3 TItem=ordemdeservico Contexto="ctx" HeaderTitle="Ordens de Serviço" Items="ctx.ordensdeservico.Include(k=>k.Equipamento).Include(k=>k.FuncionarioEnt)" ModalSize="modal-xl">
+<GenericTemplate3 TItem=ordemdeservico Contexto="ctx" HeaderTitle="Ordens de Serviço" Items="ctx.ordensdeservico" ModalSize="modal-xl">
     <GridContent>
         <PropertyColumn TProp=string TGridItem=ordemdeservico Title="Id" Property='p => p.IdOrdemDeServico.ToString("000000")' Sortable="true" />
         <PropertyColumn TProp=string TGridItem=ordemdeservico Title="Nome" Property="p => p.Data.ToShortDateString()" Sortable="true" />

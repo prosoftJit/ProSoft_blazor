@@ -4,7 +4,7 @@
 @using ProSoft.Components
 
 <GenericTemplate3 TItem=orcamento Contexto="ctx" HeaderTitle="Orçamentos" 
-    Items="ctx.orcamentos.Include(k=>k.Cliente).Include(k=>k.Items).ThenInclude(k=>k.Compra).ThenInclude(k=>k.Mercadoria)"
+    Items="ctx.orcamentos"
     ModalSize="modal-lg">
     <GridContent>
         <PropertyColumn TProp=string TGridItem=orcamento Title="Id" Property='p => p.IdOrcamento.ToString("000000")' Sortable="true" />

@@ -8,6 +8,11 @@
     }
 }
 
+rz-dropdown 
+{
+    width: 100% !important;
+}
+
 fluent-text-field, 
 fluent-numeric-field, 
 fluent-text-area, 

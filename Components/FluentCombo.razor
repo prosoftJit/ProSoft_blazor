@@ -10,13 +10,19 @@
     <FluentButton IconStart="new Icons.Regular.Size12.Edit()" OnClick="()=>askEdit = Value??new()" />
 </FluentStack>
 
-<ProSoft.Components.ModalDialog Title="Modal" Size="@ModalSize" @bind-Visible=ModalVisible>
+@if (OnEdit != null && askEdit != null)
+{
+    <ProSoft.Components.ModalDialog Title="Modal" Size="@ModalSize" @bind-Visible=ModalVisible>
     <ModalBody>
-        @OnEdit?.Invoke(askEdit)
+        <EditForm id="editForm" Model="askEdit" OnValidSubmit="()=>OnSubmit?.Invoke(askEdit)" >
+            @OnEdit?.Invoke(askEdit)
+        </EditForm>
     </ModalBody>
     <ModalFooter>
+        <FluentButton FormId="editForm" IconEnd="new Icons.Regular.Size12.Briefcase()">Salvar</FluentButton>
     </ModalFooter>
 </ProSoft.Components.ModalDialog>
+}
 
 @code {
 
@@ -39,6 +45,7 @@
     [Parameter] public RenderFragment<TItem>? OnEdit {get;set;} = null;
     [Parameter] public EventCallback<TItem?> ValueChanged { get; set; } = default!;
     [Parameter] public string ModalSize { get; set; } = "modal-xl";
+    [Parameter] public Action<TItem>? OnSubmit { get; set; } = default!;
 
     TItem? askEdit = null;
     bool ModalVisible { get { return askEdit != null; } set { if (!value) askEdit = null; } }

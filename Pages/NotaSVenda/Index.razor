@@ -21,7 +21,7 @@
 
     protected override void OnInitialized()
     {
-        items = ctx.notasvenda.Include(k => k.Cliente).Include(k => k.Items).ThenInclude(k => k.Compra).ThenInclude(k=>k.Mercadoria);
+        items = ctx.notasvenda;
         base.OnInitialized();
     }
 }

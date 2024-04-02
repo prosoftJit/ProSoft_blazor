@@ -21,34 +21,35 @@
                         <Cliente Model="itm" />
                     </OnEdit>
                 </FluentCombo>
-                <FluentCombobox Label="Cliente" @bind-SelectedOption=Model.Cliente OptionText="(c)=>c.Nome" Items="ctx.clientes.OrderBy(k=>k.Nome)" />
             </FluentGridItem>
         </FluentGrid>
 
-        <FluentDataGrid GenerateHeader=GenerateHeaderOption.None TGridItem="venda" role="grid">
-            <FluentDataGridRow RowType="DataGridRowType.Header">
-                <FluentDataGridCell GridColumn=1 CellType="DataGridCellType.ColumnHeader">Quant.</FluentDataGridCell>
-                <FluentDataGridCell GridColumn=2 CellType="DataGridCellType.ColumnHeader">Un.</FluentDataGridCell>
-                <FluentDataGridCell GridColumn=3 CellType="DataGridCellType.ColumnHeader">Descrição</FluentDataGridCell>
-                <FluentDataGridCell GridColumn=4 CellType="DataGridCellType.ColumnHeader">Unitário</FluentDataGridCell>
-                <FluentDataGridCell GridColumn=5 CellType="DataGridCellType.ColumnHeader">Desconto</FluentDataGridCell>
-                <FluentDataGridCell GridColumn=6 CellType="DataGridCellType.ColumnHeader">Total</FluentDataGridCell>
-            </FluentDataGridRow>
-            @foreach (venda v in Model.Items)
-            {
-                <FluentDataGridRow Item="v" TGridItem="venda">
-                    <FluentDataGridCell GridColumn=1><FluentNumberField @bind-Value=v.Quantidade /></FluentDataGridCell>
-                    <FluentDataGridCell GridColumn=2><FluentTextField Value="@v.Compra?.Mercadoria.Unidade" /></FluentDataGridCell>
-                    <FluentDataGridCell GridColumn=3>
-                        <FluentCombo Context="ctx" Items="ctx.compras" OptionText="e=>e.Descricao" TItem="compra">
-                        </FluentCombo>
-                    </FluentDataGridCell>
-                    <FluentDataGridCell GridColumn=4><FluentNumberField Value=@(v.Compra?.Venda) Step="0.01" /></FluentDataGridCell>
-                    <FluentDataGridCell GridColumn=5><FluentNumberField @bind-Value=v.Desconto Step="0.01" /></FluentDataGridCell>
-                    <FluentDataGridCell GridColumn=6><FluentNumberField Value="@((v.Quantidade*(v.Compra?.Venda??0))-v.Desconto)" Step="0.01" /></FluentDataGridCell>
-                </FluentDataGridRow>
-            }
-        </FluentDataGrid>
+        <table class="table w-100">
+        <thead>
+            <tr>
+                <td>Quant.</td>
+                <td>Un.</td>
+                <td>Descrição</td>
+                <td>Unitário</td>
+                <td>Desconto</td>
+                <td>Total</td>
+                <td><RadzenButton Icon="add" Click="()=>AddVenda()" /></td>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (venda v in Model.Items)
+        {
+            <Venda_row Model="v" Compras="ctx.compras" @bind-Total=total />
+        }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4"></td>
+                <td>Total</td>
+                <td align="right">@total.ToString("N2")</td>
+            </tr>
+        </tfoot>
+        </table>
 
     </EditForm>
 </CascadingValue>
@@ -60,10 +61,12 @@
 
     private Contexto ctx = new();
 
-    cliente? editCliente = null; 
+    cliente? editCliente = null;
+
+    float total = 0;
 
     protected override void OnInitialized() {
-        Model = ctx.notasvenda.Include(k=>k.Cliente).Include(k=>k.Items).ThenInclude(k=>k.Compra).ThenInclude(k=>k.Mercadoria).Include(k=>k.Parcelas).FirstOrDefault(k=>k.IdNotaVenda==idNotaVenda)??new();
+        Model = ctx.notasvenda.FirstOrDefault(k=>k.IdNotaVenda==idNotaVenda)??new();
 
         if (Model.Items.Count == 0)
             AddVenda();
@@ -83,7 +86,7 @@
 
     void AddVenda()
     {
-        venda ve = new venda { Quantidade=0, Compra=null };
+        venda ve = new();
         Model.Items.Add(ve);
         StateHasChanged();
     }
