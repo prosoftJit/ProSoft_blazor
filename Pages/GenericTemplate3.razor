@@ -47,6 +47,13 @@
         }
     }
     </tbody>
+    @if (GridFooterTemplate != null) {
+    <tfoot>
+        <tr>
+            @GridFooterTemplate
+        </tr>
+    </tfoot>
+    }
 </table>
 
 <ModalDialog Title="Editar" Size="@ModalSize" @bind-Visible=DialogVisible >
@@ -67,6 +74,7 @@
 @code {
     [Parameter] public RenderFragment<TItem>? GridRowTemplate { get; set; } = null;
     [Parameter] public RenderFragment? GridHeaderTemplate { get; set; } = null;
+    [Parameter] public RenderFragment? GridFooterTemplate { get; set; } = null;
     [Parameter] public Action<TItem>? OnSubmit { get; set; } = null;
 
     //    [Parameter] public RenderFragment GridContent { get; set; } = default!;
@@ -81,8 +89,6 @@
     [Parameter] public string ModalSize { get; set; } = "modal-fullscreen";
 
     [Inject] Radzen.NotificationService notService { get; set; } = default!;
-
-    PaginationState paginator = new PaginationState { ItemsPerPage = 10 };
 
     bool DialogVisible { get { return askEdit != null && ItemEditForm != null; } set { if (!value) askEdit = null; } }
 

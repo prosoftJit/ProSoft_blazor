@@ -1,5 +1,19 @@
 @namespace ProSoft.Components 
 
+<style>
+    .rz-button.rz-link {
+        background: none !important;
+    }
+
+    .rz-button.rz-link .rz-button-text {
+        color: var(--rz-link-color);
+    }
+
+    .rz-button.rz-link:hover .rz-button-text {
+        text-decoration: underline !important;
+    }
+ </style>
+
 @if (Visible)
 {
     <div class="modal d-block" tabindex="-1">
@@ -15,7 +29,7 @@
                 <div class="modal-footer d-print-none">
                     @if (!HideCloseButton)
                     {
-                        <FluentButton Appearance="Appearance.Hypertext" OnClick="()=>Hide()">Fechar</FluentButton>
+                        <RadzenButton Variant=Radzen.Variant.Text Text="Fechar" Click="()=>Hide()" class="me-4" />
                     }
                     @ModalFooter
                 </div>

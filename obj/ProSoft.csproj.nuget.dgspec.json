@@ -58,18 +58,6 @@
               "target": "Package",
               "version": "[6.0.26, )"
             },
-            "Microsoft.Fast.Components.FluentUI": {
-              "target": "Package",
-              "version": "[3.6.0, )"
-            },
-            "Microsoft.Fast.Components.FluentUI.DataGrid.EntityFrameworkAdapter": {
-              "target": "Package",
-              "version": "[3.6.0, )"
-            },
-            "Microsoft.Fast.Components.FluentUI.Icons": {
-              "target": "Package",
-              "version": "[3.6.0, )"
-            },
             "MySql.EntityFrameworkCore": {
               "target": "Package",
               "version": "[6.0.25, )"

@@ -27,9 +27,6 @@ D:\ProSoft_blazor\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Relational.dll
 D:\ProSoft_blazor\bin\Debug\net6.0\Microsoft.Extensions.Caching.Memory.dll
 D:\ProSoft_blazor\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
 D:\ProSoft_blazor\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
-D:\ProSoft_blazor\bin\Debug\net6.0\Microsoft.Fast.Components.FluentUI.dll
-D:\ProSoft_blazor\bin\Debug\net6.0\Microsoft.Fast.Components.FluentUI.DataGrid.EntityFrameworkAdapter.dll
-D:\ProSoft_blazor\bin\Debug\net6.0\Microsoft.Fast.Components.FluentUI.Icons.dll
 D:\ProSoft_blazor\bin\Debug\net6.0\Microsoft.JSInterop.dll
 D:\ProSoft_blazor\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
 D:\ProSoft_blazor\bin\Debug\net6.0\MySql.Data.dll
@@ -78,7 +75,6 @@ D:\ProSoft_blazor\obj\Debug\net6.0\scopedcss\Shared\MainLayout.razor.rz.scp.css
 D:\ProSoft_blazor\obj\Debug\net6.0\scopedcss\Shared\NavMenu.razor.rz.scp.css
 D:\ProSoft_blazor\obj\Debug\net6.0\scopedcss\bundle\ProSoft.styles.css
 D:\ProSoft_blazor\obj\Debug\net6.0\scopedcss\projectbundle\ProSoft.bundle.scp.css
-D:\ProSoft_blazor\obj\Debug\net6.0\jsmodules\jsmodules.build.manifest.json
 D:\ProSoft_blazor\obj\Debug\net6.0\ProSoft.csproj.CopyComplete
 D:\ProSoft_blazor\obj\Debug\net6.0\ProSoft.dll
 D:\ProSoft_blazor\obj\Debug\net6.0\refint\ProSoft.dll

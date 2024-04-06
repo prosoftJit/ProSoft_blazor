@@ -5,43 +5,38 @@
 @using Microsoft.EntityFrameworkCore
 @using BlazorBootstrap
     
-    <FluentGrid>
-        <FluentGridItem md="2">
-            <FluentTextField Value="@Model.IdOrcamento.ToString("000000")" Label="Id" />
-        </FluentGridItem>
-        <FluentGridItem md="2">
-            <FluentDatePicker Label="Data" @bind-Value="Data" />
-        </FluentGridItem>
-        <FluentGridItem md="4">
-            <FluentCombobox Label="Cliente" @bind-SelectedOption="Model.Cliente" Items="ctx.clientes" OptionText="c=>c.Nome" />
-            <FluentValidationMessage For="()=>Model.Cliente" />
-            <FluentButton IconStart="new Icons.Regular.Size12.Edit()" OnClick="()=>askEditCliente=Model.Cliente" />
-        </FluentGridItem>
-    </FluentGrid>
+<RadzenFormField Text="Id">
+    <RadzenNumeric Format="000000" Value="Model.IdOrcamento" Disabled=true />
+</RadzenFormField>
+<RadzenFormField Text="Data">
+    <RadzenDatePicker @bind-Value=Model.Data />
+</RadzenFormField>
+<RadzenFormField Text="Cliente">
+    <RadzenDropDown @bind-Value=Model.Cliente Data="ctx.clientes" TextProperty="Nome" />
+    <RadzenButton Icon="edit" Click="()=>askEditCliente=Model.Cliente" />
+</RadzenFormField>
 
-    <GenericTemplate2
-        Items="Model.Items" 
+    <GenericTemplate3
+        Items="Model.Items.AsQueryable()" 
         TItem="itemdoorcamento"
         Contexto="ctx"
         >
-        <TableHeader>
+        <GridHeaderTemplate>
             <th>Quant</th>
             <th>Un</th>
             <th>Descrição</th>
             <th>P. Venda</th>
             <th>Desconto</th>
             <th>Total</th>
-        </TableHeader>
-        <RowTemplate Context="OrcItem">
-            <OS_row Model=OrcItem Contexto=ctx OnNeedCompras="()=>ctx.compras.Include(k=>k.Mercadoria).OrderBy(k=>k.Mercadoria.Descricao).ToArray()" />
-        </RowTemplate>
-        <TableFooter>
-            <tr>
-                <td colspan="5" class="text-end">Total</td>
-                <td></td>
-            </tr>
-        </TableFooter>
-    </GenericTemplate2>
+        </GridHeaderTemplate>
+        <GridRowTemplate Context="cp">
+            <OS_row Model=cp Contexto=ctx OnNeedCompras="()=>ctx.compras.Include(k=>k.Mercadoria).OrderBy(k=>k.Mercadoria.Descricao).ToArray()" />
+        </GridRowTemplate>
+        <GridFooterTemplate>
+            <td colspan="5" class="text-end">Total</td>
+            <td></td>
+        </GridFooterTemplate>
+    </GenericTemplate3>
 
 
 <ModalDialog Title="Editar Cliente" Size="modal-lg" @bind-Visible=ModalVisible>

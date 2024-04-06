@@ -3,34 +3,12 @@
 @using ProSoft.Data
 @using Microsoft.EntityFrameworkCore
 
-<td width="10%"><FluentNumberField @bind-Value="Model.Compra" /></td>
-<td width="10%"><FluentTextField Value="@Model.Compra?.Mercadoria?.Unidade" Disabled=true /></td>
-
-<td><FluentCombobox @bind-SelectedOption="Model.Compra" Items="Contexto.compras" OptionText="e=>e.Descricao" /></td>
-
-
-<td>
-    @* <InputSelect2
-        TItem="compra"
-        Value="Model.Compra_IdCompra"
-        FormId="formId"
-        ValueProperty="(i)=>i.IdCompra"
-        OnNeedItems="OnNeedCompras"
-        OnSelectionChanged="(i)=>{Model.Compra=i;StateHasChanged();}"
-    >
-        <OnEditRenderFragment Context="cp">
-            <ProSoft.Pages.NotasCompra.Form idNotaCompra="@cp.NotaCompra_IdNotaCompra"></ProSoft.Pages.NotasCompra.Form>
-        </OnEditRenderFragment>
-    </InputSelect2> *@
-   
-
-    <FluentCombobox @bind-SelectedOption=Model.Compra Items=OnNeedCompras?.Invoke() OptionText="i=>i.Descricao" />
-
-</td>
-
-<td width="10%"><FluentTextField Value="@Model.Compra?.Venda.ToString("N2")" Disabled=true /></td>
-<td width="10%"><FluentNumberField @bind-Value="Model!.Desconto" ></FluentNumberField></td>
-<td width="10%"><FluentTextField Value='_total.ToString("N2")' Disabled=true /></td>
+<td width="10%"><RadzenNumeric Format="000000" Value="Model.Quantidade" /></td>
+<td width="10%"><RadzenTextBox Value="@Model.Compra?.Mercadoria?.Unidade" Disabled=true /></td>
+<td><RadzenDropDown @bind-Value="Model.Compra" Data="Contexto.compras" TextProperty="Descricao" /></td>
+<td width="10%"><RadzenNumeric Format="N2" Value="@Model.Compra?.Venda" Disabled=true /></td>
+<td width="10%"><RadzenNumeric Format="N2" @bind-Value="Model!.Desconto" ></RadzenNumeric></td>
+<td width="10%"><RadzenNumeric Format="N2" Value='_total.ToString("N2")' Disabled=true /></td>
 
 @code {
     [Parameter] public itemdoorcamento Model { get; set; } = new();

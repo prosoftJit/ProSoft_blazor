@@ -4,19 +4,19 @@
 @using ProSoft.Components
 @using Microsoft.EntityFrameworkCore
 
-<td width="10%"><FluentNumberField @bind-Value="Model.Quantidade" /></td>
-<td width="10%"><FluentTextField Value="@Model.Compra?.Mercadoria?.Unidade" Disabled=true /></td>
+<td width="10%"><RadzenNumeric @bind-Value="Model.Quantidade" /></td>
+<td width="10%"><RadzenNumeric Value="@Model.Compra?.Mercadoria?.Unidade" Disabled=true /></td>
 
 <td>
-    <FluentStack>
-    <FluentCombobox @bind-SelectedOption=Model.Compra Items="OnNeedCompras?.Invoke()" />
-    <FluentButton Style="max-length: 35px;" IconStart="new Icons.Regular.Size12.Edit()" OnClick="CompraEdit" />
-</FluentStack>
+    <RadzenStack>
+    <RadzenDropDown @bind-Value=Model.Compra Data="OnNeedCompras?.Invoke()" TextProperty="Descricao" />
+    <RadzenButton Style="max-width: 35px;" Icon="edit" Click="CompraEdit" />
+</RadzenStack>
 </td>
 
-<td width="10%"><FluentNumberField Value="@Model.Compra?.Venda" Disabled=true /></td>
-<td width="10%"><FluentNumberField @bind-Value="Model!.Desconto" /></td>
-<td width="10%"><FluentNumberField Value="@Total()" Disabled=true /></td>
+<td width="10%"><RadzenNumeric Format="N2" Value="@Model.Compra?.Venda" Disabled=true /></td>
+<td width="10%"><RadzenNumeric Format="N2" @bind-Value="Model!.Desconto" /></td>
+<td width="10%"><RadzenNumeric Format="N2" Value="@Total()" Disabled=true /></td>
 
 <ModalDialog Size="modal-fullscreen" Title="Editar Compra" @bind-Visible=ModalVisible >
     <ModalBody>

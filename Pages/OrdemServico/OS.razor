@@ -4,83 +4,51 @@
 @using ProSoft.Components
 @using Microsoft.EntityFrameworkCore
 
+<RadzenFormField Text="Id">
+    <RadzenNumeric Format="000000" Value="Model.IdOrdemDeServico" Disabled=true />
+</RadzenFormField>
+<RadzenFormField Text="Data">
+    <RadzenDatePicker @bind-Value=Model.Data />
+</RadzenFormField>
+<RadzenFormField Text="Equipamento">
+    <RadzenDropDown @bind-Value=Model.Equipamento Data="ctx.equipamentos" TextProperty="Descricao" />
+</RadzenFormField>
+<RadzenFormField Text="Resp. Entrada">
+    <RadzenDropDown @bind-Value=Model.FuncionarioEnt Data="ctx.funcionarios" TextProperty="Nome" />
+</RadzenFormField>
+<RadzenFormField Text="Detalhes do Equipamento">
+    <RadzenTextArea Rows="5" @bind-Value=Model.Acessorios />
+</RadzenFormField>
+<RadzenFormField Text="Defeito Apresentado">
+    <RadzenTextArea Rows="5" @bind-Value=Model.DefeitoApresentado />
+</RadzenFormField>
 
-    <FluentGrid>
-        <FluentGridItem md="1">
-            <FluentTextField Class="text-center" Value="@Model.IdOrdemDeServico.ToString("000000")" Disabled=true Label="Id" />
-        </FluentGridItem>
-        <FluentGridItem md="2">
-            <FluentDatePicker  @bind-Value="Data" Required Label="Data" />
-        </FluentGridItem>
-        <FluentGridItem md="4">
-            <FluentCombo @bind-Value=Equip Items="ctx.equipamentos" Label="Equipamento" OptionText="e=>e.Descricao" TItem="equipamento">
-                <OnEdit Context="edt">
-                    <ProSoft.Pages.Cadastros.Equipamento Model="edt" ctx="ctx" />
-                </OnEdit>
-            </FluentCombo>
-        </FluentGridItem>
-        <FluentGridItem md="5">
-            <FluentCombo @bind-Value=FuncEnt Items="ctx.funcionarios" Label="Resp. Entrada" OptionText="e=>e.Nome" TItem="funcionario">
-                <OnEdit Context="edt">
-                    <ProSoft.Pages.Cadastros.Funcionario Model="edt" />
-                </OnEdit>
-            </FluentCombo>
-        </FluentGridItem>
-        <FluentTextArea Label="Detalhes do equipamento" @bind-Value=Model.Acessorios />
-        <FluentTextArea Label="Defeito apresentado" @bind-Value=Model.DefeitoApresentado />
-    </FluentGrid>
+@foreach (orcamento os in Model.Orcamentos) {
 
-    <div class="row my-1">
-        @* <FloatingLabel InputId="IdNotaVenda" Text="Id da Nota" Columns="2">
-            <input type="text" value="@Model.IdNotaVenda.ToString("000000")" class="form-control" disabled="disabled" />
-        </FloatingLabel>
-        <FloatingLabel InputId="Data" Text="Data" Columns="2">
-            <InputDate @bind-Value="Model!.Data" class="form-control"></InputDate>
-        </FloatingLabel> *@
-        @* <FloatingLabel InputId="Cliente_IdCliente" Class="d-flex" Text="Cliente" Columns="4">
-            <InputSelect2 
-                Context="Model" 
-                FormId="formCli" 
-                ValueProperty="(c)=>c.idCliente"
-                TItem="cliente" 
-                Value="@Model.Cliente?.idCliente" 
-                OnNeedItems="()=>ctx.clientes.ToArray()"
-                OnEdit="(c)=>{editCliente=c;StateHasChanged();}"
-                OnSelectionChanged="(i)=>Model.Cliente=i"
-            >
-            </InputSelect2>
-        </FloatingLabel> *@
-    </div>
-
-    <GenericTemplate2 
-        Items="Model.Orcamentos" 
-        TItem="orcamento"
-        Contexto="Contexto"
+    <GenericTemplate3 
+        Items="os.Items.AsQueryable()" 
+        TItem="itemdoorcamento"
+        Contexto="ctx"
         >
-        <TableHeader>
+        <GridHeaderTemplate>
             <th>Quant</th>
             <th>Un</th>
             <th>Descrição</th>
             <th>P. Venda</th>
             <th>Desconto</th>
             <th>Total</th>
-        </TableHeader>
-        <RowTemplate Context=Orca>
-            @foreach (itemdoorcamento item in Orca.Items) {
-
-                <OrcamentoItem Model="item" Contexto="ctx" 
+        </GridHeaderTemplate>
+        <GridRowTemplate Context="p">
+            <OrcamentoItem Model="p" Contexto="ctx" 
                 OnNeedCompras="()=>ctx.compras.Include(k=>k.Mercadoria).OrderBy(k=>k.Mercadoria.Descricao).ToArray()"
                 TotalChanged="TotalChanged" />
-
-            }
-        </RowTemplate>
-        <TableFooter>
-            <tr>
-                <td colspan="5" class="text-end">Total</td>
-                <td>@_total.ToString("N2")</td>
-            </tr>
-        </TableFooter>
-    </GenericTemplate2>
+        </GridRowTemplate>
+        <GridFooterTemplate>
+            <td colspan="5" class="text-end">Total</td>
+            <td>@_total.ToString("N2")</td>
+        </GridFooterTemplate>
+    </GenericTemplate3>
+}
 
 <ModalDialog Title="Editar equipamento" Size="modal-lg" @bind-Visible=ShowDialogEq>
     <ModalBody>
@@ -89,7 +57,7 @@
         </EditForm>
     </ModalBody>
     <ModalFooter>
-        <FluentButton Type=ButtonType.Submit FormId="eqpForm" Id="submit">Salvar</FluentButton>
+        <RadzenButton ButtonType=Radzen.ButtonType.Submit form="eqpForm">Salvar</RadzenButton>
     </ModalFooter>
 </ModalDialog>
 
@@ -100,7 +68,7 @@
         </EditForm>
     </ModalBody>
     <ModalFooter>
-        <FluentButton Type=ButtonType.Submit FormId="funcForm" Id="submit">Salvar</FluentButton>
+        <RadzenButton ButtonType="Radzen.ButtonType.Submit" form="funcForm">Salvar</RadzenButton>
     </ModalFooter>
 </ModalDialog>
 

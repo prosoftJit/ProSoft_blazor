@@ -1,53 +1,48 @@
 ﻿@inherits LayoutComponentBase
 
-@using Microsoft.Fast.Components.FluentUI
-
-<FluentLayout Style="margin-top: 10px;">
-    <FluentHeader>
-        ProSoft Informática
-        <FluentSpacer />
-        Aligned to the end
-    </FluentHeader>
-
-    <FluentStack Orientation="Microsoft.Fast.Components.FluentUI.Orientation.Horizontal" Width="100%">
-        <FluentNavMenu Width="250">
-            <FluentNavGroup Title="Estoque">
-                <FluentNavLink Href="/Mercadorias" >Mercadorias</FluentNavLink>
-                <FluentNavLink Href="/NotasCompra/Index" >Notas de Compra</FluentNavLink>
-                <FluentNavLink Href="/NotasVenda/Index" >Notas de Venda</FluentNavLink>
-            </FluentNavGroup>
-
-            <FluentNavGroup Title="Serviços">
-                <FluentNavLink Href="/OrdemServico/Orcamentos">Orçamentos</FluentNavLink>
-                <FluentNavLink Href="/OrdemServico/Index">Ordens de Serviço</FluentNavLink>
-                <FluentNavLink Href="/Cadastros/Equipamentos">Equipamentos</FluentNavLink>
-            </FluentNavGroup>
-
-            <FluentNavGroup Title="Financeiro">
-                <FluentNavLink Href="/Mercadorias">Caixa</FluentNavLink>
-                <FluentNavLink Href="/NotasCompra/Index">Contas a Pagar</FluentNavLink>
-                <FluentNavLink Href="/NotasVenda/Index">Contas a Receber</FluentNavLink>
-            </FluentNavGroup>
-
-            <FluentNavGroup Title="Cadastros">
-                <FluentNavLink Href="/Clientes">Clientes</FluentNavLink>
-                <FluentNavLink Href="/Cadastros/Fornecedores">Fornecedores</FluentNavLink>
-                <FluentNavLink Href="/Cadastros/Funcionarios">Funcionários</FluentNavLink>
-            </FluentNavGroup>
-        </FluentNavMenu>
-
-        <FluentBodyContent>
+<RadzenLayout>
+    <RadzenHeader>
+        <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="Radzen.AlignItems.Center" Gap="0">
+            <RadzenSidebarToggle Click="@(() => sidebarExpanded = !sidebarExpanded)" />
+            <RadzenLabel Text="ProSoft Informática" />
+        </RadzenStack>
+    </RadzenHeader>
+    <RadzenSidebar Responsive="false" Style="width: max-content">
+        <RadzenPanelMenu DisplayStyle="@(sidebarExpanded ? Radzen.MenuItemDisplayStyle.IconAndText : Radzen.MenuItemDisplayStyle.Icon)" ShowArrow="false">
+            <RadzenPanelMenuItem Text="Estoque" Icon="inventory">
+                <RadzenPanelMenuItem Path="/Mercadorias" Text="Mercadorias" Icon="widgets" />
+                <RadzenPanelMenuItem Path="/NotasCompra/Index" Text="Notas de Compra" Icon="add_shopping_cart" />
+                <RadzenPanelMenuItem Path="/NotasVenda/Index" Text="Notas de Venda" Icon="shopping_cart_checkout" />
+            </RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Text="Serviços" Icon="dashboard" >
+                <RadzenPanelMenuItem Path="/OrdemServico/Orcamentos" Text="Orçamentos" Icon="request_quote" />
+                <RadzenPanelMenuItem Path="/OrdemServico/Index" Text="Ordens de Serviço" Icon="handyman" />
+                <RadzenPanelMenuItem Path="/Cadastros/Equipamentos" Text="Equipamentos" Icon="computer" />
+            </RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Text="Financeiro" Icon="paid">
+                <RadzenPanelMenuItem Path="/Mercadorias" Text="Caixa" Icon="request_quote" />
+                <RadzenPanelMenuItem Path="/NotasCompra/Index" Text="Contas a Pagar" Icon="local_atm" />
+                <RadzenPanelMenuItem Path="/NotasVenda/Index" Text="Contas a Receber" Icon="local_atm" />
+            </RadzenPanelMenuItem>
+            <RadzenPanelMenuItem Text="Cadastros" Icon="archive">
+                <RadzenPanelMenuItem Path="/Clientes" Text="Clientes" Icon="group" />
+                <RadzenPanelMenuItem Path="/Cadastros/Fornecedores" Text="Fornecedores" Icon="pallet" />
+                <RadzenPanelMenuItem Path="/Cadastros/Funcionarios" Text="Runcionários" Icon="badge" />
+            </RadzenPanelMenuItem>
+        </RadzenPanelMenu>
+    </RadzenSidebar>
+    <RadzenBody>
+        <div class="rz-p-4">
             @Body
-        </FluentBodyContent>
-    </FluentStack>
+        </div>
+    </RadzenBody>
+    <RadzenFooter>
+        Footer
+    </RadzenFooter>
+</RadzenLayout>
 
-    <FluentFooter Style="@("height: 40px; color: white; text-align: center;")">
-        Footer Text
-    </FluentFooter>
+<RadzenComponents />
 
-    <FluentDesignSystemProvider />
-    <FluentDialogProvider />
-    <FluentTooltipProvider />
-
-</FluentLayout>
-
+@code {
+    bool sidebarExpanded = true;
+}

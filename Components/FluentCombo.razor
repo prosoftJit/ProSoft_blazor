@@ -3,12 +3,10 @@
 
 @typeparam TItem where TItem: class, new()
 
-<FluentStack HorizontalGap="0" VerticalAlignment="VerticalAlignment.Bottom">
-    <div class="w-100">
-        <FluentCombobox TOption=TItem @bind-SelectedOption=Value Label="@Label" Items="@Items" OptionText=OptionText />
-    </div>
-    <FluentButton IconStart="new Icons.Regular.Size12.Edit()" OnClick="()=>askEdit = Value??new()" />
-</FluentStack>
+<RadzenStack Orientation="Radzen.Orientation.Horizontal" Gap="0">
+    <RadzenDropDown @bind-Value=Value Data="Items" TextProperty="OptionText" />
+    <RadzenButton Icon="edit" Click="()=>askEdit = Value??new()" />
+</RadzenStack>
 
 @if (OnEdit != null && askEdit != null)
 {
@@ -19,7 +17,7 @@
         </EditForm>
     </ModalBody>
     <ModalFooter>
-        <FluentButton FormId="editForm" IconEnd="new Icons.Regular.Size12.Briefcase()">Salvar</FluentButton>
+        <RadzenButton form="editForm" Icon="save">Salvar</RadzenButton>
     </ModalFooter>
 </ProSoft.Components.ModalDialog>
 }

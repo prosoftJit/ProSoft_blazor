@@ -12,7 +12,12 @@
     </GridHeaderTemplate>
     <GridRowTemplate Context="p">
         <td>@p.IdOrcamento.ToString("000000")'</td>
-        <td>@p.Cliente.Nome</td>
+        <td>@p.Cliente?.Nome</td>
+        @*
+        Tentar acessar uma propriedade como p.Cliente.Nome sem nullable (?) ou tentar carregar dados com .Load()
+        enquanto usa proxies (lazyloader) provoca esse erro
+        There is already an open DataReader associated with this Connection which must be closed first
+        *@
     </GridRowTemplate>
     <ItemEditForm Context="item">
         <Orcamento Model="item" ctx="ctx" />

@@ -4,10 +4,10 @@
 @using ProSoft.Components
 @using Microsoft.EntityFrameworkCore
 
-<td width="10%"><FluentDatePicker @bind-Value="Vencimento" /></td>
-<td width="10%"><FluentNumberField @bind-Value="Model.Valor"  /></td>
+<td width="10%"><RadzenDatePicker @bind-Value="Vencimento" /></td>
+<td width="10%"><RadzenDatePicker @bind-Value="Model.Valor"  /></td>
 <td>
-    <FluentButton IconStart="new Icons.Regular.Size12.Delete()" OnClick=@(args => AskDeleteParcela(args) ) />
+    <RadzenButton Icon="delete" Click=@(args => AskDeleteParcela(args) ) />
 </td>
 
 @code {

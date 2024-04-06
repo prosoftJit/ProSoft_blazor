@@ -4,8 +4,8 @@
 @using Microsoft.EntityFrameworkCore
 @using ProSoft.Pages.Cadastros
 
-<td width="10%"><FluentNumberField TValue="float" @bind-Value="Model!.Quantidade" @onchange="()=>TotalChanged?.Invoke()" /></td>
-<td width="10%"><FluentTextField Value="@Model.Mercadoria?.Unidade" Disabled=true /></td>
+<td width="10%"><RadzenNumeric @bind-Value="Model!.Quantidade" @onchange="()=>TotalChanged?.Invoke()" /></td>
+<td width="10%"><RadzenTextBox Value="@Model.Mercadoria?.Unidade" Disabled=true /></td>
 <td>
     <Dropdown2
         TItem="mercadoria"
@@ -20,9 +20,9 @@
         </OnEdit>
     </Dropdown2>
 </td>
-<td width="10%"><FluentNumberField TValue=float @bind-Value="Model.Custo" @onchange="()=>TotalChanged?.Invoke()" /></td>
-<td width="10%"><FluentNumberField TValue=float Value="@Model.Total" Disabled=true /></td>
-<td width="10%"><FluentNumberField @bind-Value="Model.Venda" /></td>
+<td width="10%"><RadzenNumeric Format="N2" TValue=float @bind-Value="Model.Custo" @onchange="()=>TotalChanged?.Invoke()" /></td>
+<td width="10%"><RadzenNumeric Format="N2" Value="@Model.Total" Disabled=true /></td>
+<td width="10%"><RadzenNumeric Format="N2" @bind-Value="Model.Venda" /></td>
 
 @code {
     [Parameter, EditorRequired] public compra Model { get; set; } = default!;
