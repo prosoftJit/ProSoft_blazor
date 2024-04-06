@@ -3,25 +3,32 @@
 @using Microsoft.EntityFrameworkCore
 @using ProSoft.Components
 
-<GenericTemplate3 TItem=notavenda Contexto="ctx" HeaderTitle="Notas de Venda" Items="items" ModalSize="modal-xl">
-    <GridContent>
-        <PropertyColumn TProp=string TGridItem=notavenda Title="Id" Property='p => p.IdNotaVenda.ToString("000000")' Sortable="true" />
-        <PropertyColumn TProp=string TGridItem=notavenda Title="Data" Property="p => p.Data.ToShortDateString()" Sortable="true" />
-        <PropertyColumn TProp=string TGridItem=notavenda Title="Cliente" Property="p => p.Cliente.Nome" Sortable="true" />
-        <PropertyColumn TProp=float Align=Align.End Format="N2" TGridItem=notavenda Title="Valor" Property="p => p.Items.Sum(k=>(k.Quantidade * k.Compra.Venda)-k.Desconto)" Sortable="true" />
-    </GridContent>
-    <ItemEditForm Context="item">
-        <NotaVenda idNotaVenda="item.IdNotaVenda" />
+<GenericTemplate3 TItem=notavenda Contexto="ctx" HeaderTitle="Notas de Venda" Items="ctx.notasvenda" ModalSize="modal-xl" OnSubmit="Submit">
+    <HeaderTemplate>
+        <td>Id</td><td>Data</td><td>Cliente</td>
+    </HeaderTemplate>
+    <RowTemplate>
+        <td>@context.IdNotaVenda.ToString("000000")</td>
+        <td>@context.Data.ToShortDateString()</td>
+        <td>@context.Cliente?.Nome</td>
+    </RowTemplate>
+    <ItemEditForm>
+        <NotaVenda idNotaVenda="context.IdNotaVenda" />
     </ItemEditForm>
 </GenericTemplate3>
 
 @code {
     Contexto ctx = new Contexto();
-    IQueryable<notavenda> items = default!;
 
     protected override void OnInitialized()
     {
-        items = ctx.notasvenda;
         base.OnInitialized();
+    }
+
+    void Submit(notavenda item)
+    {
+        if (item.IdNotaVenda == 0)
+            ctx.notasvenda.Add(item);
+        ctx.SaveChanges();
     }
 }

@@ -5,19 +5,19 @@
 @using ProSoft.Components
 
 <tr>
-<td width="10%"><RadzenNumeric Format="N2" @bind-Value="Model.Quantidade" TextAlign="Radzen.TextAlign.Center" ShowUpDown=false /></td>
-<td width="10%"><RadzenTextBox Value="@Model.Compra?.Mercadoria?.Unidade" Disabled=true /></td>
+    <td width="10%"><RadzenNumeric Format="N2" @bind-Value="Model.Quantidade" TextAlign="Radzen.TextAlign.Center" ShowUpDown=false /></td>
+    <td width="10%"><RadzenTextBox Value="@Model.Compra?.Mercadoria?.Unidade" Disabled=true /></td>
 
-<td>
+    <td>
 
-    <RadzenDropDown AllowFiltering=true @bind-Value=Model.Compra Data="Compras" class="w-100" TextProperty="Descricao" AllowClear=true TValue="compra" />
+        <RadzenDropDown AllowFiltering=true @bind-Value=Model.Compra Data="Compras" class="w-100" TextProperty="Descricao" AllowClear=true TValue="compra" />
 
-</td>
+    </td>
 
-<td width="10%"><RadzenNumeric Format="N2" Value="@Model.Compra?.Venda" Disabled=true ShowUpDown=false TextAlign="Radzen.TextAlign.Right" /></td>
-<td width="10%"><RadzenNumeric Format="N2" @bind-Value="Model!.Desconto" ShowUpDown=false TextAlign="Radzen.TextAlign.Right"></RadzenNumeric></td>
-<td width="10%"><RadzenNumeric Format="N2" Value="@Total" Disabled=true ShowUpDown=false TextAlign ="Radzen.TextAlign.Right" /></td>
-<td width="1%"><RadzenButton Icon="delete" Click="()=>askDelete = Model" /></td>
+    <td width="10%"><RadzenNumeric Format="N2" Value="@Model.Compra?.Venda" Disabled=true ShowUpDown=false TextAlign="Radzen.TextAlign.Right" /></td>
+    <td width="10%"><RadzenNumeric Format="N2" @bind-Value="Model!.Desconto" ShowUpDown=false TextAlign="Radzen.TextAlign.Right"></RadzenNumeric></td>
+    <td width="10%"><RadzenNumeric Format="N2" Value="@Total" Disabled=true ShowUpDown=false TextAlign ="Radzen.TextAlign.Right" /></td>
+    <td width="1%"><RadzenButton Icon="delete" Click="()=>askDelete = Model" /></td>
 </tr>
 
 @if (askDelete != null)

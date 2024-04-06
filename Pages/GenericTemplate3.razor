@@ -15,44 +15,51 @@
     </PageHeader>
 }
 
-<FluentDataGrid Items="Items" TGridItem="TItem" Pagination="paginator">
-    <EmptyContent>
-        <p>Nenhum item encontrado...</p>
-    </EmptyContent>
-    <ChildContent>
-        @GridContent
-        <TemplateColumn Align="Align.End" Context="item">
-            <HeaderCellItemTemplate >
-                <FluentButton Class="me-4" IconEnd="new Icons.Regular.Size20.AddCircle()" OnClick="()=>askEdit=new()"></FluentButton>
-            </HeaderCellItemTemplate>
-            <ChildContent>
-                <FluentButton IconEnd="new Icons.Regular.Size20.Edit()" OnClick="()=>askEdit=item" />
-                <FluentButton IconEnd="new Icons.Regular.Size20.Delete()" OnClick="()=>askDelete=item" />
-            </ChildContent>
-        </TemplateColumn>
-    </ChildContent>
-</FluentDataGrid>
+<style>
+    td
+    {
+        padding-top: 2px !important;
+        padding-bottom: 2px !important;
+    }
+    tr { cursor: pointer; }
+</style>
 
-<FluentPaginator State="paginator">
-    <PaginationTextTemplate>
-        <strong>@paginator.TotalItemCount</strong> item(s). <a href="" @onclick="()=>askEdit=new()">Incluir</a>
-    </PaginationTextTemplate>
-    <PaginationTextTemplate>
-        Página <strong>@(paginator.CurrentPageIndex + 1)</strong> de <strong>@(paginator.LastPageIndex + 1)</strong>
-    </PaginationTextTemplate>
-</FluentPaginator>
+<table class="table table-hover w-100" border="1">
+    <thead>
+        <tr>
+            @HeaderTemplate
+            <RadzenStack Gap="1" Orientation="Radzen.Orientation.Horizontal">
+                <RadzenButton Size=Radzen.ButtonSize.Small Icon="add" Click="()=>{askEdit=new();StateHasChanged();}" />
+            </RadzenStack>
+        </tr>
+    </thead>
+    <tbody>
+    @if (Items is not null && RowTemplate is not null)
+    {
+        @foreach (TItem ti in Items)
+        {
+            <tr>
+                @RowTemplate(ti)
+                <td style="width:1%">
+                    <RadzenStack Gap="1" Orientation="Radzen.Orientation.Horizontal">
+                        <RadzenButton Size=Radzen.ButtonSize.Small Icon="edit" Click="()=>askEdit=ti"/>
+                        <RadzenButton Size=Radzen.ButtonSize.Small Icon="delete" Click="()=>askDelete=ti"/>
+                    </RadzenStack>
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>
 
 <ModalDialog Title="Editar" Size="@ModalSize" @bind-Visible=DialogVisible >
     <ModalBody>
-        <EditForm Model="askEdit" id="editForm" OnValidSubmit="Submit" >
+        <RadzenTemplateForm TItem=TItem Data="askEdit" id="editForm" Submit="()=>OnSubmit?.Invoke(askEdit!)" >
         @ItemEditForm?.Invoke(askEdit!)
-        </EditForm>
+        </RadzenTemplateForm>
     </ModalBody>
     <ModalFooter>
-        <FluentButton Type=ButtonType.Submit Id="submit" FormId="editForm" >
-            <FluentIcon Value="new Icons.Filled.Size12.Briefcase()" Color="Color.Success" Slot="start" />
-            Salvar
-        </FluentButton>
+        <RadzenButton form="editForm" ButtonType="Radzen.ButtonType.Submit" Icon="save" Text="Salvar"/>
     </ModalFooter>
 </ModalDialog>
 
@@ -61,6 +68,10 @@
 }
 
 @code {
+    [Parameter] public RenderFragment<TItem>? RowTemplate { get; set; } = null;
+    [Parameter] public RenderFragment? HeaderTemplate { get; set; } = null;
+    [Parameter] public Action<TItem>? OnSubmit { get; set; } = null;
+
     [Parameter] public RenderFragment GridContent { get; set; } = default!;
     [Parameter] public IQueryable<TItem>? Items { get; set; }
     [Parameter] public string? HeaderTitle {get;set;} = null;
@@ -106,9 +117,9 @@
         StateHasChanged();
     }
 
-    void Submit()
+    void Submit(TItem item)
     {
-        if (Contexto.Entry(askEdit).State == EntityState.Detached)
+        if (!Contexto.Set<TItem>().Contains(item))
             Contexto.Add(askEdit);
 
         Contexto.SaveChanges();

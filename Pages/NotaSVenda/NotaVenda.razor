@@ -5,54 +5,48 @@
 @using Microsoft.EntityFrameworkCore
 @using ProSoft.Pages.Cadastros
 
-<CascadingValue Name="ctx" Value="ctx">
-    <EditForm Model="Model" OnValidSubmit="Submit" id="editForm">
+<DataAnnotationsValidator />
+<ValidationSummary Model="Model" />
 
-        <DataAnnotationsValidator />
-        <ValidationSummary Model="Model" />
+<RadzenRow>
+    <RadzenColumn Size="1">
+        <RadzenFormField Text="Id">
+            <RadzenNumeric Format="000000" Value="Model.IdNotaVenda" TextAlign="Radzen.TextAlign.Center" ShowUpDown=false />
+        </RadzenFormField>
+    </RadzenColumn>
+    <RadzenColumn Size="3">
+        <RadzenFormField Text="Cliente">
+            <RadzenDropDown TValue="long?" @bind-Value=Model.Cliente_IdCliente TextProperty="Nome" ValueProperty="IdCliente" Data="ctx.clientes.OrderBy(k=>k.Nome)" />
+        </RadzenFormField>
+    </RadzenColumn>
+</RadzenRow>
 
-        <FluentGrid>
-            <FluentGridItem md="1">
-                <FluentTextField Label="Id" Value="@Model.IdNotaVenda.ToString("000000")"/>
-            </FluentGridItem>
-            <FluentGridItem md="3">
-                <FluentCombo Label="Cliente" @bind-Value=Model.Cliente OptionText="c=>c.Nome" Items="ctx.clientes.OrderBy(k=>k.Nome)">
-                    <OnEdit Context="itm">
-                        <Cliente Model="itm" />
-                    </OnEdit>
-                </FluentCombo>
-            </FluentGridItem>
-        </FluentGrid>
-
-        <table class="table w-100">
-        <thead>
-            <tr>
-                <td>Quant.</td>
-                <td>Un.</td>
-                <td>Descrição</td>
-                <td>Unitário</td>
-                <td>Desconto</td>
-                <td>Total</td>
-                <td><RadzenButton Icon="add" Click="()=>AddVenda()" /></td>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach (venda v in Model.Items)
-        {
-            <Venda_row Model="v" Compras="ctx.compras" @bind-Total=total />
-        }
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="4"></td>
-                <td>Total</td>
-                <td align="right">@total.ToString("N2")</td>
-            </tr>
-        </tfoot>
-        </table>
-
-    </EditForm>
-</CascadingValue>
+<table class="table w-100">
+<thead>
+    <tr>
+        <td>Quant.</td>
+        <td>Un.</td>
+        <td>Descrição</td>
+        <td>Unitário</td>
+        <td>Desconto</td>
+        <td>Total</td>
+        <td><RadzenButton Icon="add" Click="()=>AddVenda()" /></td>
+    </tr>
+</thead>
+<tbody>
+@foreach (venda v in Model.Items)
+{
+    <Venda_row Model="v" Compras="ctx.compras" @bind-Total=total />
+}
+</tbody>
+<tfoot>
+    <tr>
+        <td colspan="4"></td>
+        <td>Total</td>
+        <td align="right">@total.ToString("N2")</td>
+    </tr>
+</tfoot>
+</table>
 
 
 @code {
@@ -72,12 +66,10 @@
             AddVenda();
     }
 
-    void Submit()
+    void Submit(notavenda nv)
     {
         if (Model.IdNotaVenda == 0)
-            ctx.Entry(Model).State = Microsoft.EntityFrameworkCore.EntityState.Added;
-        else
-            ctx.Entry(Model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            ctx.notasvenda.Add(Model);
 
         ctx.SaveChanges();
 
