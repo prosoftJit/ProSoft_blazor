@@ -2,27 +2,18 @@
 @using System.ComponentModel.DataAnnotations
 @using ProSoft.Data
 
-<EditForm Model="Model" OnValidSubmit="Submit" id="editForm">
-
-<DataAnnotationsValidator />
-<ValidationSummary />
-
-    <FluentGrid>
-        <FluentGridItem md="3">
-            <FluentTextField Label="Id do Fornecedor" Value="@Model.IdFornecedor.ToString("000000")" Disabled=true/>
-        </FluentGridItem>
-        <FluentGridItem md="9">
-            <FluentTextField Label="Nome" @bind-Value="@Model.Nome" />
-        </FluentGridItem>
-        <FluentGridItem md="4">
-            <FluentTextField Label="Nome fantasia" @bind-Value="@Model.Fantasia" />
-        </FluentGridItem>
-        <FluentGridItem md="4">
-            <FluentTextField Label="CNPJ" @bind-Value="@Model.CNPJ" />
-        </FluentGridItem>
-    </FluentGrid>
-
-</EditForm>
+<RadzenFormField Text="Id do Fornecedor">
+    <RadzenNumeric Format="000000" Value="Model.IdFornecedor" Disabled=true />
+</RadzenFormField>
+<RadzenFormField Text="Nome">
+    <RadzenTextBox @bind-Value=Model.Nome />
+</RadzenFormField>
+<RadzenFormField Text="Fantasia">
+    <RadzenTextBox @bind-Value=Model.Fantasia />
+</RadzenFormField>
+<RadzenFormField Text="CNPJ">
+    <RadzenMask Mask="**.***.***/*****-**" CharacterPattern="[0-9]" @bind-Value=Model.CNPJ />
+</RadzenFormField>
 
 @code {
     [Parameter] public fornecedor Model { get; set; } = new();

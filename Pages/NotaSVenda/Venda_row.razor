@@ -4,38 +4,54 @@
 @using Microsoft.EntityFrameworkCore
 @using ProSoft.Components
 
-<td width="10%"><FluentNumberField @bind-Value="Model.Quantidade" /></td>
-<td width="10%"><FluentTextField Value="@Model.Compra?.Mercadoria?.Unidade" Disabled=true /></td>
+<tr>
+    <td width="10%"><RadzenNumeric Format="N2" @bind-Value="Model.Quantidade" TextAlign="Radzen.TextAlign.Center" ShowUpDown=false /></td>
+    <td width="10%"><RadzenTextBox Value="@Model.Compra?.Mercadoria?.Unidade" Disabled=true /></td>
 
-<td>
+    <td>
 
-    <Dropdown2 TItem="compra" @bind-Value=Model.Compra TextProperty="Descricao" GetItems="()=>ctx.compras" OnChange="(i)=>Model.Compra=i" OnDelete="(c,i)=>{c.Remove(i);c.SaveChanges();}" >
-    </Dropdown2>
+        <RadzenDropDown AllowFiltering=true @bind-Value=Model.Compra Data="Compras" class="w-100" TextProperty="Descricao" AllowClear=true TValue="compra" />
 
-</td>
+    </td>
 
-<td width="10%"><FluentNumberField Value="@Model.Compra?.Venda" Disabled=true /></td>
-<td width="10%"><FluentNumberField @bind-Value="Model!.Desconto" ></FluentNumberField></td>
-<td width="10%"><FluentNumberField Value="@Total()" Disabled=true /></td>
+    <td width="10%"><RadzenNumeric Format="N2" Value="@Model.Compra?.Venda" Disabled=true ShowUpDown=false TextAlign="Radzen.TextAlign.Right" /></td>
+    <td width="10%"><RadzenNumeric Format="N2" @bind-Value="Model!.Desconto" ShowUpDown=false TextAlign="Radzen.TextAlign.Right"></RadzenNumeric></td>
+    <td width="10%"><RadzenNumeric Format="N2" Value="@Total" Disabled=true ShowUpDown=false TextAlign ="Radzen.TextAlign.Right" /></td>
+    <td width="1%"><RadzenButton Icon="delete" Click="()=>askDelete = Model" /></td>
+</tr>
+
+@if (askDelete != null)
+{
+    <ModalConfirm Message="Confirma exclusão?" OnClose="Delete" Title="Confirm" />
+}
 
 @code {
     [Parameter] public venda Model { get; set; } = new();
-    [Parameter] public Action<float>? TotalChanged { get; set; } = null;
-    [Parameter] public Func<compra[]>? OnNeedCompras { get; set; } = null;
+    [Parameter] public IQueryable<compra>? Compras { get; set; } = null;
     [CascadingParameter(Name="ctx")] public Contexto ctx {get;set;} = default!;
-
-    float _total = 0;
-    float Total()
-    {
-        float t = Model.Quantidade * (Model.Compra?.Venda ?? 0) - Model.Desconto;
-        if (t != _total)
+    [Parameter] public float Total {
+        get
         {
+            float t = Model.Quantidade * (Model.Compra?.Venda ?? 0) - Model.Desconto;
+            if (t == _total) return t;
             _total = t;
-            TotalChanged?.Invoke(_total);
+            TotalChanged?.InvokeAsync(_total);
+            return _total;
         }
-        return _total;
+        set {} 
     }
-    void CompraChanged(object args) {
-        Model.Compra = ctx.compras.FirstOrDefault(K=>K.IdCompra == Model.Compra_IdCompra);
+    float _total = 0;
+    [Parameter] public EventCallback<float>? TotalChanged { get; set; } = default!;
+    [Parameter] public Action<venda>? OnDelete { get; set; } = null;
+
+    venda? askDelete = null;
+    void Delete(bool confirmation)
+    {
+        if (confirmation)
+        {
+            OnDelete?.Invoke(askDelete!);
+            askDelete = null;
+        }
+        StateHasChanged();
     }
 }

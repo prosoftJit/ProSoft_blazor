@@ -724,51 +724,7 @@ namespace System
         //    return con;
         //}
 
-        //public static HtmlString CreateGrid<T>(this IEnumerable<object> lista, string urlServicos, string divGridId, string divDialogId, Func<T, long> idfunc, string gridId, string gridWidth, bool IsAuthenticated, HtmlHelper Html, string imagePath, string onedit, string ondelete, string moreData, params ExtGridCol<T>[] colunas) {
-
-        //    string editHint = "Editar " + typeof(T).Description();
-        //    string deleteHint = "Excluir " + typeof(T).Description();
-        //    string deleteMessage = "Confirma a exclusão do(a) " + typeof(T).Description() + "?";
-
-        //    // primeira coluna, chamada id, contém o id do objeto
-        //    //ExtGridCol<T> idcol = new ExtGridCol<T>("id", "id", k=> string.Format("<input type='hidden' name='id' value='{0}'/>", idfunc(k)));
-        //    //List<ExtGridCol<T>> list = colunas.ToList();
-        //    //list.Insert(0, idcol);
-        //    //colunas = list.ToArray();
-        //    List<WebGridColumn> columns = new List<WebGridColumn>();
-        //    if (idfunc != null) {
-        //        columns.Add(new WebGridColumn {Format = (a)=>idfunc(a.Value), Style = "HiddenCol" });
-        //    }
-        //    foreach (ExtGridCol<T> col in colunas) {
-        //        columns.Add(new WebGridColumn { ColumnName = col.ColName, Header = col.Header, Format = (a) => col.Format(((T)a.Value)), Style = col.Style });
-        //    }
-
-        //    string[] cols = colunas.Select(k=>k.ColName).ToArray();
-        //    WebGrid grid = new WebGrid(lista, columnNames : cols);
-
-        //    if (IsAuthenticated) {
-
-        //        string md = string.IsNullOrEmpty(moreData) ? "" : ", "+moreData;
-        //        md = md.Replace('{', '▒').Replace('}', '▓');
-
-        //        if (string.IsNullOrEmpty(onedit)) {
-        //            onedit = string.Format("return Get('{0}',{1},'{2}'{3})", urlServicos, "{0}", divDialogId, md);
-        //        }
-        //        if (string.IsNullOrEmpty(ondelete)) {
-        //            ondelete = string.Format("return Delete('{0}',{1}, '{2}', '{3}'{4})", urlServicos, "{0}", deleteMessage, divGridId, md);
-        //        } 
-
-        //        if (!string.IsNullOrEmpty(editHint) && idfunc != null) {
-        //            columns.Add(new WebGridColumn { Format = (item)=>MyExtension.ImageButton(Html, imagePath + "edit.png", string.Format(onedit, idfunc(((T)item.Value))).Replace('▒','{').Replace('▓','}'), editHint), Style="GridImg"});
-        //        }
-        //        if (!string.IsNullOrEmpty(deleteMessage) && idfunc != null) {
-        //            columns.Add(new WebGridColumn { Format = (item)=>MyExtension.ImageButton(Html, imagePath + "delete.png", string.Format(ondelete, idfunc(((T)item.Value))).Replace('▒','{').Replace('▓','}'), deleteHint), Style="GridImg"});
-        //        }
-        //    }
-
-        //    return grid.GetHtml("table", "header", alternatingRowStyle:"alternate", columns: columns, htmlAttributes: new {style="width: " + gridWidth, id = gridId});
-        //}
-
+   
         //public static Type[] Subclasses(this Type tipo) {
         //    var tipos = AppDomain.CurrentDomain.GetAssemblies().SelectMany(k=> {
         //        Type[] ret = null;
@@ -823,42 +779,6 @@ namespace System
         //        errorMessage = ex.Message;
         //    }
         //    return errorMessage;
-        //}
-
-
-        //public static HtmlString DrawList<T>(this HtmlHelper helper, ListField<T>[] fields, IEnumerable<T> lista, string tableWidth = "auto", HtmlAttributes Attributes = null, HtmlAttributes RowAttributes = null)
-        //{
-        //    if (Attributes == null) {Attributes = new HtmlAttributes();}
-        //    if (Attributes.Style.Width == null) {Attributes.Style.Width = tableWidth;}
-        //    string attr = " " + Attributes.ToString();
-
-        //    string rattr = RowAttributes == null ? "": RowAttributes.ToString();
-
-        //    string s = string.Format("<table class='DataTable'{0}><thead>", attr);
-        //    s += "<tr>";
-        //    foreach (ListField<T> h in fields)
-        //    {
-        //        s += "<td>" + h.Title + "</td>";
-        //    }
-        //    s += "</tr></thead><tbody>";
-        //    string stripes = "tr1";
-        //    string otherClass = "";
-        //    if (RowAttributes != null && !string.IsNullOrEmpty(RowAttributes.CssClass)) {
-        //        otherClass = " " + RowAttributes.CssClass;
-        //    }
-        //    foreach (T objeto in lista)
-        //    {
-        //        s += "<tr class=\"" + stripes + otherClass + "\" " + rattr + ">";
-        //        foreach (ListField<T> data in fields)
-        //        {
-        //            object value = data.Value(objeto);
-        //            s += "<td>" + value.ToString() + "</td>";
-        //        }
-        //        s += "</tr>";
-        //        stripes = stripes == "tr1" ? "tr2" : "tr1";
-        //    }
-        //    s += "</tbody></table>";
-        //    return new HtmlString(s);
         //}
 
     }

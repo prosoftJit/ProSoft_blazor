@@ -1,0 +1,54 @@
+
+@namespace ProSoft.Components
+
+@typeparam TItem where TItem: class, new()
+
+<FluentStack HorizontalGap="0" VerticalAlignment="VerticalAlignment.Bottom">
+    <div class="w-100">
+        <FluentCombobox TOption=TItem @bind-SelectedOption=Value Label="@Label" Items="@Items" OptionText=OptionText />
+    </div>
+    <FluentButton IconStart="new Icons.Regular.Size12.Edit()" OnClick="()=>askEdit = Value??new()" />
+</FluentStack>
+
+@if (OnEdit != null && askEdit != null)
+{
+    <ProSoft.Components.ModalDialog Title="Modal" Size="@ModalSize" @bind-Visible=ModalVisible>
+    <ModalBody>
+        <EditForm id="editForm" Model="askEdit" OnValidSubmit="()=>OnSubmit?.Invoke(askEdit)" >
+            @OnEdit?.Invoke(askEdit)
+        </EditForm>
+    </ModalBody>
+    <ModalFooter>
+        <FluentButton FormId="editForm" IconEnd="new Icons.Regular.Size12.Briefcase()">Salvar</FluentButton>
+    </ModalFooter>
+</ProSoft.Components.ModalDialog>
+}
+
+@code {
+
+    //https://stackoverflow.com/questions/57932850/how-to-make-two-way-binding-on-blazor-component
+
+    [Parameter] public TItem? Value
+    {
+        get { return _value; }
+        set
+        {
+            if (value == _value) return;
+            _value = value;
+            ValueChanged.InvokeAsync(value);
+        }
+    }
+    [Parameter] public string? Label { get; set; } = null;
+    [Parameter] public IEnumerable<TItem>? Items { get; set; } = null;
+    [Parameter] public Func<TItem, string>? OptionText { get; set; } = null;
+
+    [Parameter] public RenderFragment<TItem>? OnEdit {get;set;} = null;
+    [Parameter] public EventCallback<TItem?> ValueChanged { get; set; } = default!;
+    [Parameter] public string ModalSize { get; set; } = "modal-xl";
+    [Parameter] public Action<TItem>? OnSubmit { get; set; } = default!;
+
+    TItem? askEdit = null;
+    bool ModalVisible { get { return askEdit != null; } set { if (!value) askEdit = null; } }
+
+    TItem? _value = null;
+}

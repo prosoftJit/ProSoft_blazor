@@ -2,27 +2,24 @@
 @using System.ComponentModel.DataAnnotations
 @using ProSoft.Data
 
-<FluentGrid>
-    <FluentGridItem md="3">
-        <FluentTextField Label="Id do Cliente" Value="@Model.idCliente.ToString("000000")" Disabled=true />
-    </FluentGridItem>
-    <FluentGridItem md="9">
-        <FluentTextField Label="Nome" @bind-Value="Model.Nome" Required=true />
-        <FluentValidationMessage For="()=>Model.Nome" />
-    </FluentGridItem>
+<RadzenFormField Text="Id do Cliente">
+    <RadzenNumeric Format="000000" @bind-Value=Model.idCliente Disabled=true />
+</RadzenFormField>
+<RadzenFormField Text="Nome">
+    <RadzenTextBox @bind-Value=Model.Nome />
+</RadzenFormField>
 
-    <ProSoft.Shared.Endereco endereco="Model" />
+<ProSoft.Shared.Endereco endereco="Model" />
 
-    <FluentGridItem md="4">
-        <FluentTextField Label="CPF" @bind-Value="Model.CPF" />
-    </FluentGridItem>
-    <FluentGridItem md="4">
-        <FluentTextField Label="E-mail" @bind-Value="Model.Email" />
-    </FluentGridItem>
-    <FluentGridItem md="4">
-        <FluentTextField Label="RG" @bind-Value="Model.RG" />
-    </FluentGridItem>
-</FluentGrid>
+<RadzenFormField Text="CPF">
+    <RadzenMask @bind-Value=Model.CPF Mask="***.***.***-**" CharacterPattern="[0-9]" />
+</RadzenFormField>
+<RadzenFormField Text="E-mail">
+    <RadzenTextBox @bind-Value=Model.Email />
+</RadzenFormField>
+<RadzenFormField Text="RG">
+    <RadzenMask @bind-Value=Model.RG Mask="***.***.***-*" CharacterPattern="[0-9]" />
+</RadzenFormField>
 
 @code {
     [Parameter] public cliente Model { get; set; } = default!;

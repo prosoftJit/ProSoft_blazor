@@ -1,13 +1,17 @@
 @page "/Clientes"
 @using ProSoft.Data
 @using ProSoft.Components
+@using ProSoft.Services
 @using Microsoft.EntityFrameworkCore
 
-<GenericTemplate3 TItem=cliente Contexto="ctx" HeaderTitle="Clientes" Items="ctx.clientes.OrderBy(k=>k.Nome)" ModalSize="modal-lg">
-    <GridContent>
-        <PropertyColumn TProp=string TGridItem=cliente Title="Id" Property='p => p.idCliente.ToString("000000")' Sortable="true" />
-        <PropertyColumn TProp=string TGridItem=cliente Title="Nome" Property="p => p.Nome" Sortable="true" />
-    </GridContent>
+<GenericTemplate3 TItem=cliente Contexto="ctx" HeaderTitle="Clientes" Items="ctx.clientes.OrderBy(k=>k.Nome)" ModalSize="modal-lg" >
+    <GridHeaderTemplate>
+        <td>Id</td><td>Nome</td>
+    </GridHeaderTemplate>
+    <GridRowTemplate Context="p">
+        <td>@p.idCliente.ToString("000000")' </td>
+        <td>@p.Nome</td>
+    </GridRowTemplate>
     <ItemEditForm Context="item">
         <ProSoft.Pages.Cadastros.Cliente Model="item" />
     </ItemEditForm>

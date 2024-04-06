@@ -9,23 +9,21 @@
     <DataAnnotationsValidator />
     <ValidationSummary Model="Model" />
 
-    <FluentGrid>
-        <FluentGridItem md="1">
-            <FluentTextField Value='@Model.IdMercadoria.ToString("000000")' Disabled=true Label="Id da Mercadoria" />
-        </FluentGridItem>
-        <FluentGridItem md="5">
-            <FluentTextField @bind-Value="Model.Descricao" Label="Descrição" Required=true />
-        </FluentGridItem>
-        <FluentGridItem md="2">
-            <FluentTextField @bind-Value="Model.NCM" Label="NCM" />
-        </FluentGridItem>
-        <FluentGridItem md="1">
-            <FluentTextField @bind-Value="Model.Unidade" Label="Unidade" />
-        </FluentGridItem>
-        <FluentGridItem md="2">
-            <FluentTextField @bind-Value="Model.Codigo" Label="Código" />
-        </FluentGridItem>
-    </FluentGrid>
+    <RadzenFormField Text="Id">
+        <RadzenNumeric Format="000000" TextAlign="Radzen.TextAlign.Center" Value='@Model.IdMercadoria' Disabled=true />
+    </RadzenFormField>
+    <RadzenFormField Text="Descrição">
+        <RadzenTextBox @bind-Value="Model.Descricao" />
+    </RadzenFormField>
+    <RadzenFormField Text="NCM">
+        <RadzenTextBox @bind-Value="Model.NCM" />
+    </RadzenFormField>
+    <RadzenFormField Text="Unidade">
+        <RadzenTextBox @bind-Value="Model.Unidade" />
+    </RadzenFormField>
+    <RadzenFormField Text="Código">
+        <RadzenTextBox @bind-Value="Model.Codigo" />
+    </RadzenFormField>
 </EditForm>
 
 @code {

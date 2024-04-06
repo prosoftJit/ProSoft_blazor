@@ -3,66 +3,20 @@
 @using Microsoft.EntityFrameworkCore
 @using ProSoft.Components
 
-@if (notascompra == null) {
-    <p>Carregando...</p>
-} else {
-    <GenericTemplate2 
-        Items="notascompra"
-        Context=ctx
-        HeaderTitle="Notas de Compra"
-        HeaderDescription="Notas de entrada de estoque"
-        OnDelete="ItemDelete"
-        TItem=notacompra
-        Contexto=ctx
-        >
-        <TableHeader>
-            <th>Id</th>
-            <th>Número</th>
-            <th>Data</th>
-            <th>Fornecedor</th>
-            <th>Valor</th>
-        </TableHeader>
-        <RowTemplate Context="nfc">
-            <td class="text-center">@nfc.IdNotaCompra.ToString("000000")</td>
-            <td>@nfc.NumeroNF</td>
-            <td>@nfc.Data.ToShortDateString()</td>
-            <td>@nfc.Fornecedor?.Nome</td>
-            <td>@nfc.Total.ToString("N2")</td>
-        </RowTemplate>
-        <ItemEditForm Context=nc>
-            <Form Model=nc Contexto=ctx />
-        </ItemEditForm>        
-    </GenericTemplate2>
-}
+<GenericTemplate3 TItem=notacompra Contexto="ctx" HeaderTitle="Notas de Compra" Items="ctx.notascompra.Include(k=>k.Fornecedor).Include(k=>k.Items).ThenInclude(k=>k.Mercadoria)" ModalSize="modal-xl">
+    <GridHeaderTemplate>
+        <td>Id</td>
+        <td>Nome</td>
+    </GridHeaderTemplate>
+    <GridRowTemplate Context="p">
+        <td>@p.IdNotaCompra.ToString("000000")</td>
+        <td>@p.Fornecedor.Nome</td>
+    </GridRowTemplate>
+    <ItemEditForm Context="item">
+        <Form Model="item" Contexto="ctx" />
+    </ItemEditForm>
+</GenericTemplate3>
 
 @code {
-    mercadoria[] Mercadorias = Array.Empty<mercadoria>();
-    notacompra[]? notascompra;
     Contexto ctx = new Contexto();
-
-    protected override async Task OnInitializedAsync()
-    {
-        Mercadorias = ctx.mercadorias.ToArray();
-        notascompra = await LoadNotas();
-    }
-
-    Task<notacompra[]> LoadNotas()
-    {
-        try
-        {
-            return Task.FromResult(ctx.notascompra.Include(k => k.Fornecedor).Include(k=>k.Items).OrderBy(k => k.Data).ToArray());
-        }
-        catch
-        {
-
-        }
-        finally
-        {
-        }
-        return Task.FromResult( Array.Empty<notacompra>() );
-    }
-
-    void ItemDelete(notacompra nc) {
-
-    }
 }

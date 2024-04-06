@@ -34,6 +34,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xEcm9wZG93bkhhbWJ1cmd1ZXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/ProSoft_blazor/Components/FluentCombo.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xGbHVlbnRDb21iby5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/ProSoft_blazor/Components/InputNumber2.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xJbnB1dE51bWJlcjIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/ProSoft_blazor/Components/ModalConfirm.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNb2RhbENvbmZpcm0ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 

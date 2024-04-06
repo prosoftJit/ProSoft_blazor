@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProSoft")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dfd05a62471170af7d9e4294eefb02b0f9e4fef3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e84e4d808d303a18f2c3b3c02582836f9ed8411e")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProSoft")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProSoft")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

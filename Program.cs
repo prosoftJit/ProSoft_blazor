@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Web;
 using ProSoft.Data;
 using ProSoft.Services;
 using Microsoft.Fast.Components.FluentUI;
+using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,8 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 
 builder.Services.AddBlazorBootstrap();
+
+builder.Services.AddRadzenComponents();
 
 builder.Services.AddHttpClient();
 builder.Services.AddFluentUIComponents();

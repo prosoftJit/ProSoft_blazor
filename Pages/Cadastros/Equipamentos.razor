@@ -5,17 +5,19 @@
 @using ProSoft.Pages
 
 <GenericTemplate3 TItem=equipamento Contexto="ctx" HeaderTitle="Equipamentos" Items="ctx.equipamentos.Include(k=>k.Cliente)" ModalSize="modal-lg">
-    <GridContent>
-        <PropertyColumn TProp=string TGridItem=equipamento Title="Id" Property='p => p.IdEquipamento.ToString("000000")' Sortable="true" />
-        <PropertyColumn TProp=string TGridItem=equipamento Title="Descricão" Property="p => p.Descricao" Sortable="true" />
-        <TemplateColumn Context="item" TGridItem=equipamento Title="Cliente" >
-            @item.Cliente?.Nome
-        </TemplateColumn>
-    </GridContent>
+    <GridHeaderTemplate>
+        <td>Id</td><td>Descrição</td><td>Cliente</td>
+    </GridHeaderTemplate>
+    <GridRowTemplate Context="p">
+        <td>@p.IdEquipamento.ToString("000000")'</td>
+        <td>@p.Descricao</td>
+        <td>@p.Cliente.Nome</td>
+    </GridRowTemplate>
     <ItemEditForm Context="item">
+        <Equipamento Model="item" ctx="ctx" />
     </ItemEditForm>
 </GenericTemplate3>
 
 @code {
-    Contexto ctx = new();
+    Contexto? ctx = new();
 }

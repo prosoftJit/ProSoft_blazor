@@ -7,8 +7,8 @@
             @Message
         </ModalBody>
         <ModalFooter>
-            <FluentButton OnClick="()=>Close(true)">Ok</FluentButton>
-            <FluentButton OnClick="()=>Close(false)">Cancel</FluentButton>
+            <RadzenButton Text="Ok" Variant="Radzen.Variant.Filled" ButtonStyle=Radzen.ButtonStyle.Success Click="()=>Close(true)" />
+            <RadzenButton Text="Cancelar" Variant="Radzen.Variant.Filled" ButtonStyle=Radzen.ButtonStyle.Danger Click="()=>Close(false)" />
         </ModalFooter>
     </ModalDialog>
 }

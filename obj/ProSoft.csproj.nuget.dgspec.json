@@ -48,6 +48,10 @@
               "target": "Package",
               "version": "[6.0.26, )"
             },
+            "Microsoft.EntityFrameworkCore.Proxies": {
+              "target": "Package",
+              "version": "[6.0.26, )"
+            },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
@@ -73,6 +77,10 @@
             "MySqlConnector": {
               "target": "Package",
               "version": "[2.3.5, )"
+            },
+            "Radzen.Blazor": {
+              "target": "Package",
+              "version": "[4.29.1, )"
             }
           },
           "imports": [

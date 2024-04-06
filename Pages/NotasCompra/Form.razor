@@ -12,57 +12,36 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <FluentGrid>
-        <FluentGridItem md="2">
-            <FluentTextField Label="Id" Value="@Model.IdNotaCompra.ToString("000000")" Disabled=true />
-        </FluentGridItem>
-        <FluentGridItem md="2">
-            <FluentTextField Label="Número da NF" @bind-Value="Model.NumeroNF" />
-        </FluentGridItem>
-        <FluentGridItem md="2">
-            <FluentDatePicker Label="Data" Value="Model.Data" ValueChanged="e=>Model.Data=e.Value" />
-        </FluentGridItem>
-        <FluentGridItem md="3">
-            <FluentAutocomplete TOption="fornecedor"
-                                MaximumSelectedOptions="1"
-                                AutoComplete="off"
-                                Label="Fornecedor"
-                                OnOptionsSearch="(e)=>e.Items=Contexto.fornecedores.Where(k=>k.Nome.Contains(e.Text)).OrderBy(k=>k.Nome)"
-                                Placeholder="Selecione um fornecedor"
-                                OptionText="e=>e.Nome"
-                                @bind-SelectedOptions=@fornecedores />
-        </FluentGridItem>
-        <FluentGridItem md="3">
-            <FluentTextField Label="Xml" @bind-Value=Model.Xml/>
-        </FluentGridItem>
-    </FluentGrid>
+    <RadzenFormField Text="Id">
+        <RadzenNumeric Format="000000" Value="@Model.IdNotaCompra" Disabled=true />
+    </RadzenFormField>
+    <RadzenFormField Text="Número da NF">
+        <RadzenTextBox @bind-Value=Model.NumeroNF />
+    </RadzenFormField>
+    <RadzenFormField Text="Data">
+        <RadzenDatePicker @bind-Value=Model.Data />
+    </RadzenFormField>
+    <RadzenFormField Text="Fornecedor">
+        <RadzenDropDown @bind-Value=Model.Fornecedor Data="Contexto.fornecedores" TextProperty="Nome" />
+    </RadzenFormField>
+    <RadzenFormField Text="Xml">
+        <RadzenTextBox @bind-Value=Model.Xml />
+    </RadzenFormField>
 
-    <GenericTemplate TItem=compra Items=Model.Items Context=Contexto OnAdd=AddRow OnDelete=DeleteRow>
-        <TableHeader>
-            <th>Qt.</th>
-            <th>Un</th>
-            <th>Descrição</th>
-            <th>P. Custo</th>
-            <th>Total</th>
-            <th>P. Venda</th>
-        </TableHeader>
-        <RowTemplate Context=c>
-            <Row GetMercadorias="()=>Contexto.mercadorias.ToArray()" 
-                Model="c" 
-                MercadoriaChanged='()=>MercadoriaChanged(c)' 
-                TotalChanged="()=>StateHasChanged()" 
-                Contexto="Contexto"
-                />
-        </RowTemplate>
-        <TableFooter>
-            <td colspan="4" class="text-end">Total</td>
-            <td>
-                <FluentTextField Value="@Model.Total.ToString("N2")" Disabled=true/>
-            </td>
-            <td colspan="2"></td>
-        </TableFooter>
-    </GenericTemplate>
-
+    <GenericTemplate3 TItem=compra Contexto="Contexto" Items="Model.Items.AsQueryable()" >
+        <GridHeaderTemplate>
+            <td>Quant</td><td>Un</td><td>Descrição</td><td>Unitário</td><td>Total</td><td>Margem</td><td>P.Venda</td>
+        </GridHeaderTemplate>
+        <GridRowTemplate Context="cp">
+            <td width="10%"><RadzenNumeric @bind-Value=cp.Quantidade Format="N2" TextAlign="Radzen.TextAlign.End" /></td>
+            <td width="10%"><RadzenTextBox Value="@cp.Mercadoria.Unidade" /></td>
+            <td><RadzenDropDown @bind-Value=cp.Mercadoria Data="Contexto.mercadorias" TextProperty="Descricao" /></td>
+            <td width="10%"><RadzenNumeric @bind-Value=cp.Custo Format="N2" TextAlign="Radzen.TextAlign.End" /></td>
+            <td width="10%"><RadzenNumeric Value=cp.Total Format="N2" TextAlign="Radzen.TextAlign.End" /></td>
+            <td width="10%"><RadzenNumeric @bind-Value=cp.Margem Format="N2" TextAlign="Radzen.TextAlign.End" /></td>
+            <td width="10%"><RadzenNumeric @bind-Value=cp.Venda Format="N2" TextAlign="Radzen.TextAlign.End" /></td>
+        </GridRowTemplate>
+    </GenericTemplate3>
 </EditForm>
 
 @code {

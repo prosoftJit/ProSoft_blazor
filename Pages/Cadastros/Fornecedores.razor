@@ -1,14 +1,16 @@
 @page "/Cadastros/Fornecedores"
 @using ProSoft.Data
-@using ProSoft.Services
 @using ProSoft.Components
 @using ProSoft.Pages.Cadastros
 
 <GenericTemplate3 TItem=fornecedor Contexto="ctx" HeaderTitle="Fornecedores" Items="ctx.fornecedores.OrderBy(k=>k.Nome)" ModalSize="modal-lg">
-    <GridContent>
-        <PropertyColumn TProp=string TGridItem=fornecedor Title="Id" Property='p => p.IdFornecedor.ToString("000000")' Sortable="true" />
-        <PropertyColumn TProp=string TGridItem=fornecedor Title="Nome" Property="p => p.Nome" Sortable="true" />
-    </GridContent>
+    <GridHeaderTemplate>
+        <td>Id</td><td>Nome</td>
+    </GridHeaderTemplate>
+    <GridRowTemplate Context="p">
+        <td>@p.IdFornecedor.ToString("000000")</td>
+        <td>@p.Nome</td>
+    </GridRowTemplate>
     <ItemEditForm Context="item">
         <ProSoft.Pages.Cadastros.Fornecedor Model="item" Contexto="ctx" />
     </ItemEditForm>

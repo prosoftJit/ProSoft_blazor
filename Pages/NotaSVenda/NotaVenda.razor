@@ -5,60 +5,48 @@
 @using Microsoft.EntityFrameworkCore
 @using ProSoft.Pages.Cadastros
 
-<CascadingValue Name="ctx" Value="ctx">
-    <EditForm Model="Model" OnValidSubmit="Submit" id="editForm">
+<DataAnnotationsValidator />
+<ValidationSummary Model="Model" />
 
-        <DataAnnotationsValidator />
-        <ValidationSummary Model="Model" />
+<RadzenRow>
+    <RadzenColumn Size="1">
+        <RadzenFormField Text="Id">
+            <RadzenNumeric Format="000000" Value="Model.IdNotaVenda" TextAlign="Radzen.TextAlign.Center" ShowUpDown=false />
+        </RadzenFormField>
+    </RadzenColumn>
+    <RadzenColumn Size="3">
+        <RadzenFormField Text="Cliente">
+            <RadzenDropDown TValue="long?" @bind-Value=Model.Cliente_IdCliente TextProperty="Nome" ValueProperty="IdCliente" Data="ctx.clientes.OrderBy(k=>k.Nome)" />
+        </RadzenFormField>
+    </RadzenColumn>
+</RadzenRow>
 
-        <FluentGrid>
-            <FluentGridItem md="1">
-                <FluentTextField Label="Id" Value="@Model.IdNotaVenda.ToString("000000")"/>
-            </FluentGridItem>
-            <FluentGridItem md="3">
-                <FluentCombobox Label="Cliente" @bind-SelectedOption=Model.Cliente OptionText="(c)=>c.Nome" Items="ctx.clientes.OrderBy(k=>k.Nome)" />
-            </FluentGridItem>
-        </FluentGrid>
-
-        <GenericTemplate Items="Model.Items" TItem="venda" OnAdd="AddVenda" OnDelete="(i)=>Model.Items.Remove(i)">
-            <TableHeader>
-                <th>Quant</th>
-                <th>Un</th>
-                <th>Descrição</th>
-                <th>P. Venda</th>
-                <th>Desconto</th>
-                <th>Total</th>
-            </TableHeader>
-            <RowTemplate Context="itemsCtx">
-                <Venda_row Model="itemsCtx" OnNeedCompras="()=>ctx.compras.Include(k=>k.Mercadoria).OrderBy(k=>k.Mercadoria.Descricao).ToArray()" />
-            </RowTemplate>
-            <TableFooter>
-                <tr>
-                    <td colspan="5" class="text-end">Total</td>
-                    <td><FluentTextField Value="@TotalVendas().ToString("N2")" /></td>
-                </tr>
-            </TableFooter>
-        </GenericTemplate>
-
-        <GenericTemplate Items="Model.Parcelas" TItem="contaareceber">
-            <TableHeader>
-                <th>Vencimento</th>
-                <th>Valor</th>
-                <th><button type="button" class="btn btn-link" @onclick="AddParcela"><i class="oi oi-plus"></i></button></th>
-            </TableHeader>
-            <RowTemplate Context="parc">
-                <ProSoft.Pages.NotasVenda.Parcela Model="parc" OnDelete="DeleteParcela" OnTotalChanged="()=>StateHasChanged()" />
-            </RowTemplate>
-            <TableFooter>
-                <tr>
-                    <td class="text-end">Total</td>
-                    <td><FluentTextField Value="@Model.Parcelas.Sum(k=>k.Valor).ToString("N2")" Disabled=true /></td>
-                </tr>
-            </TableFooter>
-        </GenericTemplate>
-
-    </EditForm>
-</CascadingValue>
+<table class="table w-100">
+<thead>
+    <tr>
+        <td>Quant.</td>
+        <td>Un.</td>
+        <td>Descrição</td>
+        <td>Unitário</td>
+        <td>Desconto</td>
+        <td>Total</td>
+        <td><RadzenButton Icon="add" Click="()=>AddVenda()" /></td>
+    </tr>
+</thead>
+<tbody>
+@foreach (venda v in Model.Items)
+{
+    <Venda_row Model="v" Compras="ctx.compras" @bind-Total=total />
+}
+</tbody>
+<tfoot>
+    <tr>
+        <td colspan="4"></td>
+        <td>Total</td>
+        <td align="right">@total.ToString("N2")</td>
+    </tr>
+</tfoot>
+</table>
 
 
 @code {
@@ -67,21 +55,21 @@
 
     private Contexto ctx = new();
 
-    cliente? editCliente = null; 
+    cliente? editCliente = null;
+
+    float total = 0;
 
     protected override void OnInitialized() {
-        Model = ctx.notasvenda.Include(k=>k.Cliente).Include(k=>k.Items).ThenInclude(k=>k.Compra).ThenInclude(k=>k.Mercadoria).Include(k=>k.Parcelas).FirstOrDefault(k=>k.IdNotaVenda==idNotaVenda)??new();
+        Model = ctx.notasvenda.FirstOrDefault(k=>k.IdNotaVenda==idNotaVenda)??new();
 
         if (Model.Items.Count == 0)
             AddVenda();
     }
 
-    void Submit()
+    void Submit(notavenda nv)
     {
         if (Model.IdNotaVenda == 0)
-            ctx.Entry(Model).State = Microsoft.EntityFrameworkCore.EntityState.Added;
-        else
-            ctx.Entry(Model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            ctx.notasvenda.Add(Model);
 
         ctx.SaveChanges();
 
@@ -90,7 +78,7 @@
 
     void AddVenda()
     {
-        venda ve = new venda { Quantidade=0, Compra=null };
+        venda ve = new();
         Model.Items.Add(ve);
         StateHasChanged();
     }

@@ -5,20 +5,18 @@
 <DataAnnotationsValidator />
 <ValidationSummary />
 
-<FluentGrid>
-    <FluentGridItem md="3">
-        <FluentTextField Label="Id do Funcionário" Value="@Model.IdFuncionario.ToString("000000")" Disabled=true />
-    </FluentGridItem>
-    <FluentGridItem md="9">
-        <FluentTextField Label="Nome" @bind-Value=Model.Nome />
-    </FluentGridItem>
-    <FluentGridItem md="4">
-        <FluentCheckbox Label="System user?" @bind-Value=Model.IsSystemUser />
-    </FluentGridItem>
-    <FluentGridItem md="8">
-        <FluentTextField Label="Senha" @bind-Value=Model.Senha />
-    </FluentGridItem>
-</FluentGrid>
+<RadzenFormField Text="Id do Funcionário">
+    <RadzenNumeric Format="000000" @bind-Value=Model.IdFuncionario Disabled=true />
+</RadzenFormField>
+<RadzenFormField Text="Nome">
+    <RadzenTextBox @bind-Value=Model.Nome />
+</RadzenFormField>
+<RadzenFormField Text="IsSystemUser?">
+    <RadzenSwitch @bind-Value=Model.IsSystemUser />
+</RadzenFormField>
+<RadzenFormField Text="Senha">
+    <RadzenPassword @bind-Value=Model.Senha />
+</RadzenFormField>
 
 @code {
     [Parameter] public funcionario Model { get; set; } = new();

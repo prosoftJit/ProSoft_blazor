@@ -7,6 +7,7 @@ using System.Data;
 using System.Reflection.Emit;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure.Internal;
 using MySqlConnector;
 using ProSoft.Pages;
 
@@ -30,6 +31,8 @@ namespace ProSoft.Data
                 if (string.IsNullOrEmpty(connectionString))
                     connectionString = _connectionString;
 
+                optionsBuilder.UseLazyLoadingProxies();
+ 
                // var connection = new MySqlConnector.MySqlConnection(connectionString);
                 optionsBuilder.UseMySQL(connectionString);
                 optionsBuilder.EnableDetailedErrors(true);
@@ -311,7 +314,7 @@ namespace ProSoft.Data
         public float Total { get {
                 return Items.Sum(k => k.Quantidade * k.Custo);
         } }
-        public ICollection<compra> Items { get; set; } = new HashSet<compra>();
+        public virtual ICollection<compra> Items { get; set; } = new HashSet<compra>();
     }
 
     public class compra
@@ -334,6 +337,8 @@ namespace ProSoft.Data
         {
             return Descricao;
         }
+        [NotMapped]
+        public float Margem { get; set; } = 0.5f;
 
         /// <summary>
         /// Cria um produto a partir de uma descri��o, se ele n�o existir no arquivo.
@@ -372,7 +377,7 @@ namespace ProSoft.Data
             c.Quantidade = 0;
 
             string fornecedor_padrao = "Inclus�o Autom�tica de Compra";
-            fornecedor forn = contexto.fornecedores.Include(k => k.Compras).FirstOrDefault(k => k.Nome == fornecedor_padrao);
+            fornecedor forn = contexto.fornecedores.FirstOrDefault(k => k.Nome == fornecedor_padrao);
             if (forn == null)
             {
                 forn = new fornecedor();

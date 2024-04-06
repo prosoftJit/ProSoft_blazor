@@ -15,44 +15,48 @@
     </PageHeader>
 }
 
-<FluentDataGrid Items="Items" TGridItem="TItem" Pagination="paginator">
-    <EmptyContent>
-        <p>Nenhum item encontrado...</p>
-    </EmptyContent>
-    <ChildContent>
-        @GridContent
-        <TemplateColumn Align="Align.End" Context="item" >
-            <HeaderCellItemTemplate>
-                <FluentButton Class="mr-2" IconEnd="new Icons.Regular.Size12.Add()" OnClick="()=>askEdit=new()"></FluentButton>
-            </HeaderCellItemTemplate>
-            <ChildContent>
-                <FluentButton IconEnd="new Icons.Regular.Size12.Edit()" OnClick="()=>askEdit=item" />
-                <FluentButton IconEnd="new Icons.Regular.Size12.Delete()" OnClick="()=>askDelete=item" />
-            </ChildContent>
-        </TemplateColumn>
-    </ChildContent>
-</FluentDataGrid>
+<style>
+    td
+    {
+        padding-top: 2px !important;
+        padding-bottom: 2px !important;
+    }
+    tr { cursor: pointer; }
+</style>
 
-<FluentPaginator State="paginator">
-    <PaginationTextTemplate>
-        Foram encontrados <strong>@paginator.TotalItemCount</strong> item(s). <a href="" @onclick="()=>askEdit=new()">Incluir</a>
-    </PaginationTextTemplate>
-    <PaginationTextTemplate>
-        Página <strong>@(paginator.CurrentPageIndex + 1)</strong> de <strong>@(paginator.LastPageIndex + 1)</strong>
-    </PaginationTextTemplate>
-</FluentPaginator>
+<table class="table table-hover w-100" border="0">
+    <thead>
+        <tr>
+            @GridHeaderTemplate
+            <RadzenStack Gap="1" Orientation="Radzen.Orientation.Horizontal">
+                <RadzenButton Size=Radzen.ButtonSize.Small Icon="add" Click="()=>{askEdit=new();StateHasChanged();}" Variant="Radzen.Variant.Outlined" ButtonStyle="Radzen.ButtonStyle.Primary" />
+            </RadzenStack>
+        </tr>
+    </thead>
+    <tbody>
+    @if (Items is not null && GridRowTemplate is not null)
+    {
+        @foreach (TItem ti in Items)
+        {
+            <tr @onclick="()=>askEdit=ti">
+                @GridRowTemplate(ti)
+                <td style="width:1%">
+                        <RadzenButton Size=Radzen.ButtonSize.Small Icon="delete" Click="()=>askDelete=ti" @onclick:stopPropagation Variant="Radzen.Variant.Outlined" ButtonStyle="Radzen.ButtonStyle.Danger" />
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>
 
 <ModalDialog Title="Editar" Size="@ModalSize" @bind-Visible=DialogVisible >
     <ModalBody>
-        <EditForm Model="askEdit" id="editForm" OnValidSubmit="Submit" >
+        <RadzenTemplateForm TItem=TItem Data="askEdit" id="editForm" Submit="()=>OnSubmit?.Invoke(askEdit!)" >
         @ItemEditForm?.Invoke(askEdit!)
-        </EditForm>
+        </RadzenTemplateForm>
     </ModalBody>
     <ModalFooter>
-        <FluentButton Type=ButtonType.Submit Id="submit" FormId="editForm" >
-            <FluentIcon Value="new Icons.Filled.Size12.Briefcase()" Color="Color.Success" Slot="start" />
-            Salvar
-        </FluentButton>
+        <RadzenButton form="editForm" ButtonType="Radzen.ButtonType.Submit" Icon="save" Text="Salvar" />
     </ModalFooter>
 </ModalDialog>
 
@@ -61,7 +65,11 @@
 }
 
 @code {
-    [Parameter] public RenderFragment GridContent { get; set; } = default!;
+    [Parameter] public RenderFragment<TItem>? GridRowTemplate { get; set; } = null;
+    [Parameter] public RenderFragment? GridHeaderTemplate { get; set; } = null;
+    [Parameter] public Action<TItem>? OnSubmit { get; set; } = null;
+
+    //    [Parameter] public RenderFragment GridContent { get; set; } = default!;
     [Parameter] public IQueryable<TItem>? Items { get; set; }
     [Parameter] public string? HeaderTitle {get;set;} = null;
     [Parameter] public string? HeaderDescription {get;set;} = null;
@@ -72,7 +80,7 @@
     [Parameter, EditorRequired] public Contexto Contexto { get; set; } = default!;
     [Parameter] public string ModalSize { get; set; } = "modal-fullscreen";
 
-    //[Inject] NotificationService notService { get; set; } = default!;
+    [Inject] Radzen.NotificationService notService { get; set; } = default!;
 
     PaginationState paginator = new PaginationState { ItemsPerPage = 10 };
 
@@ -97,7 +105,10 @@
                 Contexto.SaveChanges();
 
                 //notService.Notify(NotificationSeverity.Success, "ProSoft", "Item excluído com sucesso!");
-            } catch {
+            } catch (Exception ex) {
+
+                notService.Notify(Radzen.NotificationSeverity.Error, ex.Message);
+
                 //notService.Notify(NotificationSeverity.Error, "ProSoft", "Erro excluindo ítem!");
             }
             askEdit = null;
@@ -106,9 +117,9 @@
         StateHasChanged();
     }
 
-    void Submit()
+    void Submit(TItem item)
     {
-        if (Contexto.Entry(askEdit).State == EntityState.Detached)
+        if (!Contexto.Set<TItem>().Contains(item))
             Contexto.Add(askEdit);
 
         Contexto.SaveChanges();

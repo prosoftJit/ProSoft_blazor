@@ -5,27 +5,33 @@
 
 @namespace ProSoft.Shared
 
-<FluentGridItem md="10">
-    <FluentTextField Label="Logradouro" @bind-Value=endereco.Endereco_logradouro />
-</FluentGridItem>
-<FluentGridItem md="2">
-    <FluentNumberField Label="Número" @bind-Value=endereco.Endereco_numero />
-</FluentGridItem>
-<FluentGridItem md="6">
-    <FluentTextField Label="Complemento" @bind-Value=endereco.Endereco_complemento />
-</FluentGridItem>
-<FluentGridItem md="6">
-    <FluentTextField Label="Bairro" @bind-Value=endereco.Endereco_bairro />
-</FluentGridItem>
-<FluentGridItem md="3">
-    <FluentTextField Label="CEP" @bind-Value=endereco.Endereco_cep />
-</FluentGridItem>
-<FluentGridItem md="7">
-    <FluentTextField Label="Cidade" @bind-Value=endereco.Endereco_cidade />
-</FluentGridItem>
-<FluentGridItem md="2">
-    <FluentTextField Label="UF" @bind-Value=endereco.Endereco_uf />
-</FluentGridItem>
+<RadzenFormField Text="Logradouro">
+    <RadzenTextBox @bind-Value=endereco.Endereco_logradouro />
+</RadzenFormField>
+
+<RadzenFormField Text="Nº">
+    <RadzenNumeric @bind-Value=endereco.Endereco_numero ShowUpDown=false />
+</RadzenFormField>
+
+<RadzenFormField Text="Complemento">
+    <RadzenTextBox @bind-Value=endereco.Endereco_complemento />
+</RadzenFormField>
+
+<RadzenFormField Text="Bairro">
+    <RadzenTextBox @bind-Value=endereco.Endereco_bairro />
+</RadzenFormField>
+
+<RadzenFormField Text="CEP">
+    <RadzenMask @bind-Value=endereco.Endereco_cep Mask="**.***-***" CharacterPattern="[0-9]" />
+</RadzenFormField>
+
+<RadzenFormField Text="Cidade">
+    <RadzenTextBox @bind-Value=endereco.Endereco_cidade />
+</RadzenFormField>
+
+<RadzenFormField Text="UF">
+    <RadzenMask @bind-Value=endereco.Endereco_uf Mask="**" CharacterPattern="[A-Z]" />
+</RadzenFormField>
 
 @code {
     [Parameter] public iendereco endereco { get; set; } = default!;

@@ -4,87 +4,19 @@
 @using ProSoft.Components
 @using ProSoft.Pages
 
-<PageHeader Title="Funcionários" Description="Colaboradores da empresa com ou sem acesso ao sistema">
-    <BarItems>
-        <FluentButton OnClick="()=>askEdit=new()">+ funcionário</FluentButton>
-    </BarItems>
-</PageHeader>
-
-<GenericTemplate Context="ctx" Items="funcionarios">
-    <TableHeader>
-        <th>Id do Funcionário</th>
-        <th>Nome</th>
-        <th>SysUser?</th>
-        <th></th>
-    </TableHeader>
-    <RowTemplate Context="func">
-        <td class="text-center"><a href="" @onclick="()=>askEdit=func" @onclick:preventDefault>@func.IdFuncionario.ToString("000000")</a></td>
-        <td>@func.Nome</td>
-        <td>@func.IsSystemUser</td>
-        <td><a href="" @onclick="()=>askDelete=func.IdFuncionario" @onclick:preventDefault><i class="oi oi-trash"></i></a></td>
-    </RowTemplate>
-</GenericTemplate>
-
-<ModalDialog Title="Funcionario" Size="modal-lg" @bind-Visible=ModalVisible >
-    <ModalBody>
-        <PageHeader Title="Funcionário" />
-        <EditForm id="fornForm" Model=askEdit OnValidSubmit="Submit">
-            <ProSoft.Pages.Cadastros.Funcionario Model="askEdit" />
-        </EditForm>
-    </ModalBody>
-    <ModalFooter>
-        <FluentButton IconStart="new Icons.Regular.Size12.Briefcase()" Type="ButtonType.Submit" Id="submit" FormId="fornForm" >Salvar</FluentButton>
-    </ModalFooter>
-</ModalDialog>
-
-@if (askDelete > 0)
-{
-    <ModalConfirm OnClose="Delete">Confirma exclusão do fornecedor?</ModalConfirm>
-}
+<GenericTemplate3 TItem=funcionario Contexto="ctx" HeaderTitle="Funcionários" Items="ctx.funcionarios.OrderBy(k=>k.Nome)" ModalSize="modal-lg">
+    <GridHeaderTemplate>
+        <td>Id</td><td>Nome</td>
+    </GridHeaderTemplate>
+    <GridRowTemplate Context="p">
+        <td>@p.IdFuncionario.ToString("000000")'</td>
+        <td>@p.Nome</td>
+    </GridRowTemplate>
+    <ItemEditForm Context="item">
+        <ProSoft.Pages.Cadastros.Funcionario Model="item" />
+    </ItemEditForm>
+</GenericTemplate3>
 
 @code {
     Contexto ctx = new();
-    //[Inject] NotificationService notificationService {get;set;} = default!;
-    funcionario? askEdit = null;
-    long askDelete = 0;
-
-    bool ModalVisible { get { return askEdit != null; } set { if (!value) askEdit = null; } }
-
-    private void Delete(bool confirm)
-    {
-        funcionario? f = ctx.funcionarios.Find(askDelete);
-        if (f != null && confirm)
-        {
-            ctx.funcionarios.Remove(f);
-            ctx.SaveChanges();
-            //notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary="Cadastro de Fornecedores", Detail = "Fornecedor excluído com sucesso", Duration = 4000 });
-            GetFuncionarios();
-        }
-        askDelete = 0;
-        StateHasChanged();
-    }
-
-    private void Submit()
-    {
-        if (askEdit == null)
-            return;
-
-        if (askEdit.IdFuncionario == 0)
-            ctx.funcionarios.Add(askEdit);
-        ctx.SaveChanges();
-        askEdit = null;
-        GetFuncionarios();
-        //notificationService?.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Cadastro de Fornecedores", Detail = "Alterações do funcionário foram salvas com sucesso!", Duration = 4000 });
-    }
-
-    private IReadOnlyList<funcionario> funcionarios = Array.Empty<funcionario>();
-    void GetFuncionarios()
-    {
-        funcionarios = ctx.funcionarios.ToArray();
-    }
-    protected override void OnInitialized()
-    {
-        GetFuncionarios();
-        base.OnInitialized();
-    }
 }

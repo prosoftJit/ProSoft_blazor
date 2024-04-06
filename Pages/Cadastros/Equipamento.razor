@@ -7,70 +7,19 @@
 
 <DataAnnotationsValidator />
 
-<FluentGrid>
-    <FluentGridItem md="3">
-        <FluentTextField Label="Id do Equipamento" Value=@Model.IdEquipamento.ToString("000000") Disabled=true />
-    </FluentGridItem>
-    <FluentGridItem md="9">
-        <FluentStack HorizontalGap="0" VerticalAlignment="VerticalAlignment.Bottom">
-        <div class="w-100">
-        <FluentCombobox Label="Cliente" Autocomplete=ComboboxAutocomplete.Inline Items="ctx!.clientes" TOption="cliente" OptionText="(o)=>o.Nome" @bind-SelectedOption=Model.Cliente Required />
-        </div>
-        <FluentButton IconStart="new Icons.Regular.Size12.Edit()" OnClick="()=>askEditCli=Model.Cliente??new()" />
-         </FluentStack>
-
-        <FluentValidationMessage For="()=>Model.Cliente" />
-    </FluentGridItem>
-    <FluentGridItem md="12">
-        <FluentTextArea @bind-Value="Model.Descricao" Label="Descrição" Rows="5" Required />
-        <FluentValidationMessage For="()=>Model.Descricao" />
-        </FluentGridItem>
-</FluentGrid>
-
-<ModalDialog Title="Cliente" Size="modal-lg" @bind-Visible=ModalVisible>
-    <ModalBody>
-        <EditForm Model="askEditCli" id="cliForm" OnValidSubmit="ClienteSubmit">
-            <Cliente Model="askEditCli" />
-        </EditForm>
-    </ModalBody>
-    <ModalFooter>
-        <FluentButton Appearance=Appearance.Accent Type="ButtonType.Submit" Id="submit" FormId="cliForm" IconStart="new Icons.Regular.Size12.Briefcase()">Salvar</FluentButton>
-    </ModalFooter>
-</ModalDialog>
+<div class="container">
+    <RadzenFormField Text="Id do Equipamento">
+        <RadzenNumeric Format="000000" TextAlign="Radzen.TextAlign.Center" Value="Model.IdEquipamento" Disabled=true />
+    </RadzenFormField>
+    <RadzenFormField Text="Id do Equipamento">
+        <RadzenDropDown @bind-Value=Model.Cliente Data="ctx.clientes" TextProperty="Nome" />
+    </RadzenFormField>
+    <RadzenFormField Text="Descrição">
+        <RadzenTextArea Rows="5" @bind-Value=Model.Descricao />
+    </RadzenFormField>
+</div>
 
  @code {
     [Parameter] public equipamento Model { get; set; } = new();
     [Parameter, EditorRequired] public Contexto ctx {get;set;} = default!;
-
-    bool ModalVisible { get { return askEditCli != null; } set { if (!value) askEditCli = null; } }
-
-    cliente cli = new();
-
-    cliente? askEditCli = null;
-
-    bool EditClienteHidden
-    {
-        get { return askEditCli == null; }
-        set { if (value == true) askEditCli = null; }
-    }
-
-    void ClienteSubmit()
-    {
-        if (askEditCli!.idCliente == 0)
-            ctx.clientes.Add(askEditCli);
-
-        ctx.SaveChanges();
-
-        askEditCli = null;
-    }
-
-    // async void EditCliente() {
-    //     cliente c = ctx!.clientes.Find(Model.Cliente_IdCliente) ?? new();
-
-    //     await dialogService.OpenAsync<Cliente>(
-    //         $"Cliente ID: {c.idCliente.ToString("000000")}",
-    //         new Dictionary<string, object>() { { "idCliente", c.idCliente } },
-    //         new DialogOptions() { Width = "700px", Height = "530px", Resizable = true }
-    //     );    
-    // }
 }
